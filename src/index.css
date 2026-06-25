@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+:root {
+  font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+  background-color: #f0fdf4; /* Soft light-green environment background */
+  color: #1e293b;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: #f0fdf4;
+  background-image: linear-gradient(rgba(240, 253, 244, 0.28), rgba(240, 253, 244, 0.28)), url('/images/bg-forest.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  overflow-x: hidden;
+  user-select: none; /* Prevent text selection for a native-app feel */
+}
+
+/* Custom animations and effects */
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(2deg); }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: float 4s ease-in-out infinite;
+  animation-delay: 2s;
+}
+
+/* Big playful box shadows */
+.shadow-playful {
+  box-shadow: 0 8px 0px #cbd5e1, 0 15px 20px rgba(0, 0, 0, 0.08);
+}
+
+.shadow-playful-primary {
+  box-shadow: 0 8px 0px #16a34a, 0 15px 20px rgba(22, 163, 74, 0.2);
+}
+
+.shadow-playful-secondary {
+  box-shadow: 0 8px 0px #d97706, 0 15px 20px rgba(217, 119, 6, 0.2);
+}
+
+.shadow-playful-blue {
+  box-shadow: 0 8px 0px #2563eb, 0 15px 20px rgba(37, 99, 235, 0.2);
+}
+
+.shadow-playful-rose {
+  box-shadow: 0 8px 0px #e11d48, 0 15px 20px rgba(225, 29, 72, 0.2);
+}
+
+.shadow-playful-purple {
+  box-shadow: 0 8px 0px #7c3aed, 0 15px 20px rgba(124, 58, 237, 0.2);
+}
+
+/* Active pressed states for playful buttons */
+.btn-pressed {
+  transform: translateY(4px);
+  box-shadow: 0 4px 0px currentColor, 0 8px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #f0fdf4;
+}
+::-webkit-scrollbar-thumb {
+  background: #bbf7d0;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #86efac;
+}
