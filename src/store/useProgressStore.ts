@@ -138,7 +138,7 @@ export const useProgressStore = create<ProgressState>((set, get) => ({
     }
 
     // 4. Pintar Bercerita
-    const storySteps = ['eksplorasi_cerita', 'konstruksi_matching', 'aksi_wordbuilder'];
+    const storySteps = ['eksplorasi_cerita', 'konstruksi_matching', 'konstruksi_cerita', 'aksi_wordbuilder'];
     const completedStory = storySteps.filter(s => steps.includes(s));
     if (completedStory.length >= 2 && !earnedBadgeNames.includes('Pintar Bercerita')) {
       await get().earnBadge('Pintar Bercerita', '📚');

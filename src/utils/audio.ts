@@ -12,14 +12,21 @@ export function speakIndonesian(text: string) {
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = 'id-ID'; // Indonesian voice
     utterance.volume = settings.voiceVolume;
-    utterance.pitch = 1.25; // Playful higher pitch for a mascot/cartoon tone
-    utterance.rate = 1.05; // Cheerful, energetic pace
+    utterance.pitch = 1.3; // Playful cartoon mascot tone (pitch up)
+    utterance.rate = 0.88; // Slightly slower, clear pace perfect for kids (4-6 years old) to follow along
 
-    // Find Indonesian voice if possible
+    // Find Indonesian voice, prioritizing high-quality/natural neural and child-friendly voices
     const voices = window.speechSynthesis.getVoices();
-    const idVoice = voices.find(voice => voice.lang.toLowerCase().includes('id'));
-    if (idVoice) {
-      utterance.voice = idVoice;
+    const idVoices = voices.filter(voice => voice.lang.toLowerCase().includes('id'));
+    
+    const selectedVoice = 
+      idVoices.find(v => v.name.toLowerCase().includes('gadis')) || // Microsoft Edge friendly girl voice
+      idVoices.find(v => v.name.toLowerCase().includes('neural')) || // Neural high-quality
+      idVoices.find(v => v.name.toLowerCase().includes('google')) || // Google Indonesian
+      idVoices[0]; // Fallback
+
+    if (selectedVoice) {
+      utterance.voice = selectedVoice;
     }
 
     window.speechSynthesis.speak(utterance);

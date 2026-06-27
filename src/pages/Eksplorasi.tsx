@@ -94,8 +94,8 @@ export const Eksplorasi: React.FC = () => {
   return (
     <div className="space-y-6 py-4">
       {/* Header */}
-      <div className="flex items-center space-x-3">
-        <Link to="/" onClick={() => playSound('click')} className="p-3 bg-white rounded-2xl border-2 border-emerald-100 hover:bg-emerald-50 transition text-slate-700">
+      <div className="flex items-center space-x-3 bg-white/80 backdrop-blur-md p-4 rounded-3xl border-3 border-emerald-100/85 shadow-sm">
+        <Link to="/" onClick={() => playSound('click')} className="p-3 bg-white rounded-2xl border-2 border-emerald-100 hover:bg-emerald-50 transition text-slate-700 shrink-0">
           <ChevronLeft size={24} />
         </Link>
         <div>
