@@ -1,7 +1,7 @@
 import { useSettingsStore } from '../store/useSettingsStore';
 
 let currentUtteranceAudio: HTMLAudioElement | null = null;
-let activeSpeechText: string | null = null;
+let currentSpeechSequence: number = 0;
 
 // Helper to strip emojis and clean up whitespace
 export function cleanSpeechText(text: string): string {
@@ -30,21 +30,34 @@ export async function speakIndonesian(text: string) {
   const cleaned = cleanSpeechText(text);
   if (!cleaned) return;
 
-  activeSpeechText = cleaned;
+  const sequenceId = ++currentSpeechSequence;
 
   try {
     const hash = await getHash(cleaned);
 
-    // Abort if activeSpeechText has changed during the async hashing period
-    if (activeSpeechText !== cleaned) return;
+    // Abort if a new speech was triggered during the async hashing period
+    if (sequenceId !== currentSpeechSequence) return;
 
     const audioSrc = `/audio/tts/${hash}.mp3`;
     const audio = new Audio(audioSrc);
     audio.volume = settings.voiceVolume;
     currentUtteranceAudio = audio;
 
+    // Lower BGM volume (ducking)
+    duckBGM();
+
+    audio.addEventListener('ended', () => {
+      if (currentUtteranceAudio === audio) {
+        unduckBGM();
+        currentUtteranceAudio = null;
+      }
+    });
+
     await audio.play().catch(err => {
       console.warn('Audio play failed:', err);
+      if (currentUtteranceAudio === audio) {
+        unduckBGM();
+      }
     });
   } catch (err) {
     console.error('Error generating hash or playing audio:', err);
@@ -53,12 +66,14 @@ export async function speakIndonesian(text: string) {
 
 // Cancel any playing speech
 export function cancelSpeech() {
-  activeSpeechText = null;
+  currentSpeechSequence++; // Invalidate any pending async hashing requests
   if (currentUtteranceAudio) {
     currentUtteranceAudio.pause();
     currentUtteranceAudio.src = '';
     currentUtteranceAudio = null;
   }
+  // Restore BGM volume if speech is cancelled
+  unduckBGM();
 }
 
 // Web Audio API Sound Generator (synthesizes audio dynamically for zero-dependency offline use)
@@ -130,5 +145,63 @@ export function playSound(type: 'click' | 'success' | 'error' | 'pop') {
     }
   } catch (e) {
     console.error('Web Audio synthesiser failed:', e);
+  }
+}
+
+// --- Background Music (BGM) Player ---
+let bgmAudioElement: HTMLAudioElement | null = null;
+let isBgmPlaying = false;
+let isDucked = false;
+let unsubSettings: (() => void) | null = null;
+
+export function duckBGM() {
+  isDucked = true;
+  if (bgmAudioElement) {
+    const vol = useSettingsStore.getState().settings.bgMusicVolume;
+    bgmAudioElement.volume = vol * 0.15;
+  }
+}
+
+export function unduckBGM() {
+  isDucked = false;
+  if (bgmAudioElement) {
+    const vol = useSettingsStore.getState().settings.bgMusicVolume;
+    bgmAudioElement.volume = vol;
+  }
+}
+
+export function initBGM() {
+  if (bgmAudioElement) return;
+
+  bgmAudioElement = new Audio('/audio/bgm.mp3');
+  bgmAudioElement.loop = true;
+  
+  // Set initial volume
+  const vol = useSettingsStore.getState().settings.bgMusicVolume;
+  bgmAudioElement.volume = isDucked ? vol * 0.15 : vol; // full volume control to slider
+
+  // Subscribe to settings changes for dynamic volume updates
+  unsubSettings = useSettingsStore.subscribe((state) => {
+    if (bgmAudioElement) {
+      bgmAudioElement.volume = isDucked ? state.settings.bgMusicVolume * 0.15 : state.settings.bgMusicVolume;
+    }
+  });
+}
+
+export function playBGM() {
+  if (!bgmAudioElement) initBGM();
+  if (bgmAudioElement && !isBgmPlaying) {
+    bgmAudioElement.play().then(() => {
+      isBgmPlaying = true;
+    }).catch(e => {
+      console.warn('BGM blocked by browser autoplay policy. Waiting for user interaction...', e);
+    });
+  }
+}
+
+export function stopBGM() {
+  if (bgmAudioElement && isBgmPlaying) {
+    bgmAudioElement.pause();
+    isBgmPlaying = false;
   }
 }
