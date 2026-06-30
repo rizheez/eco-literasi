@@ -152,7 +152,6 @@ export function playSound(type: 'click' | 'success' | 'error' | 'pop') {
 let bgmAudioElement: HTMLAudioElement | null = null;
 let isBgmPlaying = false;
 let isDucked = false;
-let unsubSettings: (() => void) | null = null;
 
 export function duckBGM() {
   isDucked = true;
@@ -181,7 +180,7 @@ export function initBGM() {
   bgmAudioElement.volume = isDucked ? vol * 0.15 : vol; // full volume control to slider
 
   // Subscribe to settings changes for dynamic volume updates
-  unsubSettings = useSettingsStore.subscribe((state) => {
+  useSettingsStore.subscribe((state) => {
     if (bgmAudioElement) {
       bgmAudioElement.volume = isDucked ? state.settings.bgMusicVolume * 0.15 : state.settings.bgMusicVolume;
     }
