@@ -86,7 +86,7 @@ export const ProfileModal: React.FC = () => {
 
             <button
               onClick={() => { playSound('click'); setIsCreating(true); }}
-              className="mt-6 w-full py-4 bg-amber-500 text-white rounded-2xl font-bold text-xl flex items-center justify-center space-x-2 shadow-playful-secondary hover:brightness-110 active:translate-y-[4px] active:shadow-none transition-all cursor-pointer"
+              className="mt-6 w-full py-4 bg-amber-500 text-white rounded-2xl font-bold text-xl flex items-center justify-center space-x-2 shadow-playful-secondary hover:brightness-110 btn-bouncy  transition-all cursor-pointer"
             >
               <UserPlus size={24} />
               <span>Buat Profil Baru</span>
@@ -139,7 +139,7 @@ export const ProfileModal: React.FC = () => {
               )}
               <button
                 type="submit"
-                className={`py-4 bg-emerald-500 text-white rounded-2xl font-bold text-lg flex items-center justify-center space-x-2 shadow-playful-primary hover:brightness-110 active:translate-y-[4px] active:shadow-none transition-all cursor-pointer ${
+                className={`py-4 bg-emerald-500 text-white rounded-2xl font-bold text-lg flex items-center justify-center space-x-2 shadow-playful-primary hover:brightness-110 btn-bouncy  transition-all cursor-pointer ${
                   childrenList.length > 0 ? 'w-2/3' : 'w-full'
                 }`}
               >

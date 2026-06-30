@@ -150,9 +150,9 @@ export const Internalisasi: React.FC = () => {
                 key={sc.id}
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: idx * 0.1 }}
+                transition={{ type: 'spring', bounce: 0.6, delay: idx * 0.1 }}
                 onClick={() => handleSelectScenario(idx)}
-                className="bg-white rounded-3xl p-6 border-4 border-emerald-100 text-center cursor-pointer shadow-playful hover:border-emerald-400 hover:translate-y-[-4px] transition-all flex flex-col items-center justify-between min-h-[220px]"
+                className="bg-white rounded-3xl p-6 border-4 border-emerald-100 text-center cursor-pointer shadow-playful btn-bouncy hover:border-emerald-400 hover:translate-y-[-4px] transition-all flex flex-col items-center justify-between min-h-[220px]"
               >
                 <div className="p-4 bg-emerald-50 rounded-2xl text-emerald-600">
                   <Icon size={48} />
@@ -259,7 +259,7 @@ export const Internalisasi: React.FC = () => {
                       <div className="flex justify-center space-x-3">
                         <button
                           onClick={handleReflect}
-                          className="px-6 py-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded-2xl font-extrabold shadow-playful-primary active:translate-y-[2px] transition cursor-pointer"
+                          className="px-6 py-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded-2xl font-extrabold shadow-playful-primary btn-bouncy transition cursor-pointer"
                         >
                           👍 Ya, Saya Berjanji! (+2 ⭐)
                         </button>

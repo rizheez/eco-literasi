@@ -41,7 +41,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-transparent">
       {/* SIDEBAR FOR DESKTOP */}
-      <aside className="hidden md:flex flex-col w-64 bg-white border-r-4 border-emerald-100 p-6 space-y-8 shrink-0">
+      <aside className="hidden md:flex flex-col w-72 bg-white/90 backdrop-blur-xl border-r-2 border-white/50 p-6 space-y-8 shrink-0 shadow-[4px_0_24px_rgba(0,0,0,0.05)]">
         {/* Child Profile Header */}
         <div className="bg-emerald-50 rounded-2xl p-4 border-2 border-emerald-100 flex items-center space-x-3">
           <span className="text-4xl animate-bounce">{activeChild.avatar}</span>

@@ -204,18 +204,18 @@ export const Eksplorasi: React.FC = () => {
                 </div>
               </div>
 
-              <div className="mt-6 flex space-x-3">
+              <div className="mt-6 flex flex-col-reverse md:flex-row gap-3">
                 <button
                   onClick={() => { playSound('click'); cancelSpeech(); setSelectedItem(null); }}
-                  className="w-1/3 py-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-2xl transition cursor-pointer"
+                  className="w-full md:w-1/3 py-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-2xl transition cursor-pointer"
                 >
                   Tutup
                 </button>
                 <button
                   onClick={() => handleComplete(selectedItem.id)}
-                  className="w-2/3 py-4 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-2xl shadow-playful-primary flex items-center justify-center space-x-2 cursor-pointer active:translate-y-[4px] active:shadow-none transition-all"
+                  className="w-full md:w-2/3 py-4 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-2xl shadow-playful-primary flex items-center justify-center space-x-2 cursor-pointer btn-bouncy transition-all"
                 >
-                  <CheckCircle2 size={22} />
+                  <CheckCircle2 size={22} className="shrink-0" />
                   <span>Selesai & Ambil Bintang (+2 ⭐)</span>
                 </button>
               </div>
