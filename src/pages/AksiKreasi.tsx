@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useProgressStore } from '../store/useProgressStore';
-import { playSound, speakIndonesian } from '../utils/audio';
+import { playSound, speakIndonesian, cancelSpeech } from '../utils/audio';
 import { ChevronLeft, RotateCcw, HelpCircle, RefreshCw } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import confetti from 'canvas-confetti';
@@ -66,8 +66,8 @@ const sebabAkibatData: SebabAkibatPair[] = [
     id: 3,
     sebabText: 'Membuang sampah plastik ke sungai 🥤🗑️',
     sebabEmoji: '🥤',
-    akibatText: 'Ikan mati & air beracun kotor 💀🤢',
-    akibatEmoji: '💀',
+    akibatText: 'Ikan mati & air beracun kotor 🐟🤢',
+    akibatEmoji: '🤢',
     explanation: 'Sampah plastik mencemari air sungai, membuat pesut mahakam sedih, dan merusak ekosistem sungai.'
   },
   {
@@ -84,12 +84,20 @@ export const AksiKreasi: React.FC = () => {
   const { completedSteps, completeStep } = useProgressStore();
   const [activeTab, setActiveTab] = useState<'wordbuilder' | 'sebab_akibat' | 'puzzle' | 'memory'>('wordbuilder');
 
+  useEffect(() => {
+    return () => {
+      cancelSpeech();
+    };
+  }, []);
+
   // Word Builder State
   const wordList: WordItem[] = [
     { word: 'LAMIN', emoji: '🏠', clue: 'Rumah Adat Dayak yang panjang', image: '/images/rumah_lamin.png' },
     { word: 'SAPE', emoji: '🎸', clue: 'Alat musik tradisional Dayak', image: '/images/musik_sape.png' },
     { word: 'HUTAN', emoji: '🌳', clue: 'Tempat tumbuhnya banyak pohon', image: '/images/hutan_hujan.png' },
-    { word: 'SUNGAI', emoji: '🐟', clue: 'Aliran air bersih tempat pesut hidup', image: '/images/sungai_mahakam.png' },
+    { word: 'SUNGAI', emoji: '🌊', clue: 'Aliran air bersih tempat pesut hidup', image: '/images/sungai_mahakam.png' },
+    { word: 'PESUT', emoji: '🐬', clue: 'Lumba-lumba air tawar Sungai Mahakam', image: '/images/pesut_mahakam.png' },
+    { word: 'ORANGUTAN', emoji: '🦧', clue: 'Kera besar berbulu merah khas Kaltim', image: '/images/orangutan.png' },
     { word: 'ENGGANG', emoji: '🦜', clue: 'Burung suci lambang persatuan', image: '/images/burung_enggang.png' }
   ];
   const [currentWordIdx, setCurrentWordIdx] = useState(0);
@@ -130,9 +138,7 @@ export const AksiKreasi: React.FC = () => {
     speakIndonesian(`Susun kata: ${item.word}. Petunjuk: ${item.clue}`);
   };
 
-  useEffect(() => {
-    initWordBuilder(0);
-  }, []);
+
 
   const handleLetterSelect = (letter: string, index: number) => {
     playSound('click');
@@ -250,7 +256,13 @@ export const AksiKreasi: React.FC = () => {
 
     setPuzzleBoard(shuffled);
 
-    const images = ['/images/burung_enggang.png', '/images/rumah_lamin.png', '/images/hutan_hujan.png'];
+    const images = [
+      '/images/burung_enggang.png',
+      '/images/rumah_lamin.png',
+      '/images/hutan_hujan.png',
+      '/images/pesut_mahakam.png',
+      '/images/orangutan.png'
+    ];
     const randomImg = images[Math.floor(Math.random() * images.length)];
     setPuzzleImage(randomImg);
 
@@ -302,13 +314,16 @@ export const AksiKreasi: React.FC = () => {
 
   // Handle Tab Switch Initializers
   useEffect(() => {
-    if (activeTab === 'sebab_akibat') {
+    if (activeTab === 'wordbuilder') {
+      initWordBuilder(currentWordIdx);
+    } else if (activeTab === 'sebab_akibat') {
       initSebabAkibat();
     } else if (activeTab === 'puzzle') {
       initPuzzle();
     } else if (activeTab === 'memory') {
       initMemoryGame();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab]);
 
   const handleCardClick = (index: number) => {
@@ -356,7 +371,7 @@ export const AksiKreasi: React.FC = () => {
     <div className="space-y-6 py-4">
       {/* Header */}
       <div className="flex items-center space-x-3 bg-white/80 backdrop-blur-md p-4 rounded-3xl border-3 border-emerald-100/85 shadow-sm">
-        <Link to="/" onClick={() => { playSound('click'); window.speechSynthesis.cancel(); }} className="p-3 bg-white rounded-2xl border-2 border-emerald-100 hover:bg-emerald-50 transition text-slate-700 shrink-0">
+        <Link to="/" onClick={() => { playSound('click'); cancelSpeech(); }} className="p-3 bg-white rounded-2xl border-2 border-emerald-100 hover:bg-emerald-50 transition text-slate-700 shrink-0">
           <ChevronLeft size={24} />
         </Link>
         <div>
@@ -368,7 +383,7 @@ export const AksiKreasi: React.FC = () => {
       {/* Tabs Layout */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-2 bg-emerald-100/50 p-2 rounded-2xl border-2 border-emerald-100">
         <button
-          onClick={() => { playSound('pop'); window.speechSynthesis.cancel(); setActiveTab('wordbuilder'); }}
+          onClick={() => { playSound('pop'); cancelSpeech(); setActiveTab('wordbuilder'); }}
           className={`py-3 font-extrabold text-sm md:text-base rounded-xl transition cursor-pointer ${
             activeTab === 'wordbuilder' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-800 hover:bg-white/50'
           }`}
@@ -376,7 +391,7 @@ export const AksiKreasi: React.FC = () => {
           🔠 Susun Huruf
         </button>
         <button
-          onClick={() => { playSound('pop'); window.speechSynthesis.cancel(); setActiveTab('sebab_akibat'); }}
+          onClick={() => { playSound('pop'); cancelSpeech(); setActiveTab('sebab_akibat'); }}
           className={`py-3 font-extrabold text-sm md:text-base rounded-xl transition cursor-pointer ${
             activeTab === 'sebab_akibat' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-800 hover:bg-white/50'
           }`}
@@ -384,7 +399,7 @@ export const AksiKreasi: React.FC = () => {
           🔄 Sebab-Akibat
         </button>
         <button
-          onClick={() => { playSound('pop'); window.speechSynthesis.cancel(); setActiveTab('puzzle'); }}
+          onClick={() => { playSound('pop'); cancelSpeech(); setActiveTab('puzzle'); }}
           className={`py-3 font-extrabold text-sm md:text-base rounded-xl transition cursor-pointer ${
             activeTab === 'puzzle' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-800 hover:bg-white/50'
           }`}
@@ -392,7 +407,7 @@ export const AksiKreasi: React.FC = () => {
           🧩 Puzzle Alam
         </button>
         <button
-          onClick={() => { playSound('pop'); window.speechSynthesis.cancel(); setActiveTab('memory'); }}
+          onClick={() => { playSound('pop'); cancelSpeech(); setActiveTab('memory'); }}
           className={`py-3 font-extrabold text-sm md:text-base rounded-xl transition cursor-pointer ${
             activeTab === 'memory' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-800 hover:bg-white/50'
           }`}

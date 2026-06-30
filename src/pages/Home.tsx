@@ -26,7 +26,15 @@ export const Home: React.FC = () => {
       color: 'bg-gradient-to-br from-blue-400 to-sky-500',
       shadowClass: 'shadow-playful-blue',
       path: '/eksplorasi',
-      items: ['eksplorasi_enggang', 'eksplorasi_hutan', 'eksplorasi_sungai']
+      items: [
+        'eksplorasi_enggang',
+        'eksplorasi_hutan',
+        'eksplorasi_orangutan',
+        'eksplorasi_sungai',
+        'eksplorasi_pesut',
+        'eksplorasi_lamin',
+        'eksplorasi_sape'
+      ]
     },
     {
       id: 'konstruksi',
@@ -36,7 +44,7 @@ export const Home: React.FC = () => {
       color: 'bg-gradient-to-br from-amber-400 to-orange-500',
       shadowClass: 'shadow-playful-secondary',
       path: '/konstruksi',
-      items: ['konstruksi_matching']
+      items: ['konstruksi_matching', 'konstruksi_cerita']
     },
     {
       id: 'internalisasi',
@@ -56,7 +64,7 @@ export const Home: React.FC = () => {
       color: 'bg-gradient-to-br from-rose-400 to-pink-500',
       shadowClass: 'shadow-playful-rose',
       path: '/aksi',
-      items: ['aksi_wordbuilder', 'aksi_puzzle']
+      items: ['aksi_wordbuilder', 'aksi_sebab_akibat', 'aksi_puzzle', 'aksi_memory']
     }
   ];
 

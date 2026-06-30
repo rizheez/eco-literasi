@@ -1,44 +1,64 @@
 import { useSettingsStore } from '../store/useSettingsStore';
 
-// Web Speech Synthesis API helper (TTS in Indonesian)
-export function speakIndonesian(text: string) {
+let currentUtteranceAudio: HTMLAudioElement | null = null;
+let activeSpeechText: string | null = null;
+
+// Helper to strip emojis and clean up whitespace
+export function cleanSpeechText(text: string): string {
+  return text
+    .replace(/[\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+// Helper to generate SHA-256 hash using Web Crypto API
+async function getHash(text: string): Promise<string> {
+  const msgBuffer = new TextEncoder().encode(text);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+// Speak guide in Indonesian, using pre-rendered MP3
+export async function speakIndonesian(text: string) {
   const settings = useSettingsStore.getState().settings;
   if (!settings.textToSpeechEnabled) return;
 
-  if ('speechSynthesis' in window) {
-    // Cancel any ongoing speech to prevent queuing lag
-    window.speechSynthesis.cancel();
+  // Cancel any ongoing speech
+  cancelSpeech();
 
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = 'id-ID'; // Indonesian voice
-    utterance.volume = settings.voiceVolume;
-    utterance.pitch = 1.3; // Playful cartoon mascot tone (pitch up)
-    utterance.rate = 0.88; // Slightly slower, clear pace perfect for kids (4-6 years old) to follow along
+  const cleaned = cleanSpeechText(text);
+  if (!cleaned) return;
 
-    // Find Indonesian voice, prioritizing high-quality/natural neural and child-friendly voices
-    const voices = window.speechSynthesis.getVoices();
-    const idVoices = voices.filter(voice => voice.lang.toLowerCase().includes('id'));
-    
-    const selectedVoice = 
-      idVoices.find(v => v.name.toLowerCase().includes('gadis')) || // Microsoft Edge friendly girl voice
-      idVoices.find(v => v.name.toLowerCase().includes('neural')) || // Neural high-quality
-      idVoices.find(v => v.name.toLowerCase().includes('google')) || // Google Indonesian
-      idVoices[0]; // Fallback
+  activeSpeechText = cleaned;
 
-    if (selectedVoice) {
-      utterance.voice = selectedVoice;
-    }
+  try {
+    const hash = await getHash(cleaned);
 
-    window.speechSynthesis.speak(utterance);
+    // Abort if activeSpeechText has changed during the async hashing period
+    if (activeSpeechText !== cleaned) return;
+
+    const audioSrc = `/audio/tts/${hash}.mp3`;
+    const audio = new Audio(audioSrc);
+    audio.volume = settings.voiceVolume;
+    currentUtteranceAudio = audio;
+
+    await audio.play().catch(err => {
+      console.warn('Audio play failed:', err);
+    });
+  } catch (err) {
+    console.error('Error generating hash or playing audio:', err);
   }
 }
 
-// Trigger speech synthesis list load to register voices on startup
-if ('speechSynthesis' in window) {
-  window.speechSynthesis.getVoices();
-  window.speechSynthesis.onvoiceschanged = () => {
-    window.speechSynthesis.getVoices();
-  };
+// Cancel any playing speech
+export function cancelSpeech() {
+  activeSpeechText = null;
+  if (currentUtteranceAudio) {
+    currentUtteranceAudio.pause();
+    currentUtteranceAudio.src = '';
+    currentUtteranceAudio = null;
+  }
 }
 
 // Web Audio API Sound Generator (synthesizes audio dynamically for zero-dependency offline use)

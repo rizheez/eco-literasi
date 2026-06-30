@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useProgressStore } from '../store/useProgressStore';
-import { playSound, speakIndonesian } from '../utils/audio';
+import { playSound, speakIndonesian, cancelSpeech } from '../utils/audio';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, CheckCircle2, Heart, Trees, Waves } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -28,6 +28,12 @@ export const Internalisasi: React.FC = () => {
   const [selectedChoiceIdx, setSelectedChoiceIdx] = useState<number | null>(null);
   const [hasReflected, setHasReflected] = useState(false);
 
+  useEffect(() => {
+    return () => {
+      cancelSpeech();
+    };
+  }, []);
+
   const scenarios: Scenario[] = [
     {
       id: 'internalisasi_forest',
@@ -40,7 +46,7 @@ export const Internalisasi: React.FC = () => {
           emoji: '🪓🔥',
           isCorrect: false,
           visualEffect: 'from-orange-150 to-amber-100 border-red-300 bg-red-50',
-          illustrations: ['🍂', '🔥', '🪓', '🐗', '😢', '💀'],
+          illustrations: ['🍂', '🔥', '🪓', '🐗', '😢', '🥀'],
           outcomeTitle: 'Hutan Gundul dan Rusak 😢',
           outcomeDesc: 'Bila pohon ditebang habis dan dibakar, hewan seperti orangutan kehilangan rumahnya. Tanah akan longsor dan banjir bandang melanda saat hujan lebat.'
         },
@@ -66,7 +72,7 @@ export const Internalisasi: React.FC = () => {
           emoji: '🥤🗑️',
           isCorrect: false,
           visualEffect: 'from-slate-100 to-zinc-200 border-slate-350 bg-slate-100',
-          illustrations: ['🥤', '🩹', '🛶', '🐟', '💀', '🤢', '⛈️'],
+          illustrations: ['🥤', '🩹', '🛶', '🐟', '🗑️', '🤢', '⛈️'],
           outcomeTitle: 'Sungai Kotor dan Tercemar 🤮',
           outcomeDesc: 'Sampah menyumbat aliran air, bau tidak sedap menyebar, pesut mahakam keracunan, dan ikan-ikan kecil bisa mati karena air yang tercemar racun sampah.'
         },

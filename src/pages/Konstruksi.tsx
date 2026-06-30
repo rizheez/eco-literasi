@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useProgressStore } from '../store/useProgressStore';
-import { playSound, speakIndonesian } from '../utils/audio';
+import { playSound, speakIndonesian, cancelSpeech } from '../utils/audio';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, Volume2, CheckCircle2, Mic, Play, Square, HelpCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -52,13 +52,25 @@ const storiesList: StoryItem[] = [
   {
     id: 'konstruksi_story_pesut',
     title: 'Sahabat Pesut Mahakam',
-    emoji: '🐟',
-    image: '/images/sungai_mahakam.png',
+    emoji: '🐬',
+    image: '/images/pesut_mahakam.png',
     content: 'Di perairan Sungai Mahakam yang jernih, hiduplah sekeluarga Pesut Mahakam. Pesut adalah lumba-lumba air tawar yang sangat ramah. Mereka sering membantu nelayan yang tersesat di sungai. Pesut sangat sedih jika manusia membuang sampah ke sungai. Mari kita jaga kebersihan sungai agar pesut tetap sehat!',
     question: 'Di mana tempat tinggal Pesut Mahakam?',
     choices: [
       { text: 'Sungai Mahakam yang jernih 🌊', isCorrect: true },
       { text: 'Darat/Hutan gundul 🌳', isCorrect: false }
+    ]
+  },
+  {
+    id: 'konstruksi_story_orangutan',
+    title: 'Pongo Orangutan yang Cerdas',
+    emoji: '🦧',
+    image: '/images/orangutan.png',
+    content: 'Di puncak pohon hutan Kalimantan yang lebat, hiduplah seekor orangutan bernama Pongo. Pongo sangat suka makan buah hutan yang lezat dan manis. Suatu hari, Pongo melihat asap tebal dari kejauhan. Pongo segera memanggil burung enggang untuk terbang memperingatkan hewan lain dan warga desa agar memadamkan api. Berkat kecerdasan Pongo, hutan mereka selamat dari bahaya kebakaran.',
+    question: 'Apa makanan kesukaan Pongo si Orangutan?',
+    choices: [
+      { text: 'Buah-buahan hutan yang lezat 🍌🍎', isCorrect: true },
+      { text: 'Sampah plastik 🥤🗑️', isCorrect: false }
     ]
   }
 ];
@@ -95,8 +107,10 @@ export const Konstruksi: React.FC = () => {
     { word: 'Enggang', emoji: '🦜', meaning: 'Burung Enggang Kalimantan', image: '/images/burung_enggang.png' },
     { word: 'Lamin', emoji: '🏠', meaning: 'Rumah Adat Dayak', image: '/images/rumah_lamin.png' },
     { word: 'Hutan', emoji: '🌳', meaning: 'Hutan Hujan Tropis', image: '/images/hutan_hujan.png' },
-    { word: 'Sungai', emoji: '🐟', meaning: 'Sungai Mahakam', image: '/images/sungai_mahakam.png' },
+    { word: 'Sungai', emoji: '🌊', meaning: 'Sungai Mahakam', image: '/images/sungai_mahakam.png' },
     { word: 'Sape', emoji: '🎸', meaning: 'Alat Musik Dayak', image: '/images/musik_sape.png' },
+    { word: 'Pesut', emoji: '🐬', meaning: 'Pesut Mahakam', image: '/images/pesut_mahakam.png' },
+    { word: 'Orangutan', emoji: '🦧', meaning: 'Orangutan Kalimantan', image: '/images/orangutan.png' },
   ];
 
   const [activeVocab, setActiveVocab] = useState<VocabMatch[]>([]);
@@ -121,6 +135,10 @@ export const Konstruksi: React.FC = () => {
     const selected = [...vocabList].slice(0, 3);
     setActiveVocab(selected);
     setShuffledEmojis(selected.map(item => item.emoji).sort(() => 0.5 - Math.random()));
+
+    return () => {
+      cancelSpeech();
+    };
   }, []);
 
   const handleWordSelect = (word: string) => {
@@ -217,7 +235,7 @@ export const Konstruksi: React.FC = () => {
   // Storytelling Logic
   const handleSelectStory = (idx: number) => {
     playSound('pop');
-    window.speechSynthesis.cancel();
+    cancelSpeech();
     setSelectedStoryIdx(idx);
     setStoryAnswered(null);
     setStoryAnswerCorrect(false);
@@ -313,7 +331,7 @@ export const Konstruksi: React.FC = () => {
     <div className="space-y-6 py-4">
       {/* Header */}
       <div className="flex items-center space-x-3 bg-white/80 backdrop-blur-md p-4 rounded-3xl border-3 border-emerald-100/85 shadow-sm">
-        <Link to="/" onClick={() => { playSound('click'); window.speechSynthesis.cancel(); }} className="p-3 bg-white rounded-2xl border-2 border-emerald-100 hover:bg-emerald-50 transition text-slate-700 shrink-0">
+        <Link to="/" onClick={() => { playSound('click'); cancelSpeech(); }} className="p-3 bg-white rounded-2xl border-2 border-emerald-100 hover:bg-emerald-50 transition text-slate-700 shrink-0">
           <ChevronLeft size={24} />
         </Link>
         <div>
@@ -325,7 +343,7 @@ export const Konstruksi: React.FC = () => {
       {/* Tabs */}
       <div className="flex space-x-3 bg-emerald-100/50 p-2 rounded-2xl border-2 border-emerald-100">
         <button
-          onClick={() => { playSound('pop'); window.speechSynthesis.cancel(); setActiveTab('matching'); }}
+          onClick={() => { playSound('pop'); cancelSpeech(); setActiveTab('matching'); }}
           className={`flex-1 py-3 font-extrabold text-md md:text-lg rounded-xl transition cursor-pointer ${
             activeTab === 'matching' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-850 hover:bg-white/40'
           }`}
@@ -333,7 +351,7 @@ export const Konstruksi: React.FC = () => {
           🎮 Tebak Gambar
         </button>
         <button
-          onClick={() => { playSound('pop'); window.speechSynthesis.cancel(); setActiveTab('pronounce'); }}
+          onClick={() => { playSound('pop'); cancelSpeech(); setActiveTab('pronounce'); }}
           className={`flex-1 py-3 font-extrabold text-md md:text-lg rounded-xl transition cursor-pointer ${
             activeTab === 'pronounce' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-850 hover:bg-white/40'
           }`}
@@ -341,7 +359,7 @@ export const Konstruksi: React.FC = () => {
           🎙️ Latih Lafal
         </button>
         <button
-          onClick={() => { playSound('pop'); window.speechSynthesis.cancel(); setActiveTab('story'); }}
+          onClick={() => { playSound('pop'); cancelSpeech(); setActiveTab('story'); }}
           className={`flex-1 py-3 font-extrabold text-md md:text-lg rounded-xl transition cursor-pointer ${
             activeTab === 'story' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-850 hover:bg-white/40'
           }`}

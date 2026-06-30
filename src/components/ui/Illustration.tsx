@@ -122,5 +122,15 @@ export const Illustration: React.FC<IllustrationProps> = ({ name, className = "w
     );
   }
 
+  // 6. Pesut Mahakam (AI Generated Image)
+  if (name === 'pesut' || name === 'eksplorasi_pesut' || name === 'Pesut') {
+    return <img src="/images/pesut_mahakam.png" alt="Pesut Mahakam" className={`${className} object-contain`} />;
+  }
+
+  // 7. Orangutan (AI Generated Image)
+  if (name === 'orangutan' || name === 'eksplorasi_orangutan' || name === 'Orangutan') {
+    return <img src="/images/orangutan.png" alt="Orangutan" className={`${className} object-contain`} />;
+  }
+
   return null;
 };

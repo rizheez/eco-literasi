@@ -20,16 +20,16 @@ export const ProfileModal: React.FC = () => {
     e.preventDefault();
     if (!name.trim()) return;
     playSound('success');
-    const child = await createChild(name.trim(), selectedAvatar);
-    speakIndonesian(`Halo ${child.name}! Selamat datang di petualangan Eco Dayak.`);
+    await createChild(name.trim(), selectedAvatar);
+    speakIndonesian("Halo teman! Selamat datang di petualangan Eco Dayak.");
     setName('');
     setIsCreating(false);
   };
 
-  const handleSelect = (id: number, childName: string) => {
+  const handleSelect = (id: number) => {
     playSound('pop');
     selectChild(id);
-    speakIndonesian(`Halo ${childName}! Mari belajar lagi.`);
+    speakIndonesian("Halo teman! Mari belajar lagi.");
   };
 
   const handleDelete = async (e: React.MouseEvent, id: number) => {
@@ -59,7 +59,7 @@ export const ProfileModal: React.FC = () => {
               {childrenList.map((child) => (
                 <div
                   key={child.id}
-                  onClick={() => handleSelect(child.id!, child.name)}
+                  onClick={() => handleSelect(child.id!)}
                   className="flex items-center justify-between p-4 bg-emerald-50 rounded-2xl cursor-pointer border-2 border-emerald-100 hover:border-emerald-400 transition shadow-playful hover:translate-y-[-2px]"
                 >
                   <div className="flex items-center space-x-4">
