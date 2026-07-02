@@ -17,10 +17,54 @@ interface Scenario {
     isCorrect: boolean;
     visualEffect: string; // Tailwind bg
     illustrations: string[]; // Emojis to display
+    image?: string; // Image path
     outcomeTitle: string;
     outcomeDesc: string;
   }[];
 }
+
+const OutcomeVisualizer: React.FC<{ image?: string; illustrations: string[]; alt: string }> = ({
+  image,
+  illustrations,
+  alt
+}) => {
+  const [hasError, setHasError] = useState(false);
+
+  useEffect(() => {
+    setHasError(false);
+  }, [image]);
+
+  if (image && !hasError) {
+    return (
+      <div className="bg-white/90 backdrop-blur-sm border-2 border-white rounded-2xl p-4 flex justify-center items-center min-h-[160px]">
+        <motion.img
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          src={image}
+          alt={alt}
+          onError={() => setHasError(true)}
+          className="w-full max-w-[320px] h-40 object-contain rounded-2xl"
+        />
+      </div>
+    );
+  }
+
+  return (
+    <div className="bg-white/80 backdrop-blur-sm border-2 border-white rounded-2xl p-6 flex flex-wrap gap-5 justify-center items-center text-5xl min-h-[100px]">
+      {illustrations.map((ill, i) => (
+        <motion.span
+          key={i}
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ type: 'spring', delay: i * 0.05 }}
+          className="inline-block cursor-default"
+        >
+          {ill}
+        </motion.span>
+      ))}
+    </div>
+  );
+};
 
 export const Internalisasi: React.FC = () => {
   const { completedSteps, completeStep } = useProgressStore();
@@ -47,6 +91,7 @@ export const Internalisasi: React.FC = () => {
           isCorrect: false,
           visualEffect: 'from-orange-150 to-amber-100 border-red-300 bg-red-50',
           illustrations: ['🍂', '🔥', '🪓', '🐗', '😢', '🥀'],
+          image: '/images/hutan_rusak.png',
           outcomeTitle: 'Hutan Gundul dan Rusak 😢',
           outcomeDesc: 'Bila pohon ditebang habis dan dibakar, hewan seperti orangutan kehilangan rumahnya. Tanah akan longsor dan banjir bandang melanda saat hujan lebat.'
         },
@@ -56,6 +101,7 @@ export const Internalisasi: React.FC = () => {
           isCorrect: true,
           visualEffect: 'from-emerald-50 to-teal-50 border-emerald-300 bg-emerald-50',
           illustrations: ['🌳', '🌱', '🦜', '🐒', '🦋', '🌸', '😊'],
+          image: '/images/hutan_subur.png',
           outcomeTitle: 'Hutan Subur dan Hijau! 😍',
           outcomeDesc: 'Hutan yang rimbun menyerap air hujan untuk mencegah banjir, membersihkan udara agar sejuk, dan menjadi tempat hidup yang damai bagi satwa liar Kalimantan.'
         }
@@ -73,6 +119,7 @@ export const Internalisasi: React.FC = () => {
           isCorrect: false,
           visualEffect: 'from-slate-100 to-zinc-200 border-slate-350 bg-slate-100',
           illustrations: ['🥤', '🩹', '🛶', '🐟', '🗑️', '🤢', '⛈️'],
+          image: '/images/sungai_kotor.png',
           outcomeTitle: 'Sungai Kotor dan Tercemar 🤮',
           outcomeDesc: 'Sampah menyumbat aliran air, bau tidak sedap menyebar, pesut mahakam keracunan, dan ikan-ikan kecil bisa mati karena air yang tercemar racun sampah.'
         },
@@ -82,6 +129,7 @@ export const Internalisasi: React.FC = () => {
           isCorrect: true,
           visualEffect: 'from-sky-50 to-blue-50 border-blue-300 bg-blue-50',
           illustrations: ['🐟', '🐬', '🛶', '✨', '💧', '😊', '🐠'],
+          image: '/images/sungai_bersih.png',
           outcomeTitle: 'Sungai Bersih dan Indah! 🌟',
           outcomeDesc: 'Aliran air mengalir lancar, bebas dari banjir, pesut mahakam melompat gembira, dan ikan-ikan berenang sehat di air sungai yang jernih.'
         }
@@ -225,19 +273,11 @@ export const Internalisasi: React.FC = () => {
                 </div>
                 
                 {/* Simulated Eco System Scene */}
-                <div className="bg-white/80 backdrop-blur-sm border-2 border-white rounded-2xl p-6 flex flex-wrap gap-5 justify-center items-center text-5xl min-h-[100px]">
-                  {scenarios[activeScenarioIdx].choices[selectedChoiceIdx].illustrations.map((ill, i) => (
-                    <motion.span
-                      key={i}
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      transition={{ type: 'spring', delay: i * 0.05 }}
-                      className="inline-block cursor-default"
-                    >
-                      {ill}
-                    </motion.span>
-                  ))}
-                </div>
+                <OutcomeVisualizer
+                  image={scenarios[activeScenarioIdx].choices[selectedChoiceIdx].image}
+                  illustrations={scenarios[activeScenarioIdx].choices[selectedChoiceIdx].illustrations}
+                  alt={scenarios[activeScenarioIdx].choices[selectedChoiceIdx].outcomeTitle}
+                />
 
                 <p className="font-semibold text-slate-700 text-base leading-relaxed">
                   {scenarios[activeScenarioIdx].choices[selectedChoiceIdx].outcomeDesc}

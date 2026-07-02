@@ -1,10 +1,21 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useChildStore } from '../../store/useChildStore';
-import { playSound } from '../../utils/audio';
+import { playSound, speakIndonesian, cancelSpeech } from '../../utils/audio';
 import { 
-  Home, Compass, Languages, Leaf, Gamepad2, Award, Settings, LogOut 
+  Home, Compass, Languages, Leaf, Gamepad2, Award, Settings, LogOut, Volume2, X 
 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+
+const guideTexts: Record<string, string> = {
+  '/': 'Halo! Aku Enggo, teman belajarmu! Ayo pilih salah satu menu petualangan di sebelah kiri atau bawah untuk mulai belajar, bermain game seru, dan mengumpulkan bintang!',
+  '/eksplorasi': 'Di sini kita bisa melihat keindahan alam Kalimantan! Ketuk salah satu kartu untuk mendengarkan cerita menarik tentang budaya dan hewan-hewan kita. Selesai membaca akan dapat bintang!',
+  '/konstruksi': 'Ayo dengarkan cerita interaktif seru! Ketuk cerita yang kamu suka untuk mendengar petualangan Pongo dan sahabat-sahabatnya. Kamu juga bisa belajar mengeja kata di kamus kosakata!',
+  '/internalisasi': 'Ayo bantu aku memilih tindakan yang baik untuk bumi! Ketuk salah satu tombol pilihan untuk melihat dampaknya terhadap alam Kalimantan. Jangan lupa berjanji untuk menyayangi bumi ya!',
+  '/aksi': 'Waktunya bermain game seru! Ada susun huruf kosakata Dayak, mencocokkan sebab-akibat, menyusun puzzle alam, dan melatih memori. Setiap game yang selesai akan memberimu bintang!',
+  '/progress': 'Wah, lihat semua pencapaian luar biasamu! Di sini kamu bisa melihat daftar tugas yang sudah selesai dan jumlah bintang serta medali yang berhasil kamu kumpulkan!',
+  '/settings': 'Di menu pengaturan ini, kamu atau orang tuamu bisa mengatur besar kecilnya volume musik latar dan volume suara pemandu, atau menghapus data jika ingin mengulang dari awal.'
+};
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -13,6 +24,12 @@ interface LayoutProps {
 export const Layout: React.FC<LayoutProps> = ({ children }) => {
   const { activeChild } = useChildStore();
   const location = useLocation();
+  const [showHelp, setShowHelp] = useState(false);
+
+  useEffect(() => {
+    cancelSpeech();
+    setShowHelp(false);
+  }, [location.pathname]);
 
   const navItems = [
     { name: 'Mulai', path: '/', icon: Home, color: 'text-emerald-500' },
@@ -32,6 +49,27 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
     if (window.confirm('Keluar dari profil ini?')) {
       useChildStore.setState({ activeChild: null });
     }
+  };
+
+  const getGuideText = () => {
+    const path = location.pathname;
+    return guideTexts[path] || guideTexts['/'];
+  };
+
+  const handleToggleHelp = () => {
+    if (showHelp) {
+      cancelSpeech();
+      setShowHelp(false);
+    } else {
+      playSound('pop');
+      setShowHelp(true);
+      speakIndonesian(getGuideText());
+    }
+  };
+
+  const handleReplayHelp = () => {
+    playSound('click');
+    speakIndonesian(getGuideText());
   };
 
   if (!activeChild) {
@@ -158,6 +196,81 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
           );
         })}
       </nav>
+
+      {/* FLOATING MASCOT HELP BUTTON */}
+      <div className="fixed bottom-20 md:bottom-8 right-4 md:right-8 z-40 flex flex-col items-end">
+        {/* Help Speech Bubble */}
+        <AnimatePresence>
+          {showHelp && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.8, y: 20 }}
+              className="mb-3 w-72 md:w-80 bg-white border-4 border-emerald-400 p-4 rounded-3xl shadow-2xl relative flex flex-col space-y-3"
+            >
+              {/* Speech bubble tail pointer */}
+              <div className="absolute bottom-[-16px] right-14 w-0 h-0 border-l-[12px] border-l-transparent border-r-[12px] border-r-transparent border-t-[16px] border-t-emerald-400"></div>
+              <div className="absolute bottom-[-10px] right-14 w-0 h-0 border-l-[12px] border-l-transparent border-r-[12px] border-r-transparent border-t-[16px] border-t-white"></div>
+
+              {/* Header inside bubble */}
+              <div className="flex items-center justify-between border-b-2 border-emerald-50 pb-2">
+                <div>
+                  <h5 className="font-black text-emerald-900 text-sm leading-none flex items-center gap-1.5">
+                    <span>✨</span>
+                    <span>Panduan Enggo</span>
+                  </h5>
+                </div>
+                <button 
+                  onClick={() => { playSound('click'); cancelSpeech(); setShowHelp(false); }}
+                  className="p-1 text-slate-400 hover:text-rose-500 rounded-full hover:bg-rose-50 cursor-pointer transition-colors"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+
+              {/* Text Inside Bubble */}
+              <p className="text-slate-700 font-bold text-sm leading-relaxed">
+                {getGuideText()}
+              </p>
+
+              {/* Replay voice button */}
+              <button
+                onClick={handleReplayHelp}
+                className="w-full py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl font-bold text-xs flex items-center justify-center space-x-1.5 shadow-sm btn-bouncy transition cursor-pointer"
+              >
+                <Volume2 size={14} />
+                <span>Dengarkan Petunjuk</span>
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Organic Mascot Trigger */}
+        <motion.button
+          onClick={handleToggleHelp}
+          animate={showHelp ? {} : { y: [0, -8, 0] }}
+          transition={showHelp ? {} : { repeat: Infinity, duration: 2.5, ease: "easeInOut" }}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          className="relative outline-none cursor-pointer group drop-shadow-2xl mt-2"
+        >
+          {/* Subtle glow/shadow behind the mascot */}
+          <div className="absolute inset-2 bg-white/40 blur-xl rounded-full scale-125 z-0"></div>
+          
+          <img 
+            src="/images/mascot_enggo.png" 
+            alt="Maskot Enggo" 
+            className="w-20 h-20 md:w-28 md:h-28 object-contain relative z-10 transition-transform drop-shadow-[0_10px_15px_rgba(0,0,0,0.25)]" 
+          />
+          
+          {/* Little "Tanya?" indicator that appears on hover or idle */}
+          {!showHelp && (
+            <div className="absolute -top-1 -left-2 md:-top-2 md:-left-4 bg-white text-emerald-600 font-black text-[10px] md:text-xs px-2 py-1 rounded-xl shadow-md border-2 border-emerald-100 rotate-[-12deg] group-hover:rotate-0 transition-transform z-20">
+              Tanya?
+            </div>
+          )}
+        </motion.button>
+      </div>
     </div>
   );
 };
