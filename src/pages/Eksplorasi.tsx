@@ -4,6 +4,7 @@ import { playSound, speakIndonesian, cancelSpeech } from '../utils/audio';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, Volume2, CheckCircle2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import confetti from 'canvas-confetti';
 
 interface ExploreItem {
   id: string;
@@ -109,6 +110,7 @@ export const Eksplorasi: React.FC = () => {
     const isNew = await completeStep(itemId, 2);
     if (isNew) {
       speakIndonesian("Hebat! Kamu mendapatkan dua bintang!");
+      confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
     }
     setSelectedItem(null);
   };
@@ -211,13 +213,23 @@ export const Eksplorasi: React.FC = () => {
                 >
                   Tutup
                 </button>
-                <button
-                  onClick={() => handleComplete(selectedItem.id)}
-                  className="w-full md:w-2/3 py-4 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-2xl shadow-playful-primary flex items-center justify-center space-x-2 cursor-pointer btn-bouncy transition-all"
-                >
-                  <CheckCircle2 size={22} className="shrink-0" />
-                  <span>Selesai & Ambil Bintang (+2 ⭐)</span>
-                </button>
+                {completedSteps.includes(selectedItem.id) ? (
+                  <button
+                    disabled
+                    className="w-full md:w-2/3 py-4 bg-emerald-100 text-emerald-600 font-bold rounded-2xl flex items-center justify-center space-x-2 border-2 border-emerald-200 cursor-not-allowed opacity-80"
+                  >
+                    <CheckCircle2 size={22} className="shrink-0" />
+                    <span>Sudah Selesai ✅</span>
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => handleComplete(selectedItem.id)}
+                    className="w-full md:w-2/3 py-4 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-2xl shadow-playful-primary flex items-center justify-center space-x-2 cursor-pointer btn-bouncy transition-all"
+                  >
+                    <CheckCircle2 size={22} className="shrink-0" />
+                    <span>Selesai & Ambil Bintang (+2 ⭐)</span>
+                  </button>
+                )}
               </div>
             </motion.div>
           </div>

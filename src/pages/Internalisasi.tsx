@@ -243,8 +243,10 @@ export const Internalisasi: React.FC = () => {
                 onClick={() => handleSelectChoice(cIdx)}
                 className={`py-4 px-6 rounded-2xl text-left border-3 flex items-center justify-between font-extrabold text-lg transition-all cursor-pointer ${
                   selectedChoiceIdx === cIdx
-                    ? 'border-emerald-500 bg-emerald-100 text-emerald-950 scale-[1.02] shadow-sm'
-                    : 'border-slate-100 bg-slate-50 text-slate-700 hover:border-emerald-200'
+                    ? choice.isCorrect
+                      ? 'border-emerald-500 bg-emerald-100 text-emerald-950 scale-[1.02] shadow-sm'
+                      : 'border-rose-500 bg-rose-100 text-rose-950 scale-[1.02] shadow-sm'
+                    : 'border-slate-100 bg-slate-50 text-slate-700 hover:border-slate-200'
                 }`}
               >
                 <span>{choice.text}</span>
