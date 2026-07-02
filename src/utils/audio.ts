@@ -1,4 +1,5 @@
 import { useSettingsStore } from '../store/useSettingsStore';
+import { App } from '@capacitor/app';
 
 let currentUtteranceAudio: HTMLAudioElement | null = null;
 let currentSpeechSequence: number = 0;
@@ -183,6 +184,27 @@ export function initBGM() {
   useSettingsStore.subscribe((state) => {
     if (bgmAudioElement) {
       bgmAudioElement.volume = isDucked ? state.settings.bgMusicVolume * 0.15 : state.settings.bgMusicVolume;
+    }
+  });
+
+  // Handle app lifecycle for background music pausing/resuming
+  App.addListener('appStateChange', ({ isActive }) => {
+    if (!isActive) {
+      // App went to background
+      if (bgmAudioElement && !bgmAudioElement.paused) {
+        bgmAudioElement.pause();
+        isBgmPlaying = false; 
+        // Track that we paused it automatically
+        (bgmAudioElement as any)._wasPlayingBeforeBackground = true;
+      }
+    } else {
+      // App came to foreground
+      if (bgmAudioElement && (bgmAudioElement as any)._wasPlayingBeforeBackground) {
+        bgmAudioElement.play().then(() => {
+          isBgmPlaying = true;
+        }).catch(e => console.warn("Failed to resume BGM after foregrounding", e));
+        (bgmAudioElement as any)._wasPlayingBeforeBackground = false;
+      }
     }
   });
 }

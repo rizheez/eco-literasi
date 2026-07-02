@@ -21,7 +21,14 @@ export const useChildStore = create<ChildState>((set, get) => ({
     set({ isLoading: true });
     try {
       const list = await db.children.toArray();
-      set({ childrenList: list, isLoading: false });
+      const { activeChild } = get();
+      
+      // Auto-reset active child if it no longer exists in the DB
+      if (activeChild && !list.some(c => c.id === activeChild.id)) {
+        set({ childrenList: list, activeChild: null, isLoading: false });
+      } else {
+        set({ childrenList: list, isLoading: false });
+      }
     } catch (error) {
       console.error('Failed to load children', error);
       set({ isLoading: false });
@@ -40,20 +47,25 @@ export const useChildStore = create<ChildState>((set, get) => ({
   },
 
   createChild: async (name: string, avatar: string) => {
-    const newChild: Child = {
-      name,
-      avatar,
-      level: 1,
-      totalStars: 0,
-    };
-    
-    const id = await db.children.add(newChild);
-    const created = { ...newChild, id };
-    
-    await get().loadChildren();
-    set({ activeChild: created });
-    
-    return created;
+    try {
+      const newChild: Child = {
+        name,
+        avatar,
+        level: 1,
+        totalStars: 0,
+      };
+      
+      const id = await db.children.add(newChild);
+      const created = { ...newChild, id };
+      
+      await get().loadChildren();
+      set({ activeChild: created });
+      
+      return created;
+    } catch (error) {
+      console.error('Failed to create child profile in IndexedDB', error);
+      throw error;
+    }
   },
 
   addStars: async (amount: number) => {

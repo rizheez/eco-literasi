@@ -343,7 +343,7 @@ export const Konstruksi: React.FC = () => {
           <ChevronLeft size={24} />
         </Link>
         <div>
-          <h2 className="text-3xl font-extrabold text-emerald-800 font-sans">Konstruksi Bahasa & Makna</h2>
+          <h2 className="text-3xl font-extrabold text-emerald-800">Konstruksi Bahasa & Makna</h2>
           <p className="text-slate-600 font-bold text-sm">Pilih aktivitas untuk meningkatkan kosa kata dan keterampilan bicaramu!</p>
         </div>
       </div>

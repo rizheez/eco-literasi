@@ -18,9 +18,17 @@ export const ProfileModal: React.FC = () => {
 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name.trim()) return;
+    
+    // Sanitize input: only allow letters, numbers, and spaces to prevent XSS in DB
+    const sanitizedName = name.replace(/[^a-zA-Z0-9\s]/g, '').trim();
+    
+    if (!sanitizedName) {
+      alert("Nama tidak valid. Gunakan huruf dan angka saja ya!");
+      return;
+    }
+    
     playSound('success');
-    await createChild(name.trim(), selectedAvatar);
+    await createChild(sanitizedName, selectedAvatar);
     speakIndonesian("Halo teman! Selamat datang di petualangan Eco Dayak.");
     setName('');
     setIsCreating(false);

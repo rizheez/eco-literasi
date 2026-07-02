@@ -54,7 +54,7 @@ export const Progress: React.FC = () => {
           <ChevronLeft size={24} />
         </Link>
         <div>
-          <h2 className="text-3xl font-extrabold text-emerald-800 font-sans">Laporan Progress Belajar</h2>
+          <h2 className="text-3xl font-extrabold text-emerald-800">Laporan Progress Belajar</h2>
           <p className="text-slate-600 font-bold text-sm">Lihat pencapaian belajarmu, bintang, dan lencana yang berhasil kamu kumpulkan!</p>
         </div>
       </div>
