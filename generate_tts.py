@@ -144,7 +144,7 @@ TEXTS = [
     "Wah, lihat semua pencapaian luar biasamu! Di sini kamu bisa melihat daftar tugas yang sudah selesai dan jumlah bintang serta medali yang berhasil kamu kumpulkan!",
     "Di menu pengaturan ini, kamu atau orang tuamu bisa mengatur besar kecilnya volume musik latar dan volume suara pemandu, atau menghapus data jika ingin mengulang dari awal.",
     # Onboarding Tour
-    "Halo teman! Ini profil petualangmu. Di sini kamu bisa melihat namamu, levelmu, dan bintang yang sudah kamu kumpulkan!",
+    "Selamat datang teman! Aku Enggo yang akan memandu petualangan belajarmu. Di sebelah kiri atas adalah profil petualanganmu, tempat melihat namamu, level, dan bintangmu!",
     "Ayo ketuk menu Eksplorasi di sini untuk melihat peta petualangan dan belajar tentang budaya Dayak!",
     "Jika kamu butuh bantuan atau ingin mendengar petunjuk suara, cukup ketuk aku di sini!",
 ]

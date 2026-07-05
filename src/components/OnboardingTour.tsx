@@ -19,7 +19,7 @@ interface OnboardingTourProps {
 const STEPS = [
   {
     targetSelector: '.onboarding-profile',
-    text: 'Halo! Ini profil petualangmu. Di sini kamu bisa melihat namamu, levelmu, dan bintang yang sudah kamu kumpulkan!',
+    text: 'Selamat datang! Aku Enggo yang akan memandu petualangan belajarmu. Di sebelah kiri atas adalah profil petualanganmu, tempat melihat namamu, level, dan bintangmu!',
     placement: 'right' as const,
   },
   {
@@ -93,7 +93,7 @@ export const OnboardingTour: React.FC<OnboardingTourProps> = ({ onComplete, acti
   useEffect(() => {
     let speechText = STEPS[currentStep].text;
     if (currentStep === 0) {
-      speechText = `Halo teman! Ini profil petualangmu. Di sini kamu bisa melihat namamu, levelmu, dan bintang yang sudah kamu kumpulkan!`;
+      speechText = `Selamat datang teman! Aku Enggo yang akan memandu petualangan belajarmu. Di sebelah kiri atas adalah profil petualanganmu, tempat melihat namamu, level, dan bintangmu!`;
     }
     
     // Brief delay to allow transitions to complete before speaking
@@ -235,7 +235,7 @@ export const OnboardingTour: React.FC<OnboardingTourProps> = ({ onComplete, acti
             {/* Instruction Text */}
             <p className="text-slate-700 font-bold text-sm leading-relaxed mb-4">
               {currentStep === 0 
-                ? `Halo ${activeChildName}! Ini profil petualangmu. Di sini kamu bisa melihat namamu, levelmu, dan bintang yang sudah kamu kumpulkan!`
+                ? `Selamat datang ${activeChildName}! Aku Enggo yang akan memandu petualangan belajarmu. Di sebelah kiri atas adalah profil petualanganmu, tempat melihat namamu, level, dan bintangmu!`
                 : STEPS[currentStep].text
               }
             </p>
