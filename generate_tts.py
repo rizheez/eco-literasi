@@ -143,6 +143,10 @@ TEXTS = [
     "Waktunya bermain game seru! Ada susun huruf kosakata Dayak, mencocokkan sebab-akibat, menyusun puzzle alam, dan melatih memori. Setiap game yang selesai akan memberimu bintang!",
     "Wah, lihat semua pencapaian luar biasamu! Di sini kamu bisa melihat daftar tugas yang sudah selesai dan jumlah bintang serta medali yang berhasil kamu kumpulkan!",
     "Di menu pengaturan ini, kamu atau orang tuamu bisa mengatur besar kecilnya volume musik latar dan volume suara pemandu, atau menghapus data jika ingin mengulang dari awal.",
+    # Onboarding Tour
+    "Halo teman! Ini profil petualangmu. Di sini kamu bisa melihat namamu, levelmu, dan bintang yang sudah kamu kumpulkan!",
+    "Ayo ketuk menu Eksplorasi di sini untuk melihat peta petualangan dan belajar tentang budaya Dayak!",
+    "Jika kamu butuh bantuan atau ingin mendengar petunjuk suara, cukup ketuk aku di sini!",
 ]
 
 VOICE = "id-ID-GadisNeural"
