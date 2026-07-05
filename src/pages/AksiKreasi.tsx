@@ -135,11 +135,11 @@ export const AksiKreasi: React.FC = () => {
     const item = wordList[index];
     setSelectedLetters([]);
     setWordGameWon(false);
-    
+
     const letters = item.word.split('');
     const scrambled = [...letters].sort(() => 0.5 - Math.random());
     setScrambledLetters(scrambled);
-    
+
     speakIndonesian(`Susun kata: ${item.word}. Petunjuk: ${item.clue}`);
   };
 
@@ -155,7 +155,7 @@ export const AksiKreasi: React.FC = () => {
     setScrambledLetters(newScrambled);
 
     const targetWord = wordList[currentWordIdx].word;
-    
+
     if (newSelected.length === targetWord.length) {
       const spelled = newSelected.join('');
       if (spelled === targetWord) {
@@ -285,10 +285,10 @@ export const AksiKreasi: React.FC = () => {
       const temp = newBoard[selectedPuzzleTile];
       newBoard[selectedPuzzleTile] = newBoard[index];
       newBoard[index] = temp;
-      
+
       setPuzzleBoard(newBoard);
       setSelectedPuzzleTile(null);
-      
+
       if (newBoard[0] === 0 && newBoard[1] === 1 && newBoard[2] === 2 && newBoard[3] === 3) {
         playSound('success');
         setPuzzleWon(true);
@@ -310,7 +310,7 @@ export const AksiKreasi: React.FC = () => {
         isFlipped: false,
         isMatched: false
       }));
-    
+
     setCards(shuffledList);
     setFlippedIndices([]);
     setMemoryGameWon(false);
@@ -394,33 +394,29 @@ export const AksiKreasi: React.FC = () => {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-2 bg-emerald-100/50 p-2 rounded-2xl border-2 border-emerald-100">
         <button
           onClick={() => { playSound('pop'); cancelSpeech(); setActiveTab('wordbuilder'); }}
-          className={`py-5 font-extrabold text-sm md:text-base rounded-xl transition cursor-pointer ${
-            activeTab === 'wordbuilder' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-800 hover:bg-white/50'
-          }`}
+          className={`py-5 font-extrabold text-sm md:text-base rounded-xl transition cursor-pointer ${activeTab === 'wordbuilder' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-800 hover:bg-white/50'
+            }`}
         >
           🔠 Susun Huruf
         </button>
         <button
           onClick={() => { playSound('pop'); cancelSpeech(); setActiveTab('sebab_akibat'); }}
-          className={`py-5 font-extrabold text-sm md:text-base rounded-xl transition cursor-pointer ${
-            activeTab === 'sebab_akibat' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-800 hover:bg-white/50'
-          }`}
+          className={`py-5 font-extrabold text-sm md:text-base rounded-xl transition cursor-pointer ${activeTab === 'sebab_akibat' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-800 hover:bg-white/50'
+            }`}
         >
           🔄 Sebab-Akibat
         </button>
         <button
           onClick={() => { playSound('pop'); cancelSpeech(); setActiveTab('puzzle'); }}
-          className={`py-5 font-extrabold text-sm md:text-base rounded-xl transition cursor-pointer ${
-            activeTab === 'puzzle' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-800 hover:bg-white/50'
-          }`}
+          className={`py-5 font-extrabold text-sm md:text-base rounded-xl transition cursor-pointer ${activeTab === 'puzzle' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-800 hover:bg-white/50'
+            }`}
         >
           🧩 Puzzle Alam
         </button>
         <button
           onClick={() => { playSound('pop'); cancelSpeech(); setActiveTab('memory'); }}
-          className={`py-5 font-extrabold text-sm md:text-base rounded-xl transition cursor-pointer ${
-            activeTab === 'memory' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-800 hover:bg-white/50'
-          }`}
+          className={`py-5 font-extrabold text-sm md:text-base rounded-xl transition cursor-pointer ${activeTab === 'memory' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-800 hover:bg-white/50'
+            }`}
         >
           🧠 Memori Alam
         </button>
@@ -446,11 +442,11 @@ export const AksiKreasi: React.FC = () => {
                 )}
               </h3>
               <div className="bg-rose-50 border-2 border-rose-100 rounded-2xl p-4 flex items-center justify-center gap-3">
-                <ImageWithFallback 
-                  src={wordList[currentWordIdx].image} 
-                  alt={wordList[currentWordIdx].word} 
+                <ImageWithFallback
+                  src={wordList[currentWordIdx].image}
+                  alt={wordList[currentWordIdx].word}
                   fallback={wordList[currentWordIdx].emoji}
-                  className="w-16 h-16 object-contain rounded-xl animate-float flex items-center justify-center text-4xl" 
+                  className="w-16 h-16 object-contain rounded-xl animate-float flex items-center justify-center text-4xl"
                 />
                 <div className="text-left">
                   <p className="text-xs font-black uppercase tracking-wider text-rose-800">Petunjuk Gambar</p>
@@ -466,11 +462,10 @@ export const AksiKreasi: React.FC = () => {
                 return (
                   <div
                     key={index}
-                    className={`w-20 h-20 text-3xl md:w-16 md:h-16 rounded-2xl border-3 border-dashed font-black text-2xl md:text-3xl flex items-center justify-center transition-all ${
-                      selectedChar 
-                        ? 'border-rose-500 bg-rose-50 text-rose-900 scale-105' 
+                    className={`w-20 h-20 text-3xl md:w-16 md:h-16 rounded-2xl border-3 border-dashed font-black text-2xl md:text-3xl flex items-center justify-center transition-all ${selectedChar
+                        ? 'border-rose-500 bg-rose-50 text-rose-900 scale-105'
                         : 'border-slate-300 bg-slate-50 text-slate-300'
-                    }`}
+                      }`}
                   >
                     {selectedChar || ''}
                   </div>
@@ -558,13 +553,12 @@ export const AksiKreasi: React.FC = () => {
                       key={item.id}
                       disabled={isMatched}
                       onClick={() => handleSebabClick(item.id)}
-                      className={`w-full p-4 rounded-xl text-left border-3 transition-all flex items-center justify-between cursor-pointer text-base ${
-                        isMatched
+                      className={`w-full p-4 rounded-xl text-left border-3 transition-all flex items-center justify-between cursor-pointer text-base ${isMatched
                           ? 'bg-slate-50 border-slate-200 text-slate-400 cursor-not-allowed opacity-50'
                           : isSelected
-                          ? 'bg-amber-100 border-amber-500 font-black scale-[1.02]'
-                          : 'bg-white border-slate-100 text-slate-700 hover:border-amber-400'
-                      }`}
+                            ? 'bg-amber-100 border-amber-500 font-black scale-[1.02]'
+                            : 'bg-white border-slate-100 text-slate-700 hover:border-amber-400'
+                        }`}
                     >
                       <span>{item.sebabText}</span>
                       <span className="text-2xl shrink-0 ml-2">{item.sebabEmoji}</span>
@@ -584,13 +578,12 @@ export const AksiKreasi: React.FC = () => {
                       key={item.id}
                       disabled={isMatched}
                       onClick={() => handleAkibatClick(item.id)}
-                      className={`w-full p-4 rounded-xl text-left border-3 transition-all flex items-center justify-between cursor-pointer text-base ${
-                        isMatched
+                      className={`w-full p-4 rounded-xl text-left border-3 transition-all flex items-center justify-between cursor-pointer text-base ${isMatched
                           ? 'bg-slate-50 border-slate-200 text-slate-400 cursor-not-allowed opacity-50'
                           : isSelected
-                          ? 'bg-amber-100 border-amber-500 font-black scale-[1.02]'
-                          : 'bg-white border-slate-100 text-slate-700 hover:border-amber-400'
-                      }`}
+                            ? 'bg-amber-100 border-amber-500 font-black scale-[1.02]'
+                            : 'bg-white border-slate-100 text-slate-700 hover:border-amber-400'
+                        }`}
                     >
                       <span>{item.akibatText}</span>
                       <span className="text-2xl shrink-0 ml-2">{item.akibatEmoji}</span>
@@ -658,9 +651,8 @@ export const AksiKreasi: React.FC = () => {
                       backgroundSize: '200% 200%',
                       backgroundPosition: `${bgX}% ${bgY}%`,
                     }}
-                    className={`w-28 h-28 md:w-36 md:h-36 rounded-xl border-3 shadow-md relative transition-all active:scale-95 cursor-pointer ${
-                      isSelected ? 'border-rose-500 scale-105 ring-4 ring-rose-200 z-10' : 'border-white hover:border-emerald-300'
-                    }`}
+                    className={`w-28 h-28 md:w-36 md:h-36 rounded-xl border-3 shadow-md relative transition-all active:scale-95 cursor-pointer ${isSelected ? 'border-rose-500 scale-105 ring-4 ring-rose-200 z-10' : 'border-white hover:border-emerald-300'
+                      }`}
                   >
                     <span className="absolute bottom-1 right-2 bg-slate-900/60 text-white text-xs font-bold px-1.5 py-0.5 rounded">
                       {tileIndex + 1}
@@ -714,13 +706,12 @@ export const AksiKreasi: React.FC = () => {
                   <div
                     key={card.id}
                     onClick={() => handleCardClick(index)}
-                    className={`w-24 h-24 md:w-28 md:h-28 rounded-2xl border-3 flex items-center justify-center text-4xl shadow-playful transition-all cursor-pointer ${
-                      card.isMatched
+                    className={`w-24 h-24 md:w-28 md:h-28 rounded-2xl border-3 flex items-center justify-center text-4xl shadow-playful transition-all cursor-pointer ${card.isMatched
                         ? 'bg-emerald-50 border-emerald-400 opacity-60'
                         : showContent
-                        ? 'bg-blue-50 border-blue-400 rotate-0 scale-105'
-                        : 'bg-gradient-to-br from-blue-400 to-sky-400 border-white/60 hover:brightness-110'
-                    }`}
+                          ? 'bg-blue-50 border-blue-400 rotate-0 scale-105'
+                          : 'bg-gradient-to-br from-blue-400 to-sky-400 border-white/60 hover:brightness-110'
+                      }`}
                   >
                     {showContent ? (
                       card.emoji

@@ -27,7 +27,6 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [showHelp, setShowHelp] = useState(false);
 
   useEffect(() => {
-    cancelSpeech();
     setShowHelp(false);
   }, [location.pathname]);
 

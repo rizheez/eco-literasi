@@ -151,7 +151,7 @@ export const Internalisasi: React.FC = () => {
     const scenario = scenarios[activeScenarioIdx!];
     const choice = scenario.choices[choiceIdx];
     setSelectedChoiceIdx(choiceIdx);
-    
+
     if (choice.isCorrect) {
       playSound('success');
       confetti({ particleCount: 80, spread: 60, origin: { y: 0.7 } });
@@ -243,11 +243,10 @@ export const Internalisasi: React.FC = () => {
               <button
                 key={choice.text}
                 onClick={() => handleSelectChoice(cIdx)}
-                className={`py-4 px-6 rounded-2xl text-left border-3 flex items-center justify-between font-extrabold text-lg transition-all cursor-pointer ${
-                  selectedChoiceIdx === cIdx
+                className={`py-4 px-6 rounded-2xl text-left border-3 flex items-center justify-between font-extrabold text-lg transition-all cursor-pointer ${selectedChoiceIdx === cIdx
                     ? 'border-emerald-500 bg-emerald-100 text-emerald-950 scale-[1.02] shadow-sm'
                     : 'border-slate-100 bg-slate-50 text-slate-700 hover:border-emerald-200'
-                }`}
+                  }`}
               >
                 <span>{choice.text}</span>
                 <span className="text-3xl ml-3 shrink-0">{choice.emoji}</span>
@@ -273,7 +272,7 @@ export const Internalisasi: React.FC = () => {
                     <span className="bg-emerald-500 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Benar!</span>
                   )}
                 </div>
-                
+
                 {/* Simulated Eco System Scene */}
                 <OutcomeVisualizer
                   image={scenarios[activeScenarioIdx].choices[selectedChoiceIdx].image}
@@ -287,7 +286,7 @@ export const Internalisasi: React.FC = () => {
 
                 {/* Reflection Commitment Section */}
                 {scenarios[activeScenarioIdx].choices[selectedChoiceIdx].isCorrect && (
-                  <motion.div 
+                  <motion.div
                     initial={{ scale: 0.95, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     className="border-t border-emerald-200 pt-4 mt-4 space-y-4 text-center"
@@ -296,7 +295,7 @@ export const Internalisasi: React.FC = () => {
                       <Heart size={20} className="fill-rose-500 text-rose-500" />
                       <span>Maukah kamu berjanji menjaga kelestarian lingkungan?</span>
                     </h5>
-                    
+
                     {!hasReflected ? (
                       <div className="flex justify-center space-x-3">
                         <button
