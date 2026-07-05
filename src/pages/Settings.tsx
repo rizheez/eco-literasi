@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
-import { useSettingsStore } from '../store/useSettingsStore';
-import { playSound, speakIndonesian } from '../utils/audio';
-import { ChevronLeft, Speech } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import React, { useEffect } from "react";
+import { useSettingsStore } from "../store/useSettingsStore";
+import { playSound, speakIndonesian } from "../utils/audio";
+import { ChevronLeft, Speech } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export const Settings: React.FC = () => {
   const { settings, loadSettings, updateSettings } = useSettingsStore();
@@ -22,17 +22,17 @@ export const Settings: React.FC = () => {
   };
 
   const handleTtsToggle = () => {
-    playSound('pop');
+    playSound("pop");
     const nextVal = !settings.textToSpeechEnabled;
     updateSettings({ textToSpeechEnabled: nextVal });
-    
+
     if (nextVal) {
       setTimeout(() => speakIndonesian("Suara panduan sekarang aktif!"), 100);
     }
   };
 
   const testSound = () => {
-    playSound('success');
+    playSound("success");
   };
 
   const testTts = () => {
@@ -43,12 +43,18 @@ export const Settings: React.FC = () => {
     <div className="space-y-6 py-4">
       {/* Header */}
       <div className="flex items-center space-x-3 bg-white/80 backdrop-blur-md p-4 rounded-3xl border-3 border-emerald-100/85 shadow-sm">
-        <Link to="/" onClick={() => playSound('click')} className="p-3 bg-white rounded-2xl border-2 border-emerald-100 hover:bg-emerald-50 transition text-slate-700 shrink-0">
+        <Link
+          to="/"
+          onClick={() => playSound("click")}
+          className="p-3 bg-white rounded-2xl border-2 border-emerald-100 hover:bg-emerald-50 transition text-slate-700 shrink-0"
+        >
           <ChevronLeft size={24} />
         </Link>
         <div>
           <h2 className="text-3xl font-extrabold text-emerald-800">Pengaturan</h2>
-          <p className="text-slate-600 font-bold text-sm">Sesuaikan volume suara musik, efek suara, dan suara pembaca panduan di sini.</p>
+          <p className="text-slate-600 font-bold text-sm">
+            Sesuaikan volume suara musik, efek suara, dan suara pembaca panduan di sini.
+          </p>
         </div>
       </div>
 
@@ -58,15 +64,19 @@ export const Settings: React.FC = () => {
           <div className="space-y-0.5">
             <h4 className="font-extrabold text-emerald-950 text-lg flex items-center gap-1.5">
               <Speech className="text-emerald-600" />
-              <span>Suara Pembaca Panduan (TTS)</span>
+              <span>Suara Pembaca Panduan</span>
             </h4>
-            <p className="text-slate-500 font-bold text-xs">Membacakan tulisan otomatis untuk membantu anak PAUD.</p>
+            <p className="text-slate-500 font-bold text-xs">
+              Membacakan tulisan otomatis untuk membantu anak.
+            </p>
           </div>
           <button
             type="button"
             onClick={handleTtsToggle}
             className={`w-14 h-8 rounded-full transition-all relative flex items-center p-1 cursor-pointer ${
-              settings.textToSpeechEnabled ? 'bg-emerald-500 justify-end' : 'bg-slate-300 justify-start'
+              settings.textToSpeechEnabled
+                ? "bg-emerald-500 justify-end"
+                : "bg-slate-300 justify-start"
             }`}
           >
             <span className="w-6 h-6 bg-white rounded-full shadow-md" />
@@ -123,8 +133,8 @@ export const Settings: React.FC = () => {
             disabled={!settings.textToSpeechEnabled}
             className={`py-3 px-4 font-extrabold rounded-2xl transition border-2 cursor-pointer ${
               settings.textToSpeechEnabled
-                ? 'bg-emerald-500 text-white border-emerald-500 hover:bg-emerald-600 shadow-playful-primary'
-                : 'bg-slate-150 text-slate-400 border-slate-200 cursor-not-allowed'
+                ? "bg-emerald-500 text-white border-emerald-500 hover:bg-emerald-600 shadow-playful-primary"
+                : "bg-slate-150 text-slate-400 border-slate-200 cursor-not-allowed"
             }`}
           >
             🗣️ Tes Suara Panduan

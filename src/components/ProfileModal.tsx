@@ -18,18 +18,26 @@ export const ProfileModal: React.FC = () => {
 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name.trim()) return;
+    
+    // Sanitize input: only allow letters, numbers, and spaces to prevent XSS in DB
+    const sanitizedName = name.replace(/[^a-zA-Z0-9\s]/g, '').trim();
+    
+    if (!sanitizedName) {
+      alert("Nama tidak valid. Gunakan huruf dan angka saja ya!");
+      return;
+    }
+    
     playSound('success');
-    const child = await createChild(name.trim(), selectedAvatar);
-    speakIndonesian(`Halo ${child.name}! Selamat datang di petualangan Eco Dayak.`);
+    await createChild(sanitizedName, selectedAvatar);
+    speakIndonesian("Halo teman! Selamat datang di petualangan Eco Dayak.");
     setName('');
     setIsCreating(false);
   };
 
-  const handleSelect = (id: number, childName: string) => {
+  const handleSelect = (id: number) => {
     playSound('pop');
     selectChild(id);
-    speakIndonesian(`Halo ${childName}! Mari belajar lagi.`);
+    speakIndonesian("Halo teman! Mari belajar lagi.");
   };
 
   const handleDelete = async (e: React.MouseEvent, id: number) => {
@@ -59,7 +67,7 @@ export const ProfileModal: React.FC = () => {
               {childrenList.map((child) => (
                 <div
                   key={child.id}
-                  onClick={() => handleSelect(child.id!, child.name)}
+                  onClick={() => handleSelect(child.id!)}
                   className="flex items-center justify-between p-4 bg-emerald-50 rounded-2xl cursor-pointer border-2 border-emerald-100 hover:border-emerald-400 transition shadow-playful hover:translate-y-[-2px]"
                 >
                   <div className="flex items-center space-x-4">
@@ -86,7 +94,7 @@ export const ProfileModal: React.FC = () => {
 
             <button
               onClick={() => { playSound('click'); setIsCreating(true); }}
-              className="mt-6 w-full py-4 bg-amber-500 text-white rounded-2xl font-bold text-xl flex items-center justify-center space-x-2 shadow-playful-secondary hover:brightness-110 active:translate-y-[4px] active:shadow-none transition-all cursor-pointer"
+              className="mt-6 w-full py-4 bg-amber-500 text-white rounded-2xl font-bold text-xl flex items-center justify-center space-x-2 shadow-playful-secondary hover:brightness-110 btn-bouncy  transition-all cursor-pointer"
             >
               <UserPlus size={24} />
               <span>Buat Profil Baru</span>
@@ -139,7 +147,7 @@ export const ProfileModal: React.FC = () => {
               )}
               <button
                 type="submit"
-                className={`py-4 bg-emerald-500 text-white rounded-2xl font-bold text-lg flex items-center justify-center space-x-2 shadow-playful-primary hover:brightness-110 active:translate-y-[4px] active:shadow-none transition-all cursor-pointer ${
+                className={`py-4 bg-emerald-500 text-white rounded-2xl font-bold text-lg flex items-center justify-center space-x-2 shadow-playful-primary hover:brightness-110 btn-bouncy  transition-all cursor-pointer ${
                   childrenList.length > 0 ? 'w-2/3' : 'w-full'
                 }`}
               >

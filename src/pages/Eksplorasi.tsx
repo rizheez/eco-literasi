@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useProgressStore } from '../store/useProgressStore';
-import { playSound, speakIndonesian } from '../utils/audio';
+import { playSound, speakIndonesian, cancelSpeech } from '../utils/audio';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, Volume2, CheckCircle2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -31,6 +31,12 @@ export const Eksplorasi: React.FC = () => {
   const { completedSteps, completeStep } = useProgressStore();
   const [selectedItem, setSelectedItem] = useState<ExploreItem | null>(null);
 
+  useEffect(() => {
+    return () => {
+      cancelSpeech();
+    };
+  }, []);
+
   const items: ExploreItem[] = [
     {
       id: 'eksplorasi_enggang',
@@ -38,7 +44,7 @@ export const Eksplorasi: React.FC = () => {
       emoji: '🦜',
       image: '/images/burung_enggang.png',
       description: 'Burung Enggang adalah burung suci bagi masyarakat Dayak. Bulunya melambangkan kesucian dan perdamaian.',
-      ecoLesson: 'Habibat Burung Enggang adalah di atas pohon-pohon tinggi di hutan lebat. Jika pohon ditebang, burung cantik ini tidak punya rumah lagi.'
+      ecoLesson: 'Habitat Burung Enggang adalah di atas pohon-pohon tinggi di hutan lebat. Jika pohon ditebang, burung cantik ini tidak punya rumah lagi.'
     },
     {
       id: 'eksplorasi_hutan',
@@ -49,12 +55,28 @@ export const Eksplorasi: React.FC = () => {
       ecoLesson: 'Menjaga hutan dari kebakaran dan pembalakan liar membantu menyeimbangkan suhu bumi serta menghindari banjir bandang.'
     },
     {
+      id: 'eksplorasi_orangutan',
+      title: 'Orangutan Kaltim',
+      emoji: '🦧',
+      image: '/images/orangutan.png',
+      description: 'Orangutan adalah kera besar berambut merah khas Kalimantan. Mereka sangat cerdas dan menghabiskan sebagian besar hidupnya di atas pohon.',
+      ecoLesson: 'Ketika hutan ditebang atau dibakar, mereka kehilangan rumah dan makanan. Ayo lindungi hutan tempat tinggal orangutan!'
+    },
+    {
       id: 'eksplorasi_sungai',
       title: 'Sungai Mahakam',
-      emoji: '🐟',
+      emoji: '🌊',
       image: '/images/sungai_mahakam.png',
-      description: 'Sungai Mahakam adalah sungai terpanjang di Kalimantan Timur. Sungai ini menjadi tempat hidup pesut mahakam.',
-      ecoLesson: 'Jangan membuang sampah plastik ke sungai. Sungai yang bersih membuat pesut dan ikan-ikan kecil bisa hidup bahagia.'
+      description: 'Sungai Mahakam adalah sungai terpanjang di Kalimantan Timur. Sungai ini menjadi sumber air kehidupan bagi tumbuhan, hewan, dan manusia.',
+      ecoLesson: 'Sungai Mahakam harus dijaga agar airnya tetap bersih sehingga semua makhluk hidup bisa memanfaatkan airnya tanpa khawatir sakit.'
+    },
+    {
+      id: 'eksplorasi_pesut',
+      title: 'Pesut Mahakam',
+      emoji: '🐬',
+      image: '/images/pesut_mahakam.png',
+      description: 'Pesut Mahakam adalah lumba-lumba air tawar ramah yang merupakan hewan endemik Sungai Mahakam. Jumlah mereka kini sangat sedikit.',
+      ecoLesson: 'Membuang sampah plastik dan limbah ke sungai dapat meracuni air dan membahayakan pesut. Mari kita jaga sungai agar pesut tetap lestari!'
     },
     {
       id: 'eksplorasi_lamin',
@@ -145,7 +167,7 @@ export const Eksplorasi: React.FC = () => {
               className="bg-white rounded-3xl p-6 md:p-8 max-w-xl w-full border-4 border-blue-400 shadow-2xl relative"
             >
               <button 
-                onClick={() => { playSound('click'); window.speechSynthesis.cancel(); setSelectedItem(null); }}
+                onClick={() => { playSound('click'); cancelSpeech(); setSelectedItem(null); }}
                 className="absolute top-4 right-4 bg-slate-100 text-slate-500 p-2 rounded-full font-bold hover:bg-slate-200 cursor-pointer"
               >
                 ✕
@@ -182,18 +204,18 @@ export const Eksplorasi: React.FC = () => {
                 </div>
               </div>
 
-              <div className="mt-6 flex space-x-3">
+              <div className="mt-6 flex flex-col-reverse md:flex-row gap-3">
                 <button
-                  onClick={() => { playSound('click'); window.speechSynthesis.cancel(); setSelectedItem(null); }}
-                  className="w-1/3 py-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-2xl transition cursor-pointer"
+                  onClick={() => { playSound('click'); cancelSpeech(); setSelectedItem(null); }}
+                  className="w-full md:w-1/3 py-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-2xl transition cursor-pointer"
                 >
                   Tutup
                 </button>
                 <button
                   onClick={() => handleComplete(selectedItem.id)}
-                  className="w-2/3 py-4 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-2xl shadow-playful-primary flex items-center justify-center space-x-2 cursor-pointer active:translate-y-[4px] active:shadow-none transition-all"
+                  className="w-full md:w-2/3 py-4 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-2xl shadow-playful-primary flex items-center justify-center space-x-2 cursor-pointer btn-bouncy transition-all"
                 >
-                  <CheckCircle2 size={22} />
+                  <CheckCircle2 size={22} className="shrink-0" />
                   <span>Selesai & Ambil Bintang (+2 ⭐)</span>
                 </button>
               </div>

@@ -18,14 +18,19 @@ export const Progress: React.FC = () => {
   const learningSteps = [
     { id: 'eksplorasi_enggang', label: 'Eksplorasi: Burung Enggang 🦜' },
     { id: 'eksplorasi_hutan', label: 'Eksplorasi: Hutan Hujan 🌳' },
-    { id: 'eksplorasi_sungai', label: 'Eksplorasi: Sungai Mahakam 🐟' },
+    { id: 'eksplorasi_orangutan', label: 'Eksplorasi: Orangutan Kaltim 🦧' },
+    { id: 'eksplorasi_sungai', label: 'Eksplorasi: Sungai Mahakam 🌊' },
+    { id: 'eksplorasi_pesut', label: 'Eksplorasi: Pesut Mahakam 🐬' },
     { id: 'eksplorasi_lamin', label: 'Eksplorasi: Rumah Lamin 🏠' },
     { id: 'eksplorasi_sape', label: 'Eksplorasi: Musik Sape 🎸' },
     { id: 'konstruksi_matching', label: 'Konstruksi: Cocokkan Kosakata 🎮' },
+    { id: 'konstruksi_cerita', label: 'Konstruksi: Cerita & Tanya Jawab 📚' },
     { id: 'internalisasi_forest', label: 'Internalisasi: Jaga Hutan Kaltim 🌲' },
     { id: 'internalisasi_river', label: 'Internalisasi: Jaga Sungai Mahakam 💧' },
     { id: 'aksi_wordbuilder', label: 'Aksi Kreasi: Susun Huruf Kosakata 🔠' },
-    { id: 'aksi_puzzle', label: 'Aksi Kreasi: Memori Alam 🧠' },
+    { id: 'aksi_sebab_akibat', label: 'Aksi Kreasi: Hubungkan Sebab-Akibat 🔗' },
+    { id: 'aksi_puzzle', label: 'Aksi Kreasi: Puzzle Gambar Alam 🧩' },
+    { id: 'aksi_memory', label: 'Aksi Kreasi: Memori Alam 🧠' },
   ];
 
   const handleReset = async () => {
@@ -49,7 +54,7 @@ export const Progress: React.FC = () => {
           <ChevronLeft size={24} />
         </Link>
         <div>
-          <h2 className="text-3xl font-extrabold text-emerald-800 font-sans">Laporan Progress Belajar</h2>
+          <h2 className="text-3xl font-extrabold text-emerald-800">Laporan Progress Belajar</h2>
           <p className="text-slate-600 font-bold text-sm">Lihat pencapaian belajarmu, bintang, dan lencana yang berhasil kamu kumpulkan!</p>
         </div>
       </div>

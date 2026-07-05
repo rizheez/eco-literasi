@@ -26,7 +26,15 @@ export const Home: React.FC = () => {
       color: 'bg-gradient-to-br from-blue-400 to-sky-500',
       shadowClass: 'shadow-playful-blue',
       path: '/eksplorasi',
-      items: ['eksplorasi_enggang', 'eksplorasi_hutan', 'eksplorasi_sungai']
+      items: [
+        'eksplorasi_enggang',
+        'eksplorasi_hutan',
+        'eksplorasi_orangutan',
+        'eksplorasi_sungai',
+        'eksplorasi_pesut',
+        'eksplorasi_lamin',
+        'eksplorasi_sape'
+      ]
     },
     {
       id: 'konstruksi',
@@ -36,7 +44,7 @@ export const Home: React.FC = () => {
       color: 'bg-gradient-to-br from-amber-400 to-orange-500',
       shadowClass: 'shadow-playful-secondary',
       path: '/konstruksi',
-      items: ['konstruksi_matching']
+      items: ['konstruksi_matching', 'konstruksi_cerita']
     },
     {
       id: 'internalisasi',
@@ -56,7 +64,7 @@ export const Home: React.FC = () => {
       color: 'bg-gradient-to-br from-rose-400 to-pink-500',
       shadowClass: 'shadow-playful-rose',
       path: '/aksi',
-      items: ['aksi_wordbuilder', 'aksi_puzzle']
+      items: ['aksi_wordbuilder', 'aksi_sebab_akibat', 'aksi_puzzle', 'aksi_memory']
     }
   ];
 
@@ -78,7 +86,8 @@ export const Home: React.FC = () => {
       <motion.div 
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        className="bg-white rounded-3xl p-6 md:p-8 border-4 border-emerald-300 shadow-playful flex flex-col md:flex-row items-center justify-between gap-6"
+        transition={{ type: 'spring', bounce: 0.5 }}
+        className="bg-white/90 backdrop-blur-md rounded-3xl p-6 md:p-8 border-4 border-white/60 shadow-[0_8px_30px_rgba(0,0,0,0.04)] flex flex-col md:flex-row items-center justify-between gap-6"
       >
         <div className="space-y-2 text-center md:text-left">
           <h2 className="text-3xl md:text-4xl font-extrabold text-emerald-800">
@@ -105,11 +114,11 @@ export const Home: React.FC = () => {
           return (
             <motion.div
               key={stage.id}
-              initial={{ opacity: 0, scale: 0.95 }}
+              initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: idx * 0.1 }}
+              transition={{ type: 'spring', bounce: 0.6, delay: idx * 0.1 }}
               onClick={() => handleStageClick(stage.path, stage.title)}
-              className={`${stage.color} text-white rounded-3xl p-6 cursor-pointer shadow-playful hover:translate-y-[-4px] active:translate-y-[4px] transition-all flex flex-col justify-between min-h-[190px] border-4 border-white/40`}
+              className={`${stage.color} text-white rounded-3xl p-6 cursor-pointer shadow-playful hover:translate-y-[-4px] btn-bouncy transition-all flex flex-col justify-between min-h-[190px] border-4 border-white/40`}
             >
               <div className="flex justify-between items-start">
                 <div className="p-3 bg-white/20 rounded-2xl">

@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useProgressStore } from '../store/useProgressStore';
-import { playSound, speakIndonesian } from '../utils/audio';
+import { playSound, speakIndonesian, cancelSpeech } from '../utils/audio';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, Volume2, CheckCircle2, Mic, Play, Square, HelpCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import confetti from 'canvas-confetti';
+import Confetti from 'react-confetti';
+import { useWindowSize } from 'react-use';
 
 interface VocabMatch {
   word: string;
@@ -52,18 +54,31 @@ const storiesList: StoryItem[] = [
   {
     id: 'konstruksi_story_pesut',
     title: 'Sahabat Pesut Mahakam',
-    emoji: '🐟',
-    image: '/images/sungai_mahakam.png',
+    emoji: '🐬',
+    image: '/images/pesut_mahakam.png',
     content: 'Di perairan Sungai Mahakam yang jernih, hiduplah sekeluarga Pesut Mahakam. Pesut adalah lumba-lumba air tawar yang sangat ramah. Mereka sering membantu nelayan yang tersesat di sungai. Pesut sangat sedih jika manusia membuang sampah ke sungai. Mari kita jaga kebersihan sungai agar pesut tetap sehat!',
     question: 'Di mana tempat tinggal Pesut Mahakam?',
     choices: [
       { text: 'Sungai Mahakam yang jernih 🌊', isCorrect: true },
       { text: 'Darat/Hutan gundul 🌳', isCorrect: false }
     ]
+  },
+  {
+    id: 'konstruksi_story_orangutan',
+    title: 'Pongo Orangutan yang Cerdas',
+    emoji: '🦧',
+    image: '/images/orangutan.png',
+    content: 'Di puncak pohon hutan Kalimantan yang lebat, hiduplah seekor orangutan bernama Pongo. Pongo sangat suka makan buah hutan yang lezat dan manis. Suatu hari, Pongo melihat asap tebal dari kejauhan. Pongo segera memanggil burung enggang untuk terbang memperingatkan hewan lain dan warga desa agar memadamkan api. Berkat kecerdasan Pongo, hutan mereka selamat dari bahaya kebakaran.',
+    question: 'Apa makanan kesukaan Pongo si Orangutan?',
+    choices: [
+      { text: 'Buah-buahan hutan yang lezat 🍌🍎', isCorrect: true },
+      { text: 'Sampah plastik 🥤🗑️', isCorrect: false }
+    ]
   }
 ];
 
 export const Konstruksi: React.FC = () => {
+  const { width, height } = useWindowSize();
   const { completedSteps, completeStep } = useProgressStore();
   const [activeTab, setActiveTab] = useState<'matching' | 'pronounce' | 'story'>('matching');
   
@@ -95,8 +110,10 @@ export const Konstruksi: React.FC = () => {
     { word: 'Enggang', emoji: '🦜', meaning: 'Burung Enggang Kalimantan', image: '/images/burung_enggang.png' },
     { word: 'Lamin', emoji: '🏠', meaning: 'Rumah Adat Dayak', image: '/images/rumah_lamin.png' },
     { word: 'Hutan', emoji: '🌳', meaning: 'Hutan Hujan Tropis', image: '/images/hutan_hujan.png' },
-    { word: 'Sungai', emoji: '🐟', meaning: 'Sungai Mahakam', image: '/images/sungai_mahakam.png' },
+    { word: 'Sungai', emoji: '🌊', meaning: 'Sungai Mahakam', image: '/images/sungai_mahakam.png' },
     { word: 'Sape', emoji: '🎸', meaning: 'Alat Musik Dayak', image: '/images/musik_sape.png' },
+    { word: 'Pesut', emoji: '🐬', meaning: 'Pesut Mahakam', image: '/images/pesut_mahakam.png' },
+    { word: 'Orangutan', emoji: '🦧', meaning: 'Orangutan Kalimantan', image: '/images/orangutan.png' },
   ];
 
   const [activeVocab, setActiveVocab] = useState<VocabMatch[]>([]);
@@ -121,6 +138,10 @@ export const Konstruksi: React.FC = () => {
     const selected = [...vocabList].slice(0, 3);
     setActiveVocab(selected);
     setShuffledEmojis(selected.map(item => item.emoji).sort(() => 0.5 - Math.random()));
+
+    return () => {
+      cancelSpeech();
+    };
   }, []);
 
   const handleWordSelect = (word: string) => {
@@ -217,7 +238,7 @@ export const Konstruksi: React.FC = () => {
   // Storytelling Logic
   const handleSelectStory = (idx: number) => {
     playSound('pop');
-    window.speechSynthesis.cancel();
+    cancelSpeech();
     setSelectedStoryIdx(idx);
     setStoryAnswered(null);
     setStoryAnswerCorrect(false);
@@ -311,13 +332,18 @@ export const Konstruksi: React.FC = () => {
 
   return (
     <div className="space-y-6 py-4">
+      {gameWon && (
+        <div className="fixed inset-0 pointer-events-none z-50">
+          <Confetti width={width} height={height} numberOfPieces={300} recycle={false} />
+        </div>
+      )}
       {/* Header */}
       <div className="flex items-center space-x-3 bg-white/80 backdrop-blur-md p-4 rounded-3xl border-3 border-emerald-100/85 shadow-sm">
-        <Link to="/" onClick={() => { playSound('click'); window.speechSynthesis.cancel(); }} className="p-3 bg-white rounded-2xl border-2 border-emerald-100 hover:bg-emerald-50 transition text-slate-700 shrink-0">
+        <Link to="/" onClick={() => { playSound('click'); cancelSpeech(); }} className="p-3 bg-white rounded-2xl border-2 border-emerald-100 hover:bg-emerald-50 transition text-slate-700 shrink-0">
           <ChevronLeft size={24} />
         </Link>
         <div>
-          <h2 className="text-3xl font-extrabold text-emerald-800 font-sans">Konstruksi Bahasa & Makna</h2>
+          <h2 className="text-3xl font-extrabold text-emerald-800">Konstruksi Bahasa & Makna</h2>
           <p className="text-slate-600 font-bold text-sm">Pilih aktivitas untuk meningkatkan kosa kata dan keterampilan bicaramu!</p>
         </div>
       </div>
@@ -325,24 +351,24 @@ export const Konstruksi: React.FC = () => {
       {/* Tabs */}
       <div className="flex space-x-3 bg-emerald-100/50 p-2 rounded-2xl border-2 border-emerald-100">
         <button
-          onClick={() => { playSound('pop'); window.speechSynthesis.cancel(); setActiveTab('matching'); }}
-          className={`flex-1 py-3 font-extrabold text-md md:text-lg rounded-xl transition cursor-pointer ${
+          onClick={() => { playSound('pop'); cancelSpeech(); setActiveTab('matching'); }}
+          className={`flex-1 py-5 font-extrabold text-md md:text-lg rounded-xl transition cursor-pointer ${
             activeTab === 'matching' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-850 hover:bg-white/40'
           }`}
         >
           🎮 Tebak Gambar
         </button>
         <button
-          onClick={() => { playSound('pop'); window.speechSynthesis.cancel(); setActiveTab('pronounce'); }}
-          className={`flex-1 py-3 font-extrabold text-md md:text-lg rounded-xl transition cursor-pointer ${
+          onClick={() => { playSound('pop'); cancelSpeech(); setActiveTab('pronounce'); }}
+          className={`flex-1 py-5 font-extrabold text-md md:text-lg rounded-xl transition cursor-pointer ${
             activeTab === 'pronounce' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-850 hover:bg-white/40'
           }`}
         >
           🎙️ Latih Lafal
         </button>
         <button
-          onClick={() => { playSound('pop'); window.speechSynthesis.cancel(); setActiveTab('story'); }}
-          className={`flex-1 py-3 font-extrabold text-md md:text-lg rounded-xl transition cursor-pointer ${
+          onClick={() => { playSound('pop'); cancelSpeech(); setActiveTab('story'); }}
+          className={`flex-1 py-5 font-extrabold text-md md:text-lg rounded-xl transition cursor-pointer ${
             activeTab === 'story' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-850 hover:bg-white/40'
           }`}
         >
@@ -409,7 +435,7 @@ export const Konstruksi: React.FC = () => {
                       key={emoji}
                       disabled={isMatched}
                       onClick={() => handleEmojiSelect(emoji)}
-                      className={`w-full py-2.5 rounded-2xl border-3 text-4xl transition-all cursor-pointer ${
+                      className={`w-full py-4 rounded-2xl border-3 text-4xl transition-all cursor-pointer ${
                         isMatched
                           ? 'bg-slate-50 border-slate-200 opacity-30 cursor-not-allowed'
                           : isSelected
@@ -434,7 +460,7 @@ export const Konstruksi: React.FC = () => {
                 <p className="text-emerald-700 font-bold text-sm">Kamu mencocokkan semua kata dengan benar (+2 ⭐ Bintang)</p>
                 <button
                   onClick={initGame}
-                  className="px-6 py-2.5 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl shadow-playful-secondary hover:brightness-110 transition cursor-pointer"
+                  className="px-6 py-4 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl shadow-playful-secondary hover:brightness-110 transition cursor-pointer"
                 >
                   Main Lagi!
                 </button>
@@ -442,7 +468,7 @@ export const Konstruksi: React.FC = () => {
             ) : (
               <button
                 onClick={initGame}
-                className="py-3 w-full bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-2xl shadow-playful-secondary transition cursor-pointer"
+                className="py-5 w-full bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-2xl shadow-playful-secondary transition cursor-pointer"
               >
                 Acak Ulang
               </button>
@@ -474,7 +500,7 @@ export const Konstruksi: React.FC = () => {
                 <button
                   key={item.word}
                   onClick={() => { playSound('pop'); setRecordingWord(item.word); speakIndonesian(item.word); setAudioUrl(null); }}
-                  className={`px-4 py-2.5 rounded-xl font-extrabold border-2 transition cursor-pointer ${
+                  className={`px-4 py-4 rounded-xl font-extrabold border-2 transition cursor-pointer ${
                     recordingWord === item.word
                       ? 'bg-blue-500 text-white border-blue-500 shadow-sm'
                       : 'bg-white text-slate-700 border-slate-100 hover:border-blue-200'
@@ -514,7 +540,7 @@ export const Konstruksi: React.FC = () => {
               {!isRecording ? (
                 <button
                   onClick={startRecording}
-                  className="flex items-center space-x-2 px-6 py-3 bg-rose-500 hover:bg-rose-600 text-white font-extrabold rounded-2xl shadow-playful-rose transition cursor-pointer active:translate-y-[2px]"
+                  className="flex items-center space-x-2 px-6 py-5 bg-rose-500 hover:bg-rose-600 text-white font-extrabold rounded-2xl shadow-playful-rose transition cursor-pointer btn-bouncy"
                 >
                   <Mic size={20} />
                   <span>Mulai Rekam</span>
@@ -522,7 +548,7 @@ export const Konstruksi: React.FC = () => {
               ) : (
                 <button
                   onClick={stopRecording}
-                  className="flex items-center space-x-2 px-6 py-3 bg-slate-800 hover:bg-slate-900 text-white font-extrabold rounded-2xl shadow-playful transition cursor-pointer animate-pulse"
+                  className="flex items-center space-x-2 px-6 py-5 bg-slate-800 hover:bg-slate-900 text-white font-extrabold rounded-2xl shadow-playful transition cursor-pointer animate-pulse"
                 >
                   <Square size={20} />
                   <span>Berhenti</span>
@@ -532,7 +558,7 @@ export const Konstruksi: React.FC = () => {
               <button
                 disabled={!audioUrl}
                 onClick={playRecordedAudio}
-                className={`flex items-center space-x-2 px-6 py-3 rounded-2xl font-extrabold border-2 transition cursor-pointer ${
+                className={`flex items-center space-x-2 px-6 py-5 rounded-2xl font-extrabold border-2 transition cursor-pointer ${
                   audioUrl
                     ? 'bg-emerald-500 hover:bg-emerald-600 text-white border-emerald-500 shadow-playful-primary'
                     : 'bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed'
@@ -596,7 +622,7 @@ export const Konstruksi: React.FC = () => {
                   </h3>
                   <button
                     onClick={handleListenStory}
-                    className="flex items-center gap-1.5 px-4 py-2 bg-emerald-50 text-emerald-600 rounded-xl hover:bg-emerald-100 transition cursor-pointer font-bold text-sm"
+                    className="flex items-center gap-1.5 px-4 py-4 bg-emerald-50 text-emerald-600 rounded-xl hover:bg-emerald-100 transition cursor-pointer font-bold text-sm"
                   >
                     <Volume2 size={18} />
                     <span>Dengarkan</span>
@@ -670,7 +696,7 @@ export const Konstruksi: React.FC = () => {
                     {!storyIsRecording ? (
                       <button
                         onClick={startStoryRecording}
-                        className="flex items-center space-x-2 px-5 py-3 bg-rose-500 hover:bg-rose-600 text-white font-extrabold rounded-2xl shadow-playful-rose transition cursor-pointer active:translate-y-[2px]"
+                        className="flex items-center space-x-2 px-5 py-5 bg-rose-500 hover:bg-rose-600 text-white font-extrabold rounded-2xl shadow-playful-rose transition cursor-pointer btn-bouncy"
                       >
                         <Mic size={18} />
                         <span>Mulai Rekam</span>
@@ -678,7 +704,7 @@ export const Konstruksi: React.FC = () => {
                     ) : (
                       <button
                         onClick={stopStoryRecording}
-                        className="flex items-center space-x-2 px-5 py-3 bg-slate-800 hover:bg-slate-900 text-white font-extrabold rounded-2xl shadow-playful transition cursor-pointer animate-pulse"
+                        className="flex items-center space-x-2 px-5 py-5 bg-slate-800 hover:bg-slate-900 text-white font-extrabold rounded-2xl shadow-playful transition cursor-pointer animate-pulse"
                       >
                         <Square size={18} />
                         <span>Selesai Rekam</span>
@@ -688,7 +714,7 @@ export const Konstruksi: React.FC = () => {
                     <button
                       disabled={!storyAudioUrl}
                       onClick={playStoryAudio}
-                      className={`flex items-center space-x-2 px-5 py-3 rounded-2xl font-extrabold border-2 transition cursor-pointer ${
+                      className={`flex items-center space-x-2 px-5 py-5 rounded-2xl font-extrabold border-2 transition cursor-pointer ${
                         storyAudioUrl
                           ? 'bg-emerald-500 hover:bg-emerald-600 text-white border-emerald-500 shadow-playful-primary'
                           : 'bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed'
@@ -703,7 +729,7 @@ export const Konstruksi: React.FC = () => {
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="pt-3 text-center">
                       <button
                         onClick={handleCompleteStory}
-                        className="px-8 py-4 bg-emerald-500 hover:bg-emerald-600 text-white font-black text-lg rounded-2xl shadow-playful-primary active:translate-y-[2px] transition cursor-pointer"
+                        className="px-8 py-4 bg-emerald-500 hover:bg-emerald-600 text-white font-black text-lg rounded-2xl shadow-playful-primary btn-bouncy transition cursor-pointer"
                       >
                         🌟 Selesai & Ambil Bintang (+2 ⭐)
                       </button>

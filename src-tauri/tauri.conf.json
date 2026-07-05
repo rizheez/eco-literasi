@@ -2,7 +2,7 @@
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "eco-dayak-kids",
   "version": "0.1.0",
-  "identifier": "com.tauri.dev",
+  "identifier": "com.ecodayakkids.game",
   "build": {
     "frontendDist": "../dist",
     "devUrl": "http://localhost:5173",
@@ -13,14 +13,14 @@
     "windows": [
       {
         "title": "ECO-DAYAK Kids",
-        "width": 800,
-        "height": 600,
+        "width": 1920,
+        "height": 1080,
         "resizable": true,
         "fullscreen": false
       }
     ],
     "security": {
-      "csp": null
+      "csp": "default-src 'self'; img-src 'self' data: asset:; script-src 'self'; style-src 'self' 'unsafe-inline'; media-src 'self' data: asset:; connect-src 'self' ws: wss: http://localhost:*"
     }
   },
   "bundle": {
