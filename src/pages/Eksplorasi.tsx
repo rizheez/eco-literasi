@@ -32,6 +32,8 @@ export const Eksplorasi: React.FC = () => {
   const [selectedItem, setSelectedItem] = useState<ExploreItem | null>(null);
 
   useEffect(() => {
+    playSound('pop');
+    speakIndonesian("Ketuk gambar untuk mendengarkan cerita dan dapatkan bintang!");
     return () => {
       cancelSpeech();
     };

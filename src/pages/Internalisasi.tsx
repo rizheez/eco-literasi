@@ -73,6 +73,8 @@ export const Internalisasi: React.FC = () => {
   const [hasReflected, setHasReflected] = useState(false);
 
   useEffect(() => {
+    playSound('pop');
+    speakIndonesian("Pelajari hubungan sebab-akibat perilaku manusia terhadap kelestarian alam.");
     return () => {
       cancelSpeech();
     };

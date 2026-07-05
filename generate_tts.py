@@ -21,6 +21,10 @@ TEXTS = [
     # Greetings
     "Halo teman! Selamat datang di petualangan Eco Dayak.",
     "Halo teman! Mari belajar lagi.",
+    "Ketuk gambar untuk mendengarkan cerita dan dapatkan bintang!",
+    "Pelajari hubungan sebab-akibat perilaku manusia terhadap kelestarian alam.",
+    "Pilih aktivitas untuk meningkatkan kosa kata dan keterampilan bicaramu!",
+    "Gunakan bahasamu dan aksi cerdasmu untuk melestarikan alam Dayak!",
     
     # Konstruksi: Matching
     "Hebat sekali! Semua kata sudah tercocokkan. Kamu dapat dua bintang!",

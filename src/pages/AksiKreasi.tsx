@@ -88,6 +88,8 @@ export const AksiKreasi: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'wordbuilder' | 'sebab_akibat' | 'puzzle' | 'memory'>('wordbuilder');
 
   useEffect(() => {
+    playSound('pop');
+    speakIndonesian("Gunakan bahasamu dan aksi cerdasmu untuk melestarikan alam Dayak!");
     return () => {
       cancelSpeech();
     };

@@ -81,8 +81,15 @@ export const Konstruksi: React.FC = () => {
   const { width, height } = useWindowSize();
   const { completedSteps, completeStep } = useProgressStore();
   const [activeTab, setActiveTab] = useState<'matching' | 'pronounce' | 'story'>('matching');
-  
   // Game 1: Matching State
+  useEffect(() => {
+    playSound('pop');
+    speakIndonesian("Pilih aktivitas untuk meningkatkan kosa kata dan keterampilan bicaramu!");
+    return () => {
+      cancelSpeech();
+    };
+  }, []);
+
   const [selectedWord, setSelectedWord] = useState<string | null>(null);
   const [selectedEmoji, setSelectedEmoji] = useState<string | null>(null);
   const [matches, setMatches] = useState<Record<string, string>>({}); // word -> emoji
