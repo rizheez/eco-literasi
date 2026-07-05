@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useChildStore } from '../../store/useChildStore';
 import { playSound, speakIndonesian, cancelSpeech } from '../../utils/audio';
+import { CustomDialog } from './CustomDialog';
 import { 
   Home, Compass, Languages, Leaf, Gamepad2, Award, Settings, LogOut, Volume2, X 
 } from 'lucide-react';
@@ -43,11 +44,10 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
     playSound('pop');
   };
 
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+
   const handleLogout = () => {
-    playSound('error');
-    if (window.confirm('Keluar dari profil ini?')) {
-      useChildStore.setState({ activeChild: null });
-    }
+    setShowLogoutConfirm(true);
   };
 
   const getGuideText = () => {
@@ -80,7 +80,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
       {/* SIDEBAR FOR DESKTOP */}
       <aside className="hidden md:flex flex-col w-72 bg-white/90 backdrop-blur-xl border-r-2 border-white/50 p-6 space-y-8 shrink-0 shadow-[4px_0_24px_rgba(0,0,0,0.05)]">
         {/* Child Profile Header */}
-        <div className="bg-emerald-50 rounded-2xl p-4 border-2 border-emerald-100 flex items-center space-x-3">
+        <div className="onboarding-profile bg-emerald-50 rounded-2xl p-4 border-2 border-emerald-100 flex items-center space-x-3">
           <span className="text-4xl animate-bounce">{activeChild.avatar}</span>
           <div className="overflow-hidden">
             <h4 className="font-bold text-emerald-900 truncate">{activeChild.name}</h4>
@@ -101,7 +101,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
                 key={item.path}
                 to={item.path}
                 onClick={handleNavClick}
-                className={`flex items-center space-x-3 px-4 py-3 rounded-2xl font-bold text-lg transition-all ${
+                className={`onboarding-nav-${item.name.toLowerCase().replace(/\s+/g, '')} flex items-center space-x-3 px-4 py-3 rounded-2xl font-bold text-lg transition-all ${
                   isActive 
                     ? 'bg-emerald-500 text-white shadow-playful-primary' 
                     : 'text-slate-600 hover:bg-slate-50'
@@ -140,7 +140,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
 
       {/* TOP HEADER FOR MOBILE */}
       <header className="md:hidden bg-white border-b-4 border-emerald-100 px-4 py-3 flex items-center justify-between sticky top-0 z-40">
-        <div className="flex items-center space-x-2">
+        <div className="onboarding-profile flex items-center space-x-2">
           <span className="text-3xl">{activeChild.avatar}</span>
           <div>
             <h4 className="font-bold text-emerald-950 text-sm truncate max-w-[120px]">{activeChild.name}</h4>
@@ -185,7 +185,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
               key={item.path}
               to={item.path}
               onClick={handleNavClick}
-              className={`flex flex-col items-center justify-center flex-1 py-1 rounded-xl transition ${
+              className={`onboarding-nav-${item.name.toLowerCase().replace(/\s+/g, '')} flex flex-col items-center justify-center flex-1 py-1 rounded-xl transition ${
                 isActive ? 'text-emerald-600 scale-105 font-bold' : 'text-slate-500'
               }`}
             >
@@ -251,7 +251,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
           transition={showHelp ? {} : { repeat: Infinity, duration: 2.5, ease: "easeInOut" }}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
-          className="relative outline-none cursor-pointer group drop-shadow-2xl mt-2"
+          className="onboarding-mascot relative outline-none cursor-pointer group drop-shadow-2xl mt-2"
         >
           {/* Subtle glow/shadow behind the mascot */}
           <div className="absolute inset-2 bg-white/40 blur-xl rounded-full scale-125 z-0"></div>
@@ -270,6 +270,19 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
           )}
         </motion.button>
       </div>
+
+      <CustomDialog
+        isOpen={showLogoutConfirm}
+        title="Keluar Profil"
+        message="Apakah kamu yakin ingin keluar dari profil belajar ini?"
+        confirmText="Keluar"
+        cancelText="Batal"
+        onConfirm={() => {
+          useChildStore.setState({ activeChild: null });
+          setShowLogoutConfirm(false);
+        }}
+        onCancel={() => setShowLogoutConfirm(false)}
+      />
     </div>
   );
 };

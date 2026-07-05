@@ -3,12 +3,16 @@ import { useChildStore } from '../store/useChildStore';
 import { playSound, speakIndonesian } from '../utils/audio';
 import { motion } from 'framer-motion';
 import { Sparkles, Trash2, UserPlus } from 'lucide-react';
+import { CustomDialog } from './ui/CustomDialog';
 
 export const ProfileModal: React.FC = () => {
   const { childrenList, activeChild, createChild, selectChild, deleteChild, loadChildren } = useChildStore();
   const [name, setName] = useState('');
   const [selectedAvatar, setSelectedAvatar] = useState('🦊');
   const [isCreating, setIsCreating] = useState(false);
+  const [showInvalidNameAlert, setShowInvalidNameAlert] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [profileToDeleteId, setProfileToDeleteId] = useState<number | null>(null);
 
   const avatars = ['🦊', '🐻', '🐸', '🦉', '🦜', '🐢', '🐒', '🦌'];
 
@@ -23,7 +27,7 @@ export const ProfileModal: React.FC = () => {
     const sanitizedName = name.replace(/[^a-zA-Z0-9\s]/g, '').trim();
     
     if (!sanitizedName) {
-      alert("Nama tidak valid. Gunakan huruf dan angka saja ya!");
+      setShowInvalidNameAlert(true);
       return;
     }
     
@@ -42,10 +46,8 @@ export const ProfileModal: React.FC = () => {
 
   const handleDelete = async (e: React.MouseEvent, id: number) => {
     e.stopPropagation();
-    playSound('error');
-    if (window.confirm('Apakah kamu yakin ingin menghapus profil ini? Semua bintang dan piala akan hilang.')) {
-      await deleteChild(id);
-    }
+    setProfileToDeleteId(id);
+    setShowDeleteConfirm(true);
   };
 
   if (activeChild) return null; // Hide if child is already selected
@@ -158,6 +160,34 @@ export const ProfileModal: React.FC = () => {
           </form>
         )}
       </motion.div>
+
+      <CustomDialog
+        isOpen={showInvalidNameAlert}
+        title="Nama Tidak Valid"
+        message="Nama tidak valid. Gunakan huruf dan angka saja ya!"
+        type="alert"
+        onConfirm={() => setShowInvalidNameAlert(false)}
+      />
+
+      <CustomDialog
+        isOpen={showDeleteConfirm}
+        title="Hapus Profil"
+        message="Apakah kamu yakin ingin menghapus profil ini? Semua bintang dan piala akan hilang."
+        type="danger"
+        confirmText="Hapus"
+        cancelText="Batal"
+        onConfirm={async () => {
+          if (profileToDeleteId !== null) {
+            await deleteChild(profileToDeleteId);
+            setProfileToDeleteId(null);
+          }
+          setShowDeleteConfirm(false);
+        }}
+        onCancel={() => {
+          setProfileToDeleteId(null);
+          setShowDeleteConfirm(false);
+        }}
+      />
     </div>
   );
 };

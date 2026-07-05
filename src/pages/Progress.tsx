@@ -1,13 +1,15 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useChildStore } from '../store/useChildStore';
 import { useProgressStore } from '../store/useProgressStore';
 import { playSound, speakIndonesian } from '../utils/audio';
 import { ChevronLeft, Award, BookOpen, Trash2, ShieldAlert } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { CustomDialog } from '../components/ui/CustomDialog';
 
 export const Progress: React.FC = () => {
   const { activeChild } = useChildStore();
   const { completedSteps, badges, loadProgress, resetProgress } = useProgressStore();
+  const [showResetConfirm, setShowResetConfirm] = useState(false);
 
   useEffect(() => {
     if (activeChild?.id) {
@@ -33,12 +35,8 @@ export const Progress: React.FC = () => {
     { id: 'aksi_memory', label: 'Aksi Kreasi: Memori Alam 🧠' },
   ];
 
-  const handleReset = async () => {
-    playSound('error');
-    if (activeChild?.id && window.confirm('Bapak/Ibu Guru & Orang Tua: Apakah Anda yakin ingin menyetel ulang (reset) seluruh perkembangan belajar anak ini? Tindakan ini tidak dapat dibatalkan.')) {
-      await resetProgress(activeChild.id);
-      speakIndonesian("Data belajar kamu sudah dibersihkan. Mari mulai dari awal!");
-    }
+  const handleReset = () => {
+    setShowResetConfirm(true);
   };
 
   const getBadgesString = () => {
@@ -159,6 +157,23 @@ export const Progress: React.FC = () => {
           </div>
         </div>
       </div>
+
+      <CustomDialog
+        isOpen={showResetConfirm}
+        title="Set Ulang Perkembangan"
+        message="Bapak/Ibu Guru & Orang Tua: Apakah Anda yakin ingin menyetel ulang (reset) seluruh perkembangan belajar anak ini? Tindakan ini tidak dapat dibatalkan."
+        type="danger"
+        confirmText="Set Ulang"
+        cancelText="Batal"
+        onConfirm={async () => {
+          if (activeChild?.id) {
+            await resetProgress(activeChild.id);
+            speakIndonesian("Data belajar kamu sudah dibersihkan. Mari mulai dari awal!");
+          }
+          setShowResetConfirm(false);
+        }}
+        onCancel={() => setShowResetConfirm(false)}
+      />
     </div>
   );
 };

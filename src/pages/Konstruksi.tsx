@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import confetti from 'canvas-confetti';
 import Confetti from 'react-confetti';
 import { useWindowSize } from 'react-use';
+import { CustomDialog } from '../components/ui/CustomDialog';
 
 interface VocabMatch {
   word: string;
@@ -81,6 +82,8 @@ export const Konstruksi: React.FC = () => {
   const { width, height } = useWindowSize();
   const { completedSteps, completeStep } = useProgressStore();
   const [activeTab, setActiveTab] = useState<'matching' | 'pronounce' | 'story'>('matching');
+  const [showMicErrorAlert, setShowMicErrorAlert] = useState(false);
+  const [micErrorMessage, setMicErrorMessage] = useState('');
   // Game 1: Matching State
   useEffect(() => {
     playSound('pop');
@@ -222,7 +225,8 @@ export const Konstruksi: React.FC = () => {
       speakIndonesian(`Katakan ${recordingWord}`);
     } catch (err) {
       console.error('Audio recording not supported or permitted:', err);
-      alert('Izin mikrofon diperlukan untuk merekam suaramu.');
+      setMicErrorMessage('Izin mikrofon diperlukan untuk merekam suaramu. Pastikan kamu memberikan izin mikrofon di browsermu ya!');
+      setShowMicErrorAlert(true);
     }
   };
 
@@ -305,7 +309,8 @@ export const Konstruksi: React.FC = () => {
       speakIndonesian("Silakan ceritakan kembali kisah ini");
     } catch (err) {
       console.error('Story audio recording error:', err);
-      alert('Izin mikrofon diperlukan untuk merekam ceritamu.');
+      setMicErrorMessage('Izin mikrofon diperlukan untuk merekam ceritamu. Pastikan kamu memberikan izin mikrofon di browsermu ya!');
+      setShowMicErrorAlert(true);
     }
   };
 
@@ -745,6 +750,14 @@ export const Konstruksi: React.FC = () => {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <CustomDialog
+        isOpen={showMicErrorAlert}
+        title="Mikrofon Diblokir"
+        message={micErrorMessage}
+        type="alert"
+        onConfirm={() => setShowMicErrorAlert(false)}
+      />
     </div>
   );
 };
