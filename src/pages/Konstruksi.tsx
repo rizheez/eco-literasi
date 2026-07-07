@@ -75,6 +75,18 @@ const storiesList: StoryItem[] = [
       { text: 'Buah-buahan hutan yang lezat 🍌🍎', isCorrect: true },
       { text: 'Sampah plastik 🥤🗑️', isCorrect: false }
     ]
+  },
+  {
+    id: 'konstruksi_story_petualangan_anak',
+    title: 'Petualangan Menyelamatkan Hutan',
+    emoji: '👦💚',
+    image: '/images/petualangan_anak.png',
+    content: 'Bersama-sama, mereka berdua melewati jalan yang panas dan berdebu akibat penebangan hutan secara liar. Dengan tekad yang kuat, anak Dayak dan sahabat hijaunya berjanji untuk menanam kembali pohon-pohon agar hutan mereka menjadi rindang dan sejuk kembali.',
+    question: 'Mengapa jalan yang mereka lewati terasa panas dan berdebu?',
+    choices: [
+      { text: 'Karena hutan gundul ditebang liar 🪓🔥', isCorrect: true },
+      { text: 'Karena hari sudah sore ☀️', isCorrect: false }
+    ]
   }
 ];
 
