@@ -8,13 +8,13 @@ import { CustomDialog } from './ui/CustomDialog';
 export const ProfileModal: React.FC = () => {
   const { childrenList, activeChild, createChild, selectChild, deleteChild, loadChildren } = useChildStore();
   const [name, setName] = useState('');
-  const [selectedAvatar, setSelectedAvatar] = useState('🦊');
+  const [selectedAvatar, setSelectedAvatar] = useState('/images/anak_dayak.png');
   const [isCreating, setIsCreating] = useState(false);
   const [showInvalidNameAlert, setShowInvalidNameAlert] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [profileToDeleteId, setProfileToDeleteId] = useState<number | null>(null);
 
-  const avatars = ['🦊', '🐻', '🐸', '🦉', '🦜', '🐢', '🐒', '🦌'];
+  const avatars = ['/images/anak_dayak.png', '🦊', '🐻', '🐸', '🦉', '🦜', '🐢', '🐒', '🦌'];
 
   useEffect(() => {
     loadChildren();
@@ -73,7 +73,11 @@ export const ProfileModal: React.FC = () => {
                   className="flex items-center justify-between p-4 bg-emerald-50 rounded-2xl cursor-pointer border-2 border-emerald-100 hover:border-emerald-400 transition shadow-playful hover:translate-y-[-2px]"
                 >
                   <div className="flex items-center space-x-4">
-                    <span className="text-4xl">{child.avatar}</span>
+                    {child.avatar.startsWith('/') ? (
+                      <img src={child.avatar} alt="Avatar" className="w-12 h-12 object-contain" />
+                    ) : (
+                      <span className="text-4xl">{child.avatar}</span>
+                    )}
                     <div>
                       <h3 className="font-bold text-xl text-emerald-900">{child.name}</h3>
                       <p className="text-emerald-600 text-sm font-semibold">Level {child.level} • ⭐ {child.totalStars} Bintang</p>
@@ -125,13 +129,17 @@ export const ProfileModal: React.FC = () => {
                     key={av}
                     type="button"
                     onClick={() => { playSound('pop'); setSelectedAvatar(av); }}
-                    className={`text-4xl p-3 rounded-2xl border-3 transition-all cursor-pointer ${
+                    className={`p-3 rounded-2xl border-3 transition-all cursor-pointer flex items-center justify-center ${
                       selectedAvatar === av 
                         ? 'border-amber-500 bg-amber-100 scale-110' 
                         : 'border-slate-100 bg-slate-50 hover:bg-slate-100'
                     }`}
                   >
-                    {av}
+                    {av.startsWith('/') ? (
+                      <img src={av} alt="Avatar" className="w-10 h-10 object-contain" />
+                    ) : (
+                      <span className="text-4xl">{av}</span>
+                    )}
                   </button>
                 ))}
               </div>

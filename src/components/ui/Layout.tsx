@@ -81,7 +81,11 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
       <aside className="hidden md:flex flex-col w-72 bg-white/90 backdrop-blur-xl border-r-2 border-white/50 p-6 space-y-8 shrink-0 shadow-[4px_0_24px_rgba(0,0,0,0.05)]">
         {/* Child Profile Header */}
         <div className="onboarding-profile bg-emerald-50 rounded-2xl p-4 border-2 border-emerald-100 flex items-center space-x-3">
-          <span className="text-4xl animate-bounce">{activeChild.avatar}</span>
+          {activeChild.avatar.startsWith('/') ? (
+            <img src={activeChild.avatar} alt="Avatar" className="w-12 h-12 object-contain animate-bounce" />
+          ) : (
+            <span className="text-4xl animate-bounce">{activeChild.avatar}</span>
+          )}
           <div className="overflow-hidden">
             <h4 className="font-bold text-emerald-900 truncate">{activeChild.name}</h4>
             <div className="flex items-center space-x-2 mt-0.5">
@@ -141,7 +145,11 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
       {/* TOP HEADER FOR MOBILE */}
       <header className="md:hidden bg-white border-b-4 border-emerald-100 px-4 py-3 flex items-center justify-between sticky top-0 z-40">
         <div className="onboarding-profile flex items-center space-x-2">
-          <span className="text-3xl">{activeChild.avatar}</span>
+          {activeChild.avatar.startsWith('/') ? (
+            <img src={activeChild.avatar} alt="Avatar" className="w-9 h-9 object-contain" />
+          ) : (
+            <span className="text-3xl">{activeChild.avatar}</span>
+          )}
           <div>
             <h4 className="font-bold text-emerald-950 text-sm truncate max-w-[120px]">{activeChild.name}</h4>
             <div className="flex items-center space-x-1">
