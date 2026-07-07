@@ -33,6 +33,9 @@ export const Eksplorasi: React.FC = () => {
   const [selectedItem, setSelectedItem] = useState<ExploreItem | null>(null);
 
   useEffect(() => {
+    playSound('pop');
+    speakIndonesian("Ketuk gambar untuk mendengarkan cerita dan dapatkan bintang!");
+    
     return () => {
       cancelSpeech();
     };
@@ -168,7 +171,7 @@ export const Eksplorasi: React.FC = () => {
               exit={{ scale: 0.9, opacity: 0 }}
               className="bg-white rounded-3xl p-6 md:p-8 max-w-xl w-full border-4 border-blue-400 shadow-2xl relative"
             >
-              <button 
+              <button
                 onClick={() => { playSound('click'); cancelSpeech(); setSelectedItem(null); }}
                 className="absolute top-4 right-4 bg-slate-100 text-slate-500 p-2 rounded-full font-bold hover:bg-slate-200 cursor-pointer"
               >

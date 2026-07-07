@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import confetti from 'canvas-confetti';
 import Confetti from 'react-confetti';
 import { useWindowSize } from 'react-use';
+import { CustomDialog } from '../components/ui/CustomDialog';
 
 interface VocabMatch {
   word: string;
@@ -81,14 +82,23 @@ export const Konstruksi: React.FC = () => {
   const { width, height } = useWindowSize();
   const { completedSteps, completeStep } = useProgressStore();
   const [activeTab, setActiveTab] = useState<'matching' | 'pronounce' | 'story'>('matching');
-  
+  const [showMicErrorAlert, setShowMicErrorAlert] = useState(false);
+  const [micErrorMessage, setMicErrorMessage] = useState('');
   // Game 1: Matching State
+  useEffect(() => {
+    playSound('pop');
+    speakIndonesian("Pilih aktivitas untuk meningkatkan kosa kata dan keterampilan bicaramu!");
+    return () => {
+      cancelSpeech();
+    };
+  }, []);
+
   const [selectedWord, setSelectedWord] = useState<string | null>(null);
   const [selectedEmoji, setSelectedEmoji] = useState<string | null>(null);
   const [matches, setMatches] = useState<Record<string, string>>({}); // word -> emoji
   const [gameWon, setGameWon] = useState(false);
   const [shuffledEmojis, setShuffledEmojis] = useState<string[]>([]);
-  
+
   // Game 2: Pronunciation State
   const [recordingWord, setRecordingWord] = useState('Enggang');
   const [isRecording, setIsRecording] = useState(false);
@@ -123,10 +133,10 @@ export const Konstruksi: React.FC = () => {
     const shuffledList = [...vocabList].sort(() => 0.5 - Math.random());
     const selected = shuffledList.slice(0, 3);
     setActiveVocab(selected);
-    
+
     const emojis = selected.map(item => item.emoji).sort(() => 0.5 - Math.random());
     setShuffledEmojis(emojis);
-    
+
     setMatches({});
     setSelectedWord(null);
     setSelectedEmoji(null);
@@ -148,7 +158,7 @@ export const Konstruksi: React.FC = () => {
     playSound('click');
     setSelectedWord(word);
     speakIndonesian(word);
-    
+
     if (selectedEmoji) {
       checkMatch(word, selectedEmoji);
     }
@@ -157,7 +167,7 @@ export const Konstruksi: React.FC = () => {
   const handleEmojiSelect = (emoji: string) => {
     playSound('click');
     setSelectedEmoji(emoji);
-    
+
     if (selectedWord) {
       checkMatch(selectedWord, emoji);
     }
@@ -191,7 +201,7 @@ export const Konstruksi: React.FC = () => {
     playSound('click');
     setAudioUrl(null);
     audioChunksRef.current = [];
-    
+
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       const mediaRecorder = new MediaRecorder(stream);
@@ -215,7 +225,8 @@ export const Konstruksi: React.FC = () => {
       speakIndonesian(`Katakan ${recordingWord}`);
     } catch (err) {
       console.error('Audio recording not supported or permitted:', err);
-      alert('Izin mikrofon diperlukan untuk merekam suaramu.');
+      setMicErrorMessage('Izin mikrofon diperlukan untuk merekam suaramu. Pastikan kamu memberikan izin mikrofon di browsermu ya!');
+      setShowMicErrorAlert(true);
     }
   };
 
@@ -256,7 +267,7 @@ export const Konstruksi: React.FC = () => {
   const handleSelectStoryChoice = (isCorrect: boolean) => {
     setStoryAnswered(true);
     setStoryAnswerCorrect(isCorrect);
-    
+
     if (isCorrect) {
       playSound('success');
       confetti({ particleCount: 50, spread: 60 });
@@ -274,7 +285,7 @@ export const Konstruksi: React.FC = () => {
     playSound('click');
     setStoryAudioUrl(null);
     storyAudioChunksRef.current = [];
-    
+
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       const mediaRecorder = new MediaRecorder(stream);
@@ -298,7 +309,8 @@ export const Konstruksi: React.FC = () => {
       speakIndonesian("Silakan ceritakan kembali kisah ini");
     } catch (err) {
       console.error('Story audio recording error:', err);
-      alert('Izin mikrofon diperlukan untuk merekam ceritamu.');
+      setMicErrorMessage('Izin mikrofon diperlukan untuk merekam ceritamu. Pastikan kamu memberikan izin mikrofon di browsermu ya!');
+      setShowMicErrorAlert(true);
     }
   };
 
@@ -324,7 +336,7 @@ export const Konstruksi: React.FC = () => {
     // Complete this specific story and also complete 'konstruksi_cerita' to satisfy badge step check
     await completeStep(storyId, 2);
     await completeStep('konstruksi_cerita', 2);
-    
+
     setStoryCompleted(true);
     confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
     speakIndonesian("Terima kasih sudah menceritakan kembali! Kamu pintar bercerita. Dua bintang ditambahkan!");
@@ -352,25 +364,22 @@ export const Konstruksi: React.FC = () => {
       <div className="flex space-x-3 bg-emerald-100/50 p-2 rounded-2xl border-2 border-emerald-100">
         <button
           onClick={() => { playSound('pop'); cancelSpeech(); setActiveTab('matching'); }}
-          className={`flex-1 py-5 font-extrabold text-md md:text-lg rounded-xl transition cursor-pointer ${
-            activeTab === 'matching' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-850 hover:bg-white/40'
-          }`}
+          className={`flex-1 py-5 font-extrabold text-md md:text-lg rounded-xl transition cursor-pointer ${activeTab === 'matching' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-850 hover:bg-white/40'
+            }`}
         >
           🎮 Tebak Gambar
         </button>
         <button
           onClick={() => { playSound('pop'); cancelSpeech(); setActiveTab('pronounce'); }}
-          className={`flex-1 py-5 font-extrabold text-md md:text-lg rounded-xl transition cursor-pointer ${
-            activeTab === 'pronounce' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-850 hover:bg-white/40'
-          }`}
+          className={`flex-1 py-5 font-extrabold text-md md:text-lg rounded-xl transition cursor-pointer ${activeTab === 'pronounce' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-850 hover:bg-white/40'
+            }`}
         >
           🎙️ Latih Lafal
         </button>
         <button
           onClick={() => { playSound('pop'); cancelSpeech(); setActiveTab('story'); }}
-          className={`flex-1 py-5 font-extrabold text-md md:text-lg rounded-xl transition cursor-pointer ${
-            activeTab === 'story' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-850 hover:bg-white/40'
-          }`}
+          className={`flex-1 py-5 font-extrabold text-md md:text-lg rounded-xl transition cursor-pointer ${activeTab === 'story' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-850 hover:bg-white/40'
+            }`}
         >
           📖 Simak & Ceritakan
         </button>
@@ -410,13 +419,12 @@ export const Konstruksi: React.FC = () => {
                       key={item.word}
                       disabled={isMatched}
                       onClick={() => handleWordSelect(item.word)}
-                      className={`w-full py-4 px-3 rounded-2xl font-extrabold text-lg border-3 transition-all cursor-pointer ${
-                        isMatched 
+                      className={`w-full py-4 px-3 rounded-2xl font-extrabold text-lg border-3 transition-all cursor-pointer ${isMatched
                           ? 'bg-slate-50 text-slate-400 border-slate-200 cursor-not-allowed'
                           : isSelected
-                          ? 'bg-amber-100 border-amber-500 text-amber-950 scale-105'
-                          : 'bg-white border-amber-100 text-slate-700 hover:border-amber-400'
-                      }`}
+                            ? 'bg-amber-100 border-amber-500 text-amber-950 scale-105'
+                            : 'bg-white border-amber-100 text-slate-700 hover:border-amber-400'
+                        }`}
                     >
                       {item.word}
                     </button>
@@ -435,13 +443,12 @@ export const Konstruksi: React.FC = () => {
                       key={emoji}
                       disabled={isMatched}
                       onClick={() => handleEmojiSelect(emoji)}
-                      className={`w-full py-4 rounded-2xl border-3 text-4xl transition-all cursor-pointer ${
-                        isMatched
+                      className={`w-full py-4 rounded-2xl border-3 text-4xl transition-all cursor-pointer ${isMatched
                           ? 'bg-slate-50 border-slate-200 opacity-30 cursor-not-allowed'
                           : isSelected
-                          ? 'bg-amber-100 border-amber-500 scale-110'
-                          : 'bg-white border-amber-100 hover:border-amber-400'
-                      }`}
+                            ? 'bg-amber-100 border-amber-500 scale-110'
+                            : 'bg-white border-amber-100 hover:border-amber-400'
+                        }`}
                     >
                       {emoji}
                     </button>
@@ -451,7 +458,7 @@ export const Konstruksi: React.FC = () => {
             </div>
 
             {gameWon ? (
-              <motion.div 
+              <motion.div
                 initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 className="bg-emerald-50 border-2 border-emerald-300 rounded-2xl p-4 text-center space-y-3"
@@ -500,11 +507,10 @@ export const Konstruksi: React.FC = () => {
                 <button
                   key={item.word}
                   onClick={() => { playSound('pop'); setRecordingWord(item.word); speakIndonesian(item.word); setAudioUrl(null); }}
-                  className={`px-4 py-4 rounded-xl font-extrabold border-2 transition cursor-pointer ${
-                    recordingWord === item.word
+                  className={`px-4 py-4 rounded-xl font-extrabold border-2 transition cursor-pointer ${recordingWord === item.word
                       ? 'bg-blue-500 text-white border-blue-500 shadow-sm'
                       : 'bg-white text-slate-700 border-slate-100 hover:border-blue-200'
-                  }`}
+                    }`}
                 >
                   <span className="mr-1.5">{item.emoji}</span>
                   {item.word}
@@ -514,11 +520,11 @@ export const Konstruksi: React.FC = () => {
 
             {/* Large Word display */}
             <div className="bg-blue-50/50 rounded-2xl p-6 border-2 border-blue-100 text-center space-y-3 flex flex-col justify-center items-center">
-              <ImageWithFallback 
-                src={vocabList.find(v => v.word === recordingWord)?.image} 
-                alt={recordingWord} 
+              <ImageWithFallback
+                src={vocabList.find(v => v.word === recordingWord)?.image}
+                alt={recordingWord}
                 fallback={vocabList.find(v => v.word === recordingWord)?.emoji || '❓'}
-                className="w-28 h-28 object-contain mx-auto animate-float rounded-2xl flex items-center justify-center text-7xl" 
+                className="w-28 h-28 object-contain mx-auto animate-float rounded-2xl flex items-center justify-center text-7xl"
               />
               <h4 className="text-4xl font-black text-blue-950 tracking-wider">
                 {recordingWord}
@@ -558,11 +564,10 @@ export const Konstruksi: React.FC = () => {
               <button
                 disabled={!audioUrl}
                 onClick={playRecordedAudio}
-                className={`flex items-center space-x-2 px-6 py-5 rounded-2xl font-extrabold border-2 transition cursor-pointer ${
-                  audioUrl
+                className={`flex items-center space-x-2 px-6 py-5 rounded-2xl font-extrabold border-2 transition cursor-pointer ${audioUrl
                     ? 'bg-emerald-500 hover:bg-emerald-600 text-white border-emerald-500 shadow-playful-primary'
                     : 'bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed'
-                }`}
+                  }`}
               >
                 <Play size={20} />
                 <span>Putar Suaramu</span>
@@ -590,11 +595,10 @@ export const Konstruksi: React.FC = () => {
                     <button
                       key={story.id}
                       onClick={() => handleSelectStory(index)}
-                      className={`w-full p-4 rounded-2xl text-left border-3 transition-all cursor-pointer flex items-center justify-between ${
-                        isSelected
+                      className={`w-full p-4 rounded-2xl text-left border-3 transition-all cursor-pointer flex items-center justify-between ${isSelected
                           ? 'bg-emerald-50 border-emerald-500 text-emerald-950 font-black'
                           : 'bg-white border-slate-100 text-slate-700 font-semibold hover:border-emerald-250'
-                      }`}
+                        }`}
                     >
                       <div className="flex items-center space-x-3">
                         <span className="text-3xl">{story.emoji}</span>
@@ -659,13 +663,12 @@ export const Konstruksi: React.FC = () => {
                         key={i}
                         disabled={storyAnswered !== null}
                         onClick={() => handleSelectStoryChoice(choice.isCorrect)}
-                        className={`p-3.5 rounded-xl font-extrabold text-base border-2 transition text-left cursor-pointer flex justify-between items-center ${
-                          storyAnswered === null
+                        className={`p-3.5 rounded-xl font-extrabold text-base border-2 transition text-left cursor-pointer flex justify-between items-center ${storyAnswered === null
                             ? 'bg-white border-slate-200 text-slate-700 hover:border-amber-300 hover:bg-amber-50/30'
                             : choice.isCorrect
-                            ? 'bg-emerald-100 border-emerald-400 text-emerald-950'
-                            : 'bg-rose-50 border-rose-200 text-rose-500 opacity-60'
-                        }`}
+                              ? 'bg-emerald-100 border-emerald-400 text-emerald-950'
+                              : 'bg-rose-50 border-rose-200 text-rose-500 opacity-60'
+                          }`}
                       >
                         <span>{choice.text}</span>
                         {storyAnswered !== null && choice.isCorrect && (
@@ -714,11 +717,10 @@ export const Konstruksi: React.FC = () => {
                     <button
                       disabled={!storyAudioUrl}
                       onClick={playStoryAudio}
-                      className={`flex items-center space-x-2 px-5 py-5 rounded-2xl font-extrabold border-2 transition cursor-pointer ${
-                        storyAudioUrl
+                      className={`flex items-center space-x-2 px-5 py-5 rounded-2xl font-extrabold border-2 transition cursor-pointer ${storyAudioUrl
                           ? 'bg-emerald-500 hover:bg-emerald-600 text-white border-emerald-500 shadow-playful-primary'
                           : 'bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed'
-                      }`}
+                        }`}
                     >
                       <Play size={18} />
                       <span>Putar Rekaman</span>
@@ -748,6 +750,14 @@ export const Konstruksi: React.FC = () => {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <CustomDialog
+        isOpen={showMicErrorAlert}
+        title="Mikrofon Diblokir"
+        message={micErrorMessage}
+        type="alert"
+        onConfirm={() => setShowMicErrorAlert(false)}
+      />
     </div>
   );
 };

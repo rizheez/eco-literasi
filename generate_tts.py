@@ -21,6 +21,10 @@ TEXTS = [
     # Greetings
     "Halo teman! Selamat datang di petualangan Eco Dayak.",
     "Halo teman! Mari belajar lagi.",
+    "Ketuk gambar untuk mendengarkan cerita dan dapatkan bintang!",
+    "Pelajari hubungan sebab-akibat perilaku manusia terhadap kelestarian alam.",
+    "Pilih aktivitas untuk meningkatkan kosa kata dan keterampilan bicaramu!",
+    "Gunakan bahasamu dan aksi cerdasmu untuk melestarikan alam Dayak!",
     
     # Konstruksi: Matching
     "Hebat sekali! Semua kata sudah tercocokkan. Kamu dapat dua bintang!",
@@ -139,6 +143,10 @@ TEXTS = [
     "Waktunya bermain game seru! Ada susun huruf kosakata Dayak, mencocokkan sebab-akibat, menyusun puzzle alam, dan melatih memori. Setiap game yang selesai akan memberimu bintang!",
     "Wah, lihat semua pencapaian luar biasamu! Di sini kamu bisa melihat daftar tugas yang sudah selesai dan jumlah bintang serta medali yang berhasil kamu kumpulkan!",
     "Di menu pengaturan ini, kamu atau orang tuamu bisa mengatur besar kecilnya volume musik latar dan volume suara pemandu, atau menghapus data jika ingin mengulang dari awal.",
+    # Onboarding Tour
+    "Selamat datang teman! Aku Enggo yang akan memandu petualangan belajarmu. Di sebelah kiri atas adalah profil petualanganmu, tempat melihat namamu, level, dan bintangmu!",
+    "Ayo ketuk menu Eksplorasi di sini untuk melihat peta petualangan dan belajar tentang budaya Dayak!",
+    "Jika kamu butuh bantuan atau ingin mendengar petunjuk suara, cukup ketuk aku di sini!",
 ]
 
 VOICE = "id-ID-GadisNeural"

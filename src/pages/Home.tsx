@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { OnboardingTour } from '../components/OnboardingTour';
 import { useNavigate } from 'react-router-dom';
 import { useChildStore } from '../store/useChildStore';
 import { useProgressStore } from '../store/useProgressStore';
@@ -11,11 +12,26 @@ export const Home: React.FC = () => {
   const { activeChild } = useChildStore();
   const { completedSteps, badges, loadProgress } = useProgressStore();
 
+  const [showOnboarding, setShowOnboarding] = useState(false);
+
   useEffect(() => {
     if (activeChild?.id) {
       loadProgress(activeChild.id);
+      
+      const storageKey = `onboarding_completed_child_${activeChild.id}`;
+      const hasCompleted = localStorage.getItem(storageKey) === 'true';
+      if (!hasCompleted) {
+        setShowOnboarding(true);
+      }
     }
   }, [activeChild, loadProgress]);
+
+  const handleOnboardingComplete = () => {
+    if (activeChild?.id) {
+      localStorage.setItem(`onboarding_completed_child_${activeChild.id}`, 'true');
+    }
+    setShowOnboarding(false);
+  };
 
   const stages = [
     {
@@ -177,6 +193,13 @@ export const Home: React.FC = () => {
             ))}
           </div>
         </motion.div>
+      )}
+
+      {showOnboarding && activeChild && (
+        <OnboardingTour
+          activeChildName={activeChild.name}
+          onComplete={handleOnboardingComplete}
+        />
       )}
     </div>
   );

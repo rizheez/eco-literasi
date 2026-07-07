@@ -1,7 +1,8 @@
-import React from 'react';
+import { useState } from 'react';
 import { HashRouter, Routes, Route } from 'react-router-dom';
 import { Layout } from './components/ui/Layout';
 import { ProfileModal } from './components/ProfileModal';
+import { LoadingScreen } from './components/LoadingScreen';
 import { Home } from './pages/Home';
 import { Eksplorasi } from './pages/Eksplorasi';
 import { Konstruksi } from './pages/Konstruksi';
@@ -12,20 +13,16 @@ import { Settings } from './pages/Settings';
 import { playBGM } from './utils/audio';
 
 function App() {
-  React.useEffect(() => {
-    // Browsers block autoplay, so we wait for the first user interaction
-    const handleInteraction = () => {
-      playBGM();
-    };
+  const [isAppLoaded, setIsAppLoaded] = useState(false);
 
-    document.addEventListener('click', handleInteraction);
-    document.addEventListener('keydown', handleInteraction);
+  const handleStartPlaying = () => {
+    playBGM();
+    setIsAppLoaded(true);
+  };
 
-    return () => {
-      document.removeEventListener('click', handleInteraction);
-      document.removeEventListener('keydown', handleInteraction);
-    };
-  }, []);
+  if (!isAppLoaded) {
+    return <LoadingScreen onComplete={handleStartPlaying} />;
+  }
 
   return (
     <HashRouter>
