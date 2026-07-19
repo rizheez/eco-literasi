@@ -75,18 +75,6 @@ const storiesList: StoryItem[] = [
       { text: 'Buah-buahan hutan yang lezat 🍌🍎', isCorrect: true },
       { text: 'Sampah plastik 🥤🗑️', isCorrect: false }
     ]
-  },
-  {
-    id: 'konstruksi_story_petualangan_anak',
-    title: 'Petualangan Menyelamatkan Hutan',
-    emoji: '👦💚',
-    image: '/images/petualangan_anak.png',
-    content: 'Bersama-sama, mereka berdua melewati jalan yang panas dan berdebu akibat penebangan hutan secara liar. Dengan tekad yang kuat, anak Dayak dan sahabat hijaunya berjanji untuk menanam kembali pohon-pohon agar hutan mereka menjadi rindang dan sejuk kembali.',
-    question: 'Mengapa jalan yang mereka lewati terasa panas dan berdebu?',
-    choices: [
-      { text: 'Karena hutan gundul ditebang liar 🪓🔥', isCorrect: true },
-      { text: 'Karena hari sudah sore ☀️', isCorrect: false }
-    ]
   }
 ];
 
@@ -106,10 +94,10 @@ export const Konstruksi: React.FC = () => {
   }, []);
 
   const [selectedWord, setSelectedWord] = useState<string | null>(null);
-  const [selectedEmoji, setSelectedEmoji] = useState<string | null>(null);
-  const [matches, setMatches] = useState<Record<string, string>>({}); // word -> emoji
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [matches, setMatches] = useState<Record<string, string>>({}); // word -> image url
   const [gameWon, setGameWon] = useState(false);
-  const [shuffledEmojis, setShuffledEmojis] = useState<string[]>([]);
+  const [shuffledImages, setShuffledImages] = useState<string[]>([]);
 
   // Game 2: Pronunciation State
   const [recordingWord, setRecordingWord] = useState('Enggang');
@@ -146,12 +134,12 @@ export const Konstruksi: React.FC = () => {
     const selected = shuffledList.slice(0, 3);
     setActiveVocab(selected);
 
-    const emojis = selected.map(item => item.emoji).sort(() => 0.5 - Math.random());
-    setShuffledEmojis(emojis);
+    const images = selected.map(item => item.image || '').filter(Boolean).sort(() => 0.5 - Math.random());
+    setShuffledImages(images);
 
     setMatches({});
     setSelectedWord(null);
-    setSelectedEmoji(null);
+    setSelectedImage(null);
     setGameWon(false);
   };
 
@@ -159,7 +147,7 @@ export const Konstruksi: React.FC = () => {
     // Initialise on load
     const selected = [...vocabList].slice(0, 3);
     setActiveVocab(selected);
-    setShuffledEmojis(selected.map(item => item.emoji).sort(() => 0.5 - Math.random()));
+    setShuffledImages(selected.map(item => item.image || '').filter(Boolean).sort(() => 0.5 - Math.random()));
 
     return () => {
       cancelSpeech();
@@ -171,28 +159,28 @@ export const Konstruksi: React.FC = () => {
     setSelectedWord(word);
     speakIndonesian(word);
 
-    if (selectedEmoji) {
-      checkMatch(word, selectedEmoji);
+    if (selectedImage) {
+      checkMatch(word, selectedImage);
     }
   };
 
-  const handleEmojiSelect = (emoji: string) => {
+  const handleImageSelect = (image: string) => {
     playSound('click');
-    setSelectedEmoji(emoji);
+    setSelectedImage(image);
 
     if (selectedWord) {
-      checkMatch(selectedWord, emoji);
+      checkMatch(selectedWord, image);
     }
   };
 
-  const checkMatch = (word: string, emoji: string) => {
+  const checkMatch = (word: string, image: string) => {
     const item = activeVocab.find(v => v.word === word);
-    if (item && item.emoji === emoji) {
+    if (item && item.image === image) {
       playSound('success');
-      const newMatches = { ...matches, [word]: emoji };
+      const newMatches = { ...matches, [word]: image };
       setMatches(newMatches);
       setSelectedWord(null);
-      setSelectedEmoji(null);
+      setSelectedImage(null);
 
       if (Object.keys(newMatches).length === activeVocab.length) {
         setGameWon(true);
@@ -203,10 +191,11 @@ export const Konstruksi: React.FC = () => {
     } else {
       playSound('error');
       setSelectedWord(null);
-      setSelectedEmoji(null);
+      setSelectedImage(null);
       speakIndonesian("Coba lagi, pasangannya belum tepat!");
     }
   };
+
 
   // Voice recording logic (Pronunciation)
   const startRecording = async () => {
@@ -444,25 +433,25 @@ export const Konstruksi: React.FC = () => {
                 })}
               </div>
 
-              {/* Emojis list */}
+              {/* Gambar list */}
               <div className="space-y-3">
                 <p className="text-xs font-black uppercase text-amber-800 tracking-wider text-center">Gambar</p>
-                {shuffledEmojis.map((emoji) => {
-                  const isMatched = Object.values(matches).includes(emoji);
-                  const isSelected = selectedEmoji === emoji;
+                {shuffledImages.map((image) => {
+                  const isMatched = Object.values(matches).includes(image);
+                  const isSelected = selectedImage === image;
                   return (
                     <button
-                      key={emoji}
+                      key={image}
                       disabled={isMatched}
-                      onClick={() => handleEmojiSelect(emoji)}
-                      className={`w-full py-4 rounded-2xl border-3 text-4xl transition-all cursor-pointer ${isMatched
+                      onClick={() => handleImageSelect(image)}
+                      className={`w-full py-2 px-3 rounded-2xl border-3 transition-all cursor-pointer flex justify-center items-center h-[62px] ${isMatched
                           ? 'bg-slate-50 border-slate-200 opacity-30 cursor-not-allowed'
                           : isSelected
-                            ? 'bg-amber-100 border-amber-500 scale-110'
+                            ? 'bg-amber-100 border-amber-500 scale-105 shadow-sm'
                             : 'bg-white border-amber-100 hover:border-amber-400'
                         }`}
                     >
-                      {emoji}
+                      <img src={image} alt="Pilihan Gambar" className="h-10 md:h-12 w-auto object-contain" />
                     </button>
                   );
                 })}
@@ -598,7 +587,7 @@ export const Konstruksi: React.FC = () => {
           >
             {/* Story Sidebar Selector */}
             <div className="lg:col-span-1 space-y-3">
-              <p className="text-xs font-black uppercase text-emerald-800 tracking-wider">Daftar Dongeng Rakyat</p>
+              <p className="text-xs font-black uppercase text-emerald-950 bg-white/80 backdrop-blur-sm px-3 py-1.5 rounded-full w-fit border border-emerald-100/50 shadow-sm tracking-wider">Daftar Dongeng Rakyat</p>
               <div className="space-y-2">
                 {storiesList.map((story, index) => {
                   const isSelected = selectedStoryIdx === index;
@@ -613,7 +602,11 @@ export const Konstruksi: React.FC = () => {
                         }`}
                     >
                       <div className="flex items-center space-x-3">
-                        <span className="text-3xl">{story.emoji}</span>
+                        <img 
+                          src={story.image} 
+                          alt={story.title} 
+                          className="w-10 h-10 object-contain rounded-xl bg-slate-50 p-1 shrink-0 border border-slate-100 shadow-sm" 
+                        />
                         <div>
                           <p className="text-base leading-tight">{story.title}</p>
                           <p className="text-xs text-slate-500 mt-0.5">Dongeng interaktif</p>
@@ -638,7 +631,7 @@ export const Konstruksi: React.FC = () => {
                   </h3>
                   <button
                     onClick={handleListenStory}
-                    className="flex items-center gap-1.5 px-4 py-4 bg-emerald-50 text-emerald-600 rounded-xl hover:bg-emerald-100 transition cursor-pointer font-bold text-sm"
+                    className="flex items-center gap-1.5 px-4 py-2.5 bg-emerald-500 text-white rounded-2xl hover:bg-emerald-600 transition cursor-pointer font-extrabold text-sm shadow-sm border border-emerald-600"
                   >
                     <Volume2 size={18} />
                     <span>Dengarkan</span>
