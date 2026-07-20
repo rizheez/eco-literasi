@@ -420,10 +420,10 @@ export const Konstruksi: React.FC = () => {
                       key={item.word}
                       disabled={isMatched}
                       onClick={() => handleWordSelect(item.word)}
-                      className={`w-full py-4 px-3 rounded-2xl font-extrabold text-lg border-3 transition-all cursor-pointer ${isMatched
+                      className={`w-full h-24 rounded-2xl font-extrabold text-xl border-3 transition-all cursor-pointer flex items-center justify-center ${isMatched
                           ? 'bg-slate-50 text-slate-400 border-slate-200 cursor-not-allowed'
                           : isSelected
-                            ? 'bg-amber-100 border-amber-500 text-amber-950 scale-105'
+                            ? 'bg-amber-100 border-amber-500 text-amber-950 scale-105 shadow-sm'
                             : 'bg-white border-amber-100 text-slate-700 hover:border-amber-400'
                         }`}
                     >
@@ -444,14 +444,14 @@ export const Konstruksi: React.FC = () => {
                       key={image}
                       disabled={isMatched}
                       onClick={() => handleImageSelect(image)}
-                      className={`w-full py-2 px-3 rounded-2xl border-3 transition-all cursor-pointer flex justify-center items-center h-[62px] ${isMatched
+                      className={`w-full h-24 rounded-2xl border-3 transition-all cursor-pointer flex justify-center items-center ${isMatched
                           ? 'bg-slate-50 border-slate-200 opacity-30 cursor-not-allowed'
                           : isSelected
                             ? 'bg-amber-100 border-amber-500 scale-105 shadow-sm'
                             : 'bg-white border-amber-100 hover:border-amber-400'
                         }`}
                     >
-                      <img src={image} alt="Pilihan Gambar" className="h-10 md:h-12 w-auto object-contain" />
+                      <img src={image} alt="Pilihan Gambar" className="h-20 w-auto object-contain p-1" />
                     </button>
                   );
                 })}
