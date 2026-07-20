@@ -1,6 +1,6 @@
-# Rencana Pembuatan Modul & Panduan Penggunaan Aplikasi Eco-Dayak Kids
+# Rencana Pembuatan Modul & Panduan Penggunaan Aplikasi Eco-Dayak Literacy
 
-Dokumen ini berisi rencana struktur, konten, dan rekomendasi format untuk pembuatan modul panduan belajar menggunakan aplikasi/game **Eco-Dayak Kids**. Panduan ini ditujukan kepada **Guru** dan **Orang Tua** agar dapat mendampingi anak-anak belajar kebudayaan Dayak dan pelestarian lingkungan Kalimantan Timur secara maksimal.
+Dokumen ini berisi rencana struktur, konten, dan rekomendasi format untuk pembuatan modul panduan belajar menggunakan aplikasi/game **Eco-Dayak Literacy**. Panduan ini ditujukan kepada **Guru** dan **Orang Tua** agar dapat mendampingi anak-anak belajar kebudayaan Dayak dan pelestarian lingkungan Kalimantan Timur secara maksimal.
 
 ---
 

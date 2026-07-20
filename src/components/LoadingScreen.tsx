@@ -72,7 +72,7 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete }) => {
         className="bg-white/80 backdrop-blur-md p-10 rounded-3xl shadow-playful border-4 border-emerald-300 max-w-sm w-full"
       >
         <div className="text-7xl mb-4 animate-float">🌳</div>
-        <h1 className="text-3xl font-black text-emerald-900 mb-2">Eco Dayak Kids</h1>
+        <h1 className="text-3xl font-black text-emerald-900 mb-2">Eco Dayak Literacy</h1>
         <p className="text-slate-600 font-bold mb-8">Eksplorasi Alam Kalimantan</p>
 
         <div className="h-4 bg-emerald-100 rounded-full overflow-hidden border-2 border-emerald-200 mb-4 relative">

@@ -1,4 +1,4 @@
-package com.ecodayak.kids;
+package com.ecodayak.literacy;
 
 import com.getcapacitor.BridgeActivity;
 

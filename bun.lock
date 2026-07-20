@@ -3,7 +3,7 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "eco-dayak-kids",
+      "name": "eco-dayak-literacy",
       "dependencies": {
         "@capacitor/android": "^8.4.1",
         "@capacitor/app": "^8.1.0",
