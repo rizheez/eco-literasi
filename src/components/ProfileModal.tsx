@@ -8,13 +8,13 @@ import { CustomDialog } from './ui/CustomDialog';
 export const ProfileModal: React.FC = () => {
   const { childrenList, activeChild, createChild, selectChild, deleteChild, loadChildren } = useChildStore();
   const [name, setName] = useState('');
-  const [selectedAvatar, setSelectedAvatar] = useState('/images/anak_dayak.png');
+  const [selectedAvatar, setSelectedAvatar] = useState('/images/anak_dayak_cowo.png');
   const [isCreating, setIsCreating] = useState(false);
   const [showInvalidNameAlert, setShowInvalidNameAlert] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [profileToDeleteId, setProfileToDeleteId] = useState<number | null>(null);
 
-  const avatars = ['/images/anak_dayak.png', '🦊', '🐻', '🐸', '🦉', '🦜', '🐢', '🐒', '🦌'];
+  const avatars = ['/images/anak_dayak_cowo.png', '/images/anak_dayak_cewe.png', '🦊', '🐻', '🐸', '🦉', '🦜', '🐢', '🐒', '🦌'];
 
   useEffect(() => {
     loadChildren();

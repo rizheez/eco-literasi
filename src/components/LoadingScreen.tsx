@@ -4,6 +4,8 @@ import { Play } from 'lucide-react';
 import { playSound } from '../utils/audio';
 
 const ASSETS_TO_PRELOAD = [
+  '/images/anak_dayak_cowo.png',
+  '/images/anak_dayak_cewe.png',
   '/images/burung_enggang.png',
   '/images/hutan_hujan.png',
   '/images/orangutan.png',
