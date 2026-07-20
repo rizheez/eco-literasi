@@ -114,10 +114,16 @@ export const Home: React.FC = () => {
           </p>
         </div>
         <div className="flex items-center space-x-3 shrink-0 bg-emerald-50 px-6 py-3 rounded-2xl border-2 border-emerald-100">
-          <span className="text-5xl animate-float">🦜</span>
+          {activeChild?.avatar.startsWith('/') ? (
+            <img src={activeChild.avatar} alt="Maskot Petualang" className="w-12 h-12 object-contain animate-float" />
+          ) : (
+            <span className="text-5xl animate-float">{activeChild?.avatar || '🦜'}</span>
+          )}
           <div>
             <p className="text-xs text-emerald-700 font-black tracking-widest uppercase">Maskot Petualang</p>
-            <p className="text-lg font-extrabold text-emerald-950">Enggang Cerdik</p>
+            <p className="text-lg font-extrabold text-emerald-950">
+              {activeChild?.avatar.includes('cewe') ? 'Dayak Dara' : 'Dayak Cilik'}
+            </p>
           </div>
         </div>
       </motion.div>
