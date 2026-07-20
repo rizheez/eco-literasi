@@ -14,7 +14,7 @@ export const ProfileModal: React.FC = () => {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [profileToDeleteId, setProfileToDeleteId] = useState<number | null>(null);
 
-  const avatars = ['/images/anak_dayak_cowo.png', '/images/anak_dayak_cewe.png', '🦊', '🐻', '🐸', '🦉', '🦜', '🐢', '🐒', '🦌'];
+  const avatars = ['/images/anak_dayak_cowo.png', '/images/anak_dayak_cewe.png'];
 
   useEffect(() => {
     loadChildren();
@@ -123,22 +123,22 @@ export const ProfileModal: React.FC = () => {
 
             <div>
               <label className="block text-slate-700 font-bold text-lg mb-2">Pilih Karakter Maskotmu:</label>
-              <div className="grid grid-cols-4 gap-3">
+              <div className="flex justify-center gap-6">
                 {avatars.map((av) => (
                   <button
                     key={av}
                     type="button"
                     onClick={() => { playSound('pop'); setSelectedAvatar(av); }}
-                    className={`p-3 rounded-2xl border-3 transition-all cursor-pointer flex items-center justify-center ${
+                    className={`p-4 rounded-3xl border-4 transition-all cursor-pointer flex items-center justify-center ${
                       selectedAvatar === av 
                         ? 'border-amber-500 bg-amber-100 scale-110' 
                         : 'border-slate-100 bg-slate-50 hover:bg-slate-100'
                     }`}
                   >
                     {av.startsWith('/') ? (
-                      <img src={av} alt="Avatar" className="w-10 h-10 object-contain" />
+                      <img src={av} alt="Avatar" className="w-16 h-16 object-contain" />
                     ) : (
-                      <span className="text-4xl">{av}</span>
+                      <span className="text-5xl">{av}</span>
                     )}
                   </button>
                 ))}
