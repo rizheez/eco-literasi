@@ -169,7 +169,7 @@ export const Eksplorasi: React.FC = () => {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white rounded-3xl p-6 md:p-8 max-w-xl w-full border-4 border-blue-400 shadow-2xl relative"
+              className="bg-white rounded-3xl p-6 md:p-8 max-w-2xl w-full border-4 border-blue-400 shadow-2xl relative"
             >
               <button
                 onClick={() => { playSound('click'); cancelSpeech(); setSelectedItem(null); }}
@@ -178,23 +178,27 @@ export const Eksplorasi: React.FC = () => {
                 ✕
               </button>
 
-              <div className="text-center space-y-4">
-                <ImageWithFallback
-                  src={selectedItem.image}
-                  alt={selectedItem.title}
-                  fallback={selectedItem.emoji}
-                  className="w-36 h-36 object-contain mx-auto animate-float rounded-2xl flex items-center justify-center text-8xl"
-                />
-                <h3 className="text-3xl font-extrabold text-blue-900 flex justify-center items-center gap-2">
-                  {selectedItem.title}
-                  <button
-                    onClick={() => { playSound('click'); speakIndonesian(`${selectedItem.title}. ${selectedItem.description} ${selectedItem.ecoLesson}`); }}
-                    className="p-2 bg-blue-50 text-blue-600 rounded-xl hover:bg-blue-100 transition cursor-pointer"
-                    title="Suara Panduan"
-                  >
-                    <Volume2 size={20} />
-                  </button>
-                </h3>
+              <div className="space-y-4">
+                <div className="w-full h-56 md:h-72 bg-gradient-to-b from-slate-50 to-slate-100 rounded-3xl overflow-hidden shadow-inner border border-slate-200/40 flex items-center justify-center relative">
+                  <ImageWithFallback
+                    src={selectedItem.image}
+                    alt={selectedItem.title}
+                    fallback={selectedItem.emoji}
+                    className="w-full h-full object-contain p-3 animate-float"
+                  />
+                </div>
+                <div className="text-center">
+                  <h3 className="text-3xl font-extrabold text-blue-900 flex justify-center items-center gap-2">
+                    {selectedItem.title}
+                    <button
+                      onClick={() => { playSound('click'); speakIndonesian(`${selectedItem.title}. ${selectedItem.description} ${selectedItem.ecoLesson}`); }}
+                      className="p-2 bg-blue-50 text-blue-600 rounded-xl hover:bg-blue-100 transition cursor-pointer"
+                      title="Suara Panduan"
+                    >
+                      <Volume2 size={20} />
+                    </button>
+                  </h3>
+                </div>
               </div>
 
               <div className="mt-6 space-y-4 text-slate-700">

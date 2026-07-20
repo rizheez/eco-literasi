@@ -36,14 +36,14 @@ const OutcomeVisualizer: React.FC<{ image?: string; illustrations: string[]; alt
 
   if (image && !hasError) {
     return (
-      <div className="bg-white/90 backdrop-blur-sm border-2 border-white rounded-2xl p-4 flex justify-center items-center min-h-[160px]">
+      <div className="bg-white/90 backdrop-blur-sm border-2 border-white rounded-2xl p-4 flex justify-center items-center min-h-[220px]">
         <motion.img
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           src={image}
           alt={alt}
           onError={() => setHasError(true)}
-          className="w-full max-w-[320px] h-40 object-contain rounded-2xl"
+          className="w-full max-w-lg h-48 md:h-56 object-contain rounded-2xl"
         />
       </div>
     );

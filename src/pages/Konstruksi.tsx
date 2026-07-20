@@ -525,7 +525,7 @@ export const Konstruksi: React.FC = () => {
                 src={vocabList.find(v => v.word === recordingWord)?.image}
                 alt={recordingWord}
                 fallback={vocabList.find(v => v.word === recordingWord)?.emoji || '❓'}
-                className="w-28 h-28 object-contain mx-auto animate-float rounded-2xl flex items-center justify-center text-7xl"
+                className="w-40 h-40 object-contain mx-auto animate-float rounded-2xl flex items-center justify-center text-8xl"
               />
               <h4 className="text-4xl font-black text-blue-950 tracking-wider">
                 {recordingWord}
