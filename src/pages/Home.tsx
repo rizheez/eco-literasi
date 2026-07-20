@@ -115,7 +115,7 @@ export const Home: React.FC = () => {
         </div>
         <div className="flex items-center space-x-3 shrink-0 bg-emerald-50 px-6 py-3 rounded-2xl border-2 border-emerald-100">
           {activeChild?.avatar.startsWith('/') ? (
-            <img src={activeChild.avatar} alt="Maskot Petualang" className="w-12 h-12 object-contain animate-float" />
+            <img src={activeChild.avatar} alt="Maskot Petualang" className="w-16 h-20 object-contain animate-float" />
           ) : (
             <span className="text-5xl animate-float">{activeChild?.avatar || '🦜'}</span>
           )}

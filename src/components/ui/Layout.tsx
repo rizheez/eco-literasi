@@ -82,7 +82,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
         {/* Child Profile Header */}
         <div className="onboarding-profile bg-emerald-50 rounded-2xl p-4 border-2 border-emerald-100 flex items-center space-x-3">
           {activeChild.avatar.startsWith('/') ? (
-            <img src={activeChild.avatar} alt="Avatar" className="w-12 h-12 object-contain animate-bounce" />
+            <img src={activeChild.avatar} alt="Avatar" className="w-16 h-20 object-contain animate-bounce" />
           ) : (
             <span className="text-4xl animate-bounce">{activeChild.avatar}</span>
           )}
@@ -146,7 +146,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
       <header className="md:hidden bg-white border-b-4 border-emerald-100 px-4 py-3 flex items-center justify-between sticky top-0 z-40">
         <div className="onboarding-profile flex items-center space-x-2">
           {activeChild.avatar.startsWith('/') ? (
-            <img src={activeChild.avatar} alt="Avatar" className="w-9 h-9 object-contain" />
+            <img src={activeChild.avatar} alt="Avatar" className="w-12 h-14 object-contain" />
           ) : (
             <span className="text-3xl">{activeChild.avatar}</span>
           )}

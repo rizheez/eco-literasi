@@ -74,7 +74,7 @@ export const ProfileModal: React.FC = () => {
                 >
                   <div className="flex items-center space-x-4">
                     {child.avatar.startsWith('/') ? (
-                      <img src={child.avatar} alt="Avatar" className="w-12 h-12 object-contain" />
+                      <img src={child.avatar} alt="Avatar" className="w-16 h-20 object-contain" />
                     ) : (
                       <span className="text-4xl">{child.avatar}</span>
                     )}
@@ -129,14 +129,14 @@ export const ProfileModal: React.FC = () => {
                     key={av}
                     type="button"
                     onClick={() => { playSound('pop'); setSelectedAvatar(av); }}
-                    className={`p-4 rounded-3xl border-4 transition-all cursor-pointer flex items-center justify-center ${
+                    className={`w-28 h-40 rounded-3xl border-4 transition-all cursor-pointer flex items-center justify-center ${
                       selectedAvatar === av 
                         ? 'border-amber-500 bg-amber-100 scale-110' 
                         : 'border-slate-100 bg-slate-50 hover:bg-slate-100'
                     }`}
                   >
                     {av.startsWith('/') ? (
-                      <img src={av} alt="Avatar" className="w-16 h-16 object-contain" />
+                      <img src={av} alt="Avatar" className="w-24 h-32 object-contain" />
                     ) : (
                       <span className="text-5xl">{av}</span>
                     )}

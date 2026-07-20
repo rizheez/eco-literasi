@@ -63,7 +63,7 @@ export const Progress: React.FC = () => {
           {/* Level Card */}
           <div className="bg-white rounded-3xl p-6 border-4 border-emerald-350 shadow-playful text-center space-y-4">
             {activeChild?.avatar.startsWith('/') ? (
-              <img src={activeChild.avatar} alt="Avatar" className="w-20 h-20 object-contain mx-auto animate-bounce" />
+              <img src={activeChild.avatar} alt="Avatar" className="w-24 h-32 object-contain mx-auto animate-bounce" />
             ) : (
               <span className="text-6xl block animate-bounce">{activeChild?.avatar}</span>
             )}
