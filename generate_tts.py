@@ -179,8 +179,8 @@ async def generate_single(text: str):
 
     print(f"Generating: '{cleaned[:50]}...' -> {file_hash}.mp3")
     
-    # Replace "Sape" with "Sapeh" for TTS engine so it pronounces with crisp "sa-pé"
-    tts_text = re.sub(r'\bSape\b', 'Sapeh', cleaned, flags=re.IGNORECASE)
+    # Replace "Sape" with "Sapé" for TTS engine so it pronounces clean "sa-pé" (like "tempe")
+    tts_text = re.sub(r'\bSape\b', 'Sapé', cleaned, flags=re.IGNORECASE)
     
     communicate = edge_tts.Communicate(tts_text, VOICE, rate="-12%", pitch="+10Hz")
     
