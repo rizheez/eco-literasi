@@ -25,3 +25,8 @@ dist-ssr
 
 # Documentation
 docs/
+
+# Python & Scratch
+__pycache__/
+scratch/
+
