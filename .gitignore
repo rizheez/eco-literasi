@@ -30,3 +30,16 @@ docs/
 __pycache__/
 scratch/
 
+# Keystores & Signing Secrets
+Keystore
+android/app/Keystore
+*.jks
+*.keystore
+*.pfx
+*.p12
+key.properties
+
+# Android & Build Artifacts
+*.apk
+*.aab
+android/app/release/
