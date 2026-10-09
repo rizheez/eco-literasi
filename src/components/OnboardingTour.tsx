@@ -16,21 +16,31 @@ interface OnboardingTourProps {
   activeChildName: string;
 }
 
-const STEPS = [
+interface TourStep {
+  targetSelector: string;
+  textId: string;
+  textDayak: string;
+  placement: 'right' | 'left' | 'top' | 'bottom';
+}
+
+const STEPS: TourStep[] = [
   {
     targetSelector: '.onboarding-profile',
-    text: 'Selamat datang! Aku Enggo yang akan memandu petualangan belajarmu. Di sebelah kiri atas adalah profil petualanganmu, tempat melihat namamu, level, dan bintangmu!',
-    placement: 'right' as const,
+    textId: 'Selamat datang! Aku Enggo yang akan memandu petualangan belajarmu. Di sebelah kiri atas adalah profil petualanganmu, tempat melihat namamu, level, dan bintangmu!',
+    textDayak: "Selamat teka! Ake' Enggo chie nudok pejalai pejajah iko. Te' kabing baun chie profil pejalai iko, ungot ngelan ngadan, level, ngan bintang iko!",
+    placement: 'right',
   },
   {
     targetSelector: '.onboarding-nav-eksplorasi',
-    text: 'Ayo ketuk menu Eksplorasi di sini untuk melihat peta petualangan dan belajar tentang budaya Dayak!',
-    placement: 'right' as const,
+    textId: 'Ayo ketuk menu Eksplorasi di sini untuk melihat peta petualangan dan belajar tentang budaya Dayak!',
+    textDayak: "Mai tekep menu Eksplorasi te' ini ungot ngelan peta pejalai ngan pejajah adat budaya Dayak!",
+    placement: 'right',
   },
   {
     targetSelector: '.onboarding-mascot',
-    text: 'Jika kamu butuh bantuan atau ingin mendengar petunjuk suara, cukup ketuk aku di sini!',
-    placement: 'left' as const,
+    textId: 'Jika kamu butuh bantuan atau ingin mendengar petunjuk suara, cukup ketuk aku di sini!',
+    textDayak: "Amon iko ka' tulung empang dinge petudok daa, tekep ake' te' ini!",
+    placement: 'left',
   }
 ];
 
@@ -91,7 +101,7 @@ export const OnboardingTour: React.FC<OnboardingTourProps> = ({ onComplete, acti
 
   // Speak narration when step changes
   useEffect(() => {
-    let speechText = STEPS[currentStep].text;
+    let speechText = STEPS[currentStep].textId;
     if (currentStep === 0) {
       speechText = `Selamat datang teman! Aku Enggo yang akan memandu petualangan belajarmu. Di sebelah kiri atas adalah profil petualanganmu, tempat melihat namamu, level, dan bintangmu!`;
     }
@@ -214,7 +224,7 @@ export const OnboardingTour: React.FC<OnboardingTourProps> = ({ onComplete, acti
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: isMobile ? (mobilePlacementClass.includes('top') ? -50 : 50) : 0 }}
             transition={{ type: 'spring', bounce: 0.4 }}
-            className={`pointer-events-auto w-[90%] max-w-[350px] bg-white border-4 border-emerald-400 p-5 rounded-[2rem] shadow-2xl flex flex-col md:absolute ${
+            className={`pointer-events-auto w-[90%] max-w-[390px] bg-white border-4 border-emerald-400 p-5 rounded-[2rem] shadow-2xl flex flex-col md:absolute ${
               isMobile ? mobilePlacementClass : ''
             }`}
             style={isMobile ? undefined : bubbleStyle}
@@ -232,13 +242,30 @@ export const OnboardingTour: React.FC<OnboardingTourProps> = ({ onComplete, acti
               </div>
             </div>
 
-            {/* Instruction Text */}
-            <p className="text-slate-700 font-bold text-sm leading-relaxed mb-4">
-              {currentStep === 0 
-                ? `Selamat datang ${activeChildName}! Aku Enggo yang akan memandu petualangan belajarmu. Di sebelah kiri atas adalah profil petualanganmu, tempat melihat namamu, level, dan bintangmu!`
-                : STEPS[currentStep].text
-              }
-            </p>
+            {/* Instruction Text: Indonesian & Dayak Kenyah */}
+            <div className="space-y-2.5 mb-4 max-h-[50vh] overflow-y-auto pr-1">
+              {/* Bahasa Indonesia */}
+              <p className="text-slate-700 font-bold text-xs sm:text-sm leading-relaxed">
+                {currentStep === 0 
+                  ? `Selamat datang ${activeChildName}! Aku Enggo yang akan memandu petualangan belajarmu. Di sebelah kiri atas adalah profil petualanganmu, tempat melihat namamu, level, dan bintangmu!`
+                  : STEPS[currentStep].textId
+                }
+              </p>
+
+              {/* Bahasa Dayak Kenyah */}
+              <div className="bg-emerald-50/90 border border-emerald-200/90 rounded-2xl p-2.5 sm:p-3 text-emerald-950">
+                <div className="flex items-center gap-1.5 text-[10px] font-black tracking-wider uppercase text-emerald-700 mb-1">
+                  <span>🌿</span>
+                  <span>Bahasa Dayak (Kenyah)</span>
+                </div>
+                <p className="text-xs sm:text-[13px] leading-relaxed italic font-semibold text-emerald-900">
+                  "{currentStep === 0
+                    ? `Selamat teka ${activeChildName}! Ake' Enggo chie nudok pejalai pejajah iko. Te' kabing baun chie profil pejalai iko, ungot ngelan ngadan, level, ngan bintang iko!`
+                    : STEPS[currentStep].textDayak
+                  }"
+                </p>
+              </div>
+            </div>
 
             {/* Buttons */}
             <div className="flex items-center justify-between mt-auto">

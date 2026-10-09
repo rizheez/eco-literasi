@@ -8,14 +8,40 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const guideTexts: Record<string, string> = {
-  '/': 'Halo! Aku Enggo, teman belajarmu! Ayo pilih salah satu menu petualangan di sebelah kiri atau bawah untuk mulai belajar, bermain game seru, dan mengumpulkan bintang!',
-  '/eksplorasi': 'Di sini kita bisa melihat keindahan alam Kalimantan! Ketuk salah satu kartu untuk mendengarkan cerita menarik tentang budaya dan hewan-hewan kita. Selesai membaca akan dapat bintang!',
-  '/konstruksi': 'Ayo dengarkan cerita interaktif seru! Ketuk cerita yang kamu suka untuk mendengar petualangan Pongo dan sahabat-sahabatnya. Kamu juga bisa belajar mengeja kata di kamus kosakata!',
-  '/internalisasi': 'Ayo bantu aku memilih tindakan yang baik untuk bumi! Ketuk salah satu tombol pilihan untuk melihat dampaknya terhadap alam Kalimantan. Jangan lupa berjanji untuk menyayangi bumi ya!',
-  '/aksi': 'Waktunya bermain game seru! Ada susun huruf kosakata Dayak, mencocokkan sebab-akibat, menyusun puzzle alam, dan melatih memori. Setiap game yang selesai akan memberimu bintang!',
-  '/progress': 'Wah, lihat semua pencapaian luar biasamu! Di sini kamu bisa melihat daftar tugas yang sudah selesai dan jumlah bintang serta medali yang berhasil kamu kumpulkan!',
-  '/settings': 'Di menu pengaturan ini, kamu atau orang tuamu bisa mengatur besar kecilnya volume musik latar dan volume suara pemandu, atau menghapus data jika ingin mengulang dari awal.'
+interface GuideMessage {
+  id: string;
+  dayak: string;
+}
+
+const guideTexts: Record<string, GuideMessage> = {
+  '/': {
+    id: 'Halo! Aku Enggo, teman belajarmu! Ayo pilih salah satu menu petualangan di sebelah kiri atau bawah untuk mulai belajar, bermain game seru, dan mengumpulkan bintang!',
+    dayak: "Halo! Ake' Enggo, bakap pejajah iko! Mai pileh ca menu pejalai te' kabing empang te' iba' ungot mula pejajah, pekiut rame, ngan ngalap bintang!"
+  },
+  '/eksplorasi': {
+    id: 'Di sini kita bisa melihat keindahan alam Kalimantan! Ketuk salah satu kartu untuk mendengarkan cerita menarik tentang budaya dan hewan-hewan kita. Selesai membaca akan dapat bintang!',
+    dayak: "Te' ini ite' tau ngelan lio jia alam Kalimantan! Tekep ca kartu ungot madinge kesah budayen ngan udip dita'. Lepas basa' iko ngalap bintang!"
+  },
+  '/konstruksi': {
+    id: 'Ayo dengarkan cerita interaktif seru! Ketuk cerita yang kamu suka untuk mendengar petualangan Pongo dan sahabat-sahabatnya. Kamu juga bisa belajar mengeja kata di kamus kosakata!',
+    dayak: "Mai dinge kesah rame! Tekep kesah chie iko suo ungot madinge pejalai Pongo ngan kaban dita' na. Iko pe' tau pejajah ngija ca kata te' kamus kosakata!"
+  },
+  '/internalisasi': {
+    id: 'Ayo bantu aku memilih tindakan yang baik untuk bumi! Ketuk salah satu tombol pilihan untuk melihat dampaknya terhadap alam Kalimantan. Jangan lupa berjanji untuk menyayangi bumi ya!',
+    dayak: "Mai tulung ake' mileh kenang chie jia alem tana' ite'! Tekep ca tombol pelehan ungot ngelan akibat ne men alam Kalimantan. Ayen lingo janji sayang tana' bumi ya!"
+  },
+  '/aksi': {
+    id: 'Waktunya bermain game seru! Ada susun huruf kosakata Dayak, mencocokkan sebab-akibat, menyusun puzzle alam, dan melatih memori. Setiap game yang selesai akan memberimu bintang!',
+    dayak: "Kedo tau pekiut game rame! Te' atur sukat huruf Dayak, patep sebab-akibat, atur puzzle alam, ngan latih linget. Tiap game chie sukat ma'ang iko bintang!"
+  },
+  '/progress': {
+    id: 'Wah, lihat semua pencapaian luar biasamu! Di sini kamu bisa melihat daftar tugas yang sudah selesai dan jumlah bintang serta medali yang berhasil kamu kumpulkan!',
+    dayak: "Wah, ilo' kaban tanda jia iko! Te' ini iko tau ngelan daftar pengawa' chie lepa ngan mula bintang sereta medali chie lumping iko kalap!"
+  },
+  '/settings': {
+    id: 'Di menu pengaturan ini, kamu atau orang tuamu bisa mengatur besar kecilnya volume musik latar dan volume suara pemandu, atau menghapus data jika ingin mengulang dari awal.',
+    dayak: "Te' menu pengaturan ini, iko empang uba' iko tau ngator aya' iut daa musik ngan daa panduan, atau mupu data amon ka' mula men ulu."
+  }
 };
 
 interface LayoutProps {
@@ -50,7 +76,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
     setShowLogoutConfirm(true);
   };
 
-  const getGuideText = () => {
+  const getGuide = (): GuideMessage => {
     const path = location.pathname;
     return guideTexts[path] || guideTexts['/'];
   };
@@ -62,13 +88,13 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
     } else {
       playSound('pop');
       setShowHelp(true);
-      speakIndonesian(getGuideText());
+      speakIndonesian(getGuide().id);
     }
   };
 
   const handleReplayHelp = () => {
     playSound('click');
-    speakIndonesian(getGuideText());
+    speakIndonesian(getGuide().id);
   };
 
   if (!activeChild) {
@@ -213,7 +239,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
               initial={{ opacity: 0, scale: 0.8, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.8, y: 20 }}
-              className="mb-3 w-72 md:w-80 bg-white border-4 border-emerald-400 p-4 rounded-3xl shadow-2xl relative flex flex-col space-y-3"
+              className="mb-3 w-80 sm:w-96 max-w-[92vw] bg-white border-4 border-emerald-400 p-4 sm:p-5 rounded-3xl shadow-2xl relative flex flex-col space-y-3"
             >
               {/* Speech bubble tail pointer */}
               <div className="absolute bottom-[-16px] right-14 w-0 h-0 border-l-[12px] border-l-transparent border-r-[12px] border-r-transparent border-t-[16px] border-t-emerald-400"></div>
@@ -235,10 +261,24 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
                 </button>
               </div>
 
-              {/* Text Inside Bubble */}
-              <p className="text-slate-700 font-bold text-sm leading-relaxed">
-                {getGuideText()}
-              </p>
+              {/* Text Inside Bubble: Indonesian & Dayak Kenyah */}
+              <div className="space-y-2.5 max-h-[55vh] overflow-y-auto pr-1">
+                {/* Bahasa Indonesia */}
+                <p className="text-slate-700 font-bold text-xs sm:text-sm leading-relaxed">
+                  {getGuide().id}
+                </p>
+
+                {/* Bahasa Dayak Kenyah */}
+                <div className="bg-emerald-50/90 border border-emerald-200/90 rounded-2xl p-2.5 sm:p-3 text-emerald-950">
+                  <div className="flex items-center gap-1.5 text-[10px] font-black tracking-wider uppercase text-emerald-700 mb-1">
+                    <span>🌿</span>
+                    <span>Bahasa Dayak (Kenyah)</span>
+                  </div>
+                  <p className="text-xs sm:text-[13px] leading-relaxed italic font-semibold text-emerald-900">
+                    "{getGuide().dayak}"
+                  </p>
+                </div>
+              </div>
 
               {/* Replay voice button */}
               <button
