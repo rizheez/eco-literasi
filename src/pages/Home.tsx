@@ -80,7 +80,7 @@ export const Home: React.FC = () => {
       color: 'bg-gradient-to-br from-rose-400 to-pink-500',
       shadowClass: 'shadow-playful-rose',
       path: '/aksi',
-      items: ['aksi_wordbuilder', 'aksi_sebab_akibat', 'aksi_puzzle', 'aksi_memory']
+      items: ['aksi_wordbuilder', 'aksi_counting', 'aksi_sebab_akibat', 'aksi_puzzle', 'aksi_memory']
     }
   ];
 
@@ -97,19 +97,19 @@ export const Home: React.FC = () => {
   };
 
   return (
-    <div className="space-y-8 py-4">
+    <div className="space-y-6 sm:space-y-8 py-2 sm:py-4">
       {/* Welcome Banner */}
       <motion.div 
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ type: 'spring', bounce: 0.5 }}
-        className="bg-white/90 backdrop-blur-md rounded-3xl p-6 md:p-8 border-4 border-white/60 shadow-[0_8px_30px_rgba(0,0,0,0.04)] flex flex-col md:flex-row items-center justify-between gap-6"
+        className="bg-white/90 backdrop-blur-md rounded-2xl sm:rounded-3xl p-5 sm:p-6 md:p-8 border-4 border-white/60 shadow-[0_8px_30px_rgba(0,0,0,0.04)] flex flex-col md:flex-row items-center justify-between gap-5 sm:gap-6"
       >
-        <div className="space-y-2 text-center md:text-left">
-          <h2 className="text-3xl md:text-4xl font-extrabold text-emerald-800">
+        <div className="space-y-1.5 sm:space-y-2 text-center md:text-left">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-emerald-800">
             Halo, {activeChild?.name}! 👋
           </h2>
-          <p className="text-slate-600 text-lg md:text-xl font-bold">
+          <p className="text-slate-600 text-base sm:text-lg md:text-xl font-bold">
             Siap untuk petualangan seru hari ini? Pilih salah satu petualangan di bawah ya!
           </p>
         </div>

@@ -48,21 +48,21 @@ export const Progress: React.FC = () => {
   return (
     <div className="space-y-6 py-4">
       {/* Header */}
-      <div className="flex items-center space-x-3 bg-white/80 backdrop-blur-md p-4 rounded-3xl border-3 border-emerald-100/85 shadow-sm">
-        <Link to="/" onClick={() => playSound('click')} className="p-3 bg-white rounded-2xl border-2 border-emerald-100 hover:bg-emerald-50 transition text-slate-700 shrink-0">
+      <div className="flex items-center space-x-3 bg-white/80 backdrop-blur-md p-3.5 sm:p-4 rounded-2xl sm:rounded-3xl border-3 border-emerald-100/85 shadow-sm">
+        <Link to="/" onClick={() => playSound('click')} className="p-2.5 sm:p-3 bg-white rounded-2xl border-2 border-emerald-100 hover:bg-emerald-50 transition text-slate-700 shrink-0 min-h-[44px] min-w-[44px] flex items-center justify-center">
           <ChevronLeft size={24} />
         </Link>
         <div>
-          <h2 className="text-3xl font-extrabold text-emerald-800">Laporan Progress Belajar</h2>
-          <p className="text-slate-600 font-bold text-sm">Lihat pencapaian belajarmu, bintang, dan lencana yang berhasil kamu kumpulkan!</p>
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-emerald-800">Laporan Progress Belajar</h2>
+          <p className="text-slate-600 font-bold text-xs sm:text-sm">Lihat pencapaian belajarmu, bintang, dan lencana yang berhasil kamu kumpulkan!</p>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
         {/* Left Column: Stats & Badge overview */}
-        <div className="md:col-span-1 space-y-6">
+        <div className="md:col-span-1 space-y-4 sm:space-y-6">
           {/* Level Card */}
-          <div className="bg-white rounded-3xl p-6 border-4 border-emerald-350 shadow-playful text-center space-y-4">
+          <div className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 border-4 border-emerald-350 shadow-playful text-center space-y-3 sm:space-y-4">
             {activeChild?.avatar.startsWith('/') ? (
               <img src={activeChild.avatar} alt="Avatar" className="w-24 h-32 object-contain mx-auto animate-bounce" />
             ) : (
@@ -88,55 +88,55 @@ export const Progress: React.FC = () => {
           </div>
 
           {/* Badge Milestones */}
-          <div className="bg-white rounded-3xl p-6 border-4 border-purple-300 shadow-playful space-y-4">
-            <h4 className="text-xl font-extrabold text-purple-900 flex items-center space-x-2">
+          <div className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 border-4 border-purple-300 shadow-playful space-y-3 sm:space-y-4">
+            <h4 className="text-lg sm:text-xl font-extrabold text-purple-900 flex items-center space-x-2">
               <Award size={24} />
               <span>Lencana Hebat</span>
             </h4>
             <p className="text-slate-600 font-bold text-xs">{getBadgesString()}</p>
             
-            <div className="space-y-3">
+            <div className="space-y-2.5 sm:space-y-3">
               {badges.map((b) => (
-                <div key={b.id} className="flex items-center space-x-3 bg-purple-50 p-3 rounded-2xl border border-purple-100">
-                  <span className="text-3xl">{b.icon}</span>
+                <div key={b.id} className="flex items-center space-x-3 bg-purple-50 p-2.5 sm:p-3 rounded-2xl border border-purple-100">
+                  <span className="text-2xl sm:text-3xl">{b.icon}</span>
                   <div>
-                    <h5 className="font-extrabold text-purple-950 text-sm">{b.badgeName}</h5>
+                    <h5 className="font-extrabold text-purple-950 text-xs sm:text-sm">{b.badgeName}</h5>
                     <p className="text-[10px] text-purple-600 font-bold">Diterima: {b.dateEarned}</p>
                   </div>
                 </div>
               ))}
               {badges.length === 0 && (
-                <div className="text-center py-6 text-slate-400 font-medium">Selesaikan modul untuk membuka lencana pertamamu!</div>
+                <div className="text-center py-6 text-slate-400 font-medium text-xs sm:text-sm">Selesaikan modul untuk membuka lencana pertamamu!</div>
               )}
             </div>
           </div>
         </div>
 
         {/* Right Column: Step Checklist & Parent control */}
-        <div className="md:col-span-2 space-y-6">
+        <div className="md:col-span-2 space-y-4 sm:space-y-6">
           {/* Checklist */}
-          <div className="bg-white rounded-3xl p-6 border-4 border-blue-300 shadow-playful space-y-4">
-            <h4 className="text-xl font-extrabold text-blue-900 flex items-center space-x-2">
+          <div className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 border-4 border-blue-300 shadow-playful space-y-3 sm:space-y-4">
+            <h4 className="text-lg sm:text-xl font-extrabold text-blue-900 flex items-center space-x-2">
               <BookOpen size={24} />
               <span>Petualangan yang Sudah Diselesaikan</span>
             </h4>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5 sm:gap-3">
               {learningSteps.map((step) => {
                 const isDone = completedSteps.includes(step.id);
                 return (
                   <div
                     key={step.id}
-                    className={`flex items-center space-x-3 p-3.5 rounded-2xl border-2 transition-all ${
+                    className={`flex items-center space-x-2.5 sm:space-x-3 p-3 sm:p-3.5 rounded-xl sm:rounded-2xl border-2 transition-all ${
                       isDone
                         ? 'bg-emerald-50 border-emerald-200 text-emerald-900 font-bold'
                         : 'bg-slate-50 border-slate-100 text-slate-400 font-semibold'
                     }`}
                   >
-                    <span className="text-xl shrink-0">
+                    <span className="text-lg sm:text-xl shrink-0">
                       {isDone ? '✅' : '🔒'}
                     </span>
-                    <span className="text-sm">{step.label}</span>
+                    <span className="text-xs sm:text-sm leading-snug">{step.label}</span>
                   </div>
                 );
               })}
@@ -144,20 +144,20 @@ export const Progress: React.FC = () => {
           </div>
 
           {/* Reset / Teacher panel */}
-          <div className="bg-rose-50 rounded-3xl p-6 border-4 border-rose-200 shadow-playful space-y-4">
-            <h4 className="text-xl font-extrabold text-rose-900 flex items-center space-x-2">
+          <div className="bg-rose-50 rounded-2xl sm:rounded-3xl p-4 sm:p-6 border-4 border-rose-200 shadow-playful space-y-3 sm:space-y-4">
+            <h4 className="text-lg sm:text-xl font-extrabold text-rose-900 flex items-center space-x-2">
               <ShieldAlert size={24} className="text-rose-600 animate-pulse" />
               <span>Kontrol Guru & Orang Tua</span>
             </h4>
-            <p className="text-rose-800 text-sm font-semibold leading-relaxed">
+            <p className="text-rose-800 text-xs sm:text-sm font-semibold leading-relaxed">
               Tombol di bawah ini digunakan untuk menghapus semua progress belajar dan menyetel ulang level & bintang untuk profil petualang saat ini.
             </p>
             <button
               onClick={handleReset}
-              className="px-6 py-3.5 bg-rose-600 hover:bg-rose-700 text-white rounded-2xl font-extrabold flex items-center justify-center space-x-2 shadow-playful-rose transition cursor-pointer active:translate-y-[2px]"
+              className="w-full sm:w-auto px-5 sm:px-6 py-3.5 bg-rose-600 hover:bg-rose-700 text-white rounded-2xl font-extrabold flex items-center justify-center space-x-2 shadow-playful-rose transition cursor-pointer active:translate-y-[2px] min-h-[48px]"
             >
               <Trash2 size={20} />
-              <span>Set Ulang Perkembangan Belajar Anak</span>
+              <span className="text-sm sm:text-base">Set Ulang Perkembangan Belajar Anak</span>
             </button>
           </div>
         </div>

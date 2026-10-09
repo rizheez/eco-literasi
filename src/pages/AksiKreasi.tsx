@@ -507,10 +507,10 @@ export const AksiKreasi: React.FC = () => {
       </div>
 
       {/* Tabs Layout */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 bg-emerald-100/50 p-2 rounded-2xl border-2 border-emerald-100">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-1.5 sm:gap-2 bg-emerald-100/50 p-1.5 sm:p-2 rounded-2xl border-2 border-emerald-100">
         <button
           onClick={() => { playSound('pop'); cancelSpeech(); setActiveTab('wordbuilder'); }}
-          className={`py-4 md:py-5 font-extrabold text-xs sm:text-sm md:text-base rounded-xl transition cursor-pointer ${activeTab === 'wordbuilder' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-800 hover:bg-white/50'
+          className={`py-2.5 sm:py-3.5 md:py-4 font-extrabold text-xs sm:text-sm md:text-base rounded-xl transition cursor-pointer ${activeTab === 'wordbuilder' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-800 hover:bg-white/50'
             }`}
         >
           🔠 Susun Huruf
@@ -522,28 +522,28 @@ export const AksiKreasi: React.FC = () => {
             setActiveTab('counting');
             speakIndonesian(`Ayo hitung! Ada berapa huruf pada kata ${countingWordList[countingIdx].word}? Ketuk hurufnya satu per satu!`);
           }}
-          className={`py-4 md:py-5 font-extrabold text-xs sm:text-sm md:text-base rounded-xl transition cursor-pointer ${activeTab === 'counting' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-800 hover:bg-white/50'
+          className={`py-2.5 sm:py-3.5 md:py-4 font-extrabold text-xs sm:text-sm md:text-base rounded-xl transition cursor-pointer ${activeTab === 'counting' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-800 hover:bg-white/50'
             }`}
         >
           🔢 Hitung Huruf
         </button>
         <button
           onClick={() => { playSound('pop'); cancelSpeech(); setActiveTab('sebab_akibat'); }}
-          className={`py-4 md:py-5 font-extrabold text-xs sm:text-sm md:text-base rounded-xl transition cursor-pointer ${activeTab === 'sebab_akibat' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-800 hover:bg-white/50'
+          className={`py-2.5 sm:py-3.5 md:py-4 font-extrabold text-xs sm:text-sm md:text-base rounded-xl transition cursor-pointer ${activeTab === 'sebab_akibat' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-800 hover:bg-white/50'
             }`}
         >
           🔄 Sebab-Akibat
         </button>
         <button
           onClick={() => { playSound('pop'); cancelSpeech(); setActiveTab('puzzle'); }}
-          className={`py-4 md:py-5 font-extrabold text-xs sm:text-sm md:text-base rounded-xl transition cursor-pointer ${activeTab === 'puzzle' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-800 hover:bg-white/50'
+          className={`py-2.5 sm:py-3.5 md:py-4 font-extrabold text-xs sm:text-sm md:text-base rounded-xl transition cursor-pointer ${activeTab === 'puzzle' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-800 hover:bg-white/50'
             }`}
         >
           🧩 Puzzle Alam
         </button>
         <button
           onClick={() => { playSound('pop'); cancelSpeech(); setActiveTab('memory'); }}
-          className={`py-4 md:py-5 font-extrabold text-xs sm:text-sm md:text-base rounded-xl transition cursor-pointer ${activeTab === 'memory' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-800 hover:bg-white/50'
+          className={`py-2.5 sm:py-3.5 md:py-4 font-extrabold text-xs sm:text-sm md:text-base rounded-xl transition cursor-pointer ${activeTab === 'memory' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-800 hover:bg-white/50'
             }`}
         >
           🧠 Memori Alam
@@ -558,10 +558,10 @@ export const AksiKreasi: React.FC = () => {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -15 }}
-            className="bg-white rounded-3xl p-6 md:p-8 border-4 border-rose-300 shadow-playful space-y-6 flex flex-col justify-between"
+            className="bg-white rounded-3xl p-4 sm:p-6 md:p-8 border-4 border-rose-300 shadow-playful space-y-4 sm:space-y-6 flex flex-col justify-between"
           >
             <div className="text-center space-y-2 relative">
-              <h3 className="text-2xl font-black text-rose-900 flex items-center justify-between">
+              <h3 className="text-xl sm:text-2xl font-black text-rose-900 flex items-center justify-between">
                 <span>🔠 Susun Huruf: Kosakata Dayak</span>
                 {completedSteps.includes('aksi_wordbuilder') && (
                   <span className="text-emerald-600 font-black text-xs bg-emerald-50 px-2 py-1 rounded-xl border border-emerald-200">
@@ -569,29 +569,35 @@ export const AksiKreasi: React.FC = () => {
                   </span>
                 )}
               </h3>
-              <div className="bg-rose-50 border-2 border-rose-100 rounded-2xl p-4 flex items-center justify-center gap-3">
+              <div className="bg-rose-50 border-2 border-rose-100 rounded-2xl p-3 sm:p-4 flex items-center justify-center gap-3">
                 <ImageWithFallback
                   src={wordList[currentWordIdx].image}
                   alt={wordList[currentWordIdx].word}
                   fallback={wordList[currentWordIdx].emoji}
-                  className="w-16 h-16 object-contain rounded-xl animate-float flex items-center justify-center text-4xl"
+                  className="w-14 h-14 sm:w-16 sm:h-16 object-contain rounded-xl animate-float flex items-center justify-center text-4xl"
                 />
                 <div className="text-left">
-                  <p className="text-xs font-black uppercase tracking-wider text-rose-800">Petunjuk Gambar</p>
-                  <p className="font-extrabold text-slate-700 text-sm leading-tight">{wordList[currentWordIdx].clue}</p>
+                  <p className="text-[10px] sm:text-xs font-black uppercase tracking-wider text-rose-800">Petunjuk Gambar</p>
+                  <p className="font-extrabold text-slate-700 text-xs sm:text-sm leading-tight">{wordList[currentWordIdx].clue}</p>
                 </div>
               </div>
             </div>
 
             {/* Letter Slots */}
-            <div className="flex justify-center space-x-3 py-6">
+            <div className="flex flex-wrap justify-center gap-1.5 sm:gap-2.5 md:gap-3 py-3 md:py-6">
               {wordList[currentWordIdx].word.split('').map((_, index) => {
                 const selectedChar = selectedLetters[index];
+                const wordLen = wordList[currentWordIdx].word.length;
+                const slotSize = wordLen > 7
+                  ? 'w-9 h-11 text-lg sm:w-12 sm:h-14 sm:text-2xl md:w-14 md:h-16 md:text-3xl'
+                  : wordLen > 5
+                  ? 'w-10 h-13 text-xl sm:w-14 sm:h-16 sm:text-2xl md:w-16 md:h-18 md:text-3xl'
+                  : 'w-12 h-14 text-2xl sm:w-16 sm:h-18 sm:text-3xl md:w-18 md:h-20 md:text-4xl';
                 return (
                   <div
                     key={index}
-                    className={`w-20 h-20 text-3xl md:w-16 md:h-16 rounded-2xl border-3 border-dashed font-black text-2xl md:text-3xl flex items-center justify-center transition-all ${selectedChar
-                        ? 'border-rose-500 bg-rose-50 text-rose-900 scale-105'
+                    className={`${slotSize} rounded-xl sm:rounded-2xl border-3 border-dashed font-black flex items-center justify-center transition-all ${selectedChar
+                        ? 'border-rose-500 bg-rose-50 text-rose-900 scale-105 shadow-sm'
                         : 'border-slate-300 bg-slate-50 text-slate-300'
                       }`}
                   >
@@ -603,16 +609,22 @@ export const AksiKreasi: React.FC = () => {
 
             {/* Scrambled Bank */}
             {!wordGameWon && (
-              <div className="flex flex-wrap justify-center gap-3 py-4">
-                {scrambledLetters.map((letter, index) => (
-                  <button
-                    key={index}
-                    onClick={() => handleLetterSelect(letter, index)}
-                    className="w-20 h-20 text-3xl rounded-2xl bg-white border-3 border-rose-100 hover:border-rose-400 font-black text-2xl text-slate-700 shadow-playful hover:translate-y-[-2px] btn-bouncy transition cursor-pointer"
-                  >
-                    {letter}
-                  </button>
-                ))}
+              <div className="flex flex-wrap justify-center gap-1.5 sm:gap-2.5 md:gap-3 py-2 md:py-4">
+                {scrambledLetters.map((letter, index) => {
+                  const wordLen = wordList[currentWordIdx].word.length;
+                  const btnSize = wordLen > 7
+                    ? 'w-9 h-11 text-lg sm:w-12 sm:h-14 sm:text-xl md:w-16 md:h-16 md:text-2xl'
+                    : 'w-11 h-13 text-xl sm:w-14 sm:h-16 sm:text-2xl md:w-16 md:h-16 md:text-3xl';
+                  return (
+                    <button
+                      key={index}
+                      onClick={() => handleLetterSelect(letter, index)}
+                      className={`${btnSize} rounded-xl sm:rounded-2xl bg-white border-3 border-rose-100 hover:border-rose-400 font-black text-slate-700 shadow-playful hover:translate-y-[-2px] btn-bouncy transition cursor-pointer`}
+                    >
+                      {letter}
+                    </button>
+                  );
+                })}
               </div>
             )}
 
@@ -863,23 +875,23 @@ export const AksiKreasi: React.FC = () => {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -15 }}
-            className="bg-white rounded-3xl p-6 border-4 border-amber-300 shadow-playful space-y-6"
+            className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 border-4 border-amber-300 shadow-playful space-y-4 sm:space-y-6"
           >
             <div>
-              <h3 className="text-2xl font-black text-amber-900 flex items-center justify-between">
+              <h3 className="text-xl sm:text-2xl font-black text-amber-900 flex items-center justify-between gap-2">
                 <span>🔄 Game Hubungan Sebab-Akibat</span>
                 {completedSteps.includes('aksi_sebab_akibat') && (
-                  <span className="text-emerald-600 font-black text-xs bg-emerald-50 px-2 py-1 rounded-xl border border-emerald-200">
+                  <span className="text-emerald-600 font-black text-xs bg-emerald-50 px-2 py-1 rounded-xl border border-emerald-200 shrink-0">
                     Lulus ✅
                   </span>
                 )}
               </h3>
-              <p className="text-slate-600 font-bold text-sm mt-1">Ketuk satu tindakan di kiri, lalu ketuk dampaknya terhadap alam di kanan!</p>
+              <p className="text-slate-600 font-bold text-xs sm:text-sm mt-1">Ketuk satu tindakan di kiri, lalu ketuk dampaknya terhadap alam di kanan!</p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
               {/* Sebab (Tindakan) Column */}
-              <div className="space-y-3">
+              <div className="space-y-2.5 sm:space-y-3">
                 <p className="text-xs font-black uppercase text-amber-800 tracking-wider text-center">Tindakan Kita (Sebab)</p>
                 {shuffledSebab.map((item) => {
                   const isMatched = sebabAkibatMatches.includes(item.id);
@@ -889,14 +901,14 @@ export const AksiKreasi: React.FC = () => {
                       key={item.id}
                       disabled={isMatched}
                       onClick={() => handleSebabClick(item.id)}
-                      className={`w-full p-4 rounded-xl text-left border-3 transition-all flex items-center justify-between cursor-pointer text-base ${isMatched
+                      className={`w-full p-3 sm:p-4 rounded-xl text-left border-3 transition-all flex items-center justify-between cursor-pointer text-sm sm:text-base min-h-[50px] ${isMatched
                           ? 'bg-slate-50 border-slate-200 text-slate-400 cursor-not-allowed opacity-50'
                           : isSelected
                             ? 'bg-amber-100 border-amber-500 font-black scale-[1.02]'
                             : 'bg-white border-slate-100 text-slate-700 hover:border-amber-400'
                         }`}
                     >
-                      <span>{item.sebabText}</span>
+                      <span className="font-bold leading-snug">{item.sebabText}</span>
                       <span className="text-2xl shrink-0 ml-2">{item.sebabEmoji}</span>
                     </button>
                   );
@@ -904,7 +916,7 @@ export const AksiKreasi: React.FC = () => {
               </div>
 
               {/* Akibat (Dampak) Column */}
-              <div className="space-y-3">
+              <div className="space-y-2.5 sm:space-y-3">
                 <p className="text-xs font-black uppercase text-amber-800 tracking-wider text-center">Dampak ke Alam (Akibat)</p>
                 {shuffledAkibat.map((item) => {
                   const isMatched = sebabAkibatMatches.includes(item.id);
@@ -914,14 +926,14 @@ export const AksiKreasi: React.FC = () => {
                       key={item.id}
                       disabled={isMatched}
                       onClick={() => handleAkibatClick(item.id)}
-                      className={`w-full p-4 rounded-xl text-left border-3 transition-all flex items-center justify-between cursor-pointer text-base ${isMatched
+                      className={`w-full p-3 sm:p-4 rounded-xl text-left border-3 transition-all flex items-center justify-between cursor-pointer text-sm sm:text-base min-h-[50px] ${isMatched
                           ? 'bg-slate-50 border-slate-200 text-slate-400 cursor-not-allowed opacity-50'
                           : isSelected
                             ? 'bg-amber-100 border-amber-500 font-black scale-[1.02]'
                             : 'bg-white border-slate-100 text-slate-700 hover:border-amber-400'
                         }`}
                     >
-                      <span>{item.akibatText}</span>
+                      <span className="font-bold leading-snug">{item.akibatText}</span>
                       <span className="text-2xl shrink-0 ml-2">{item.akibatEmoji}</span>
                     </button>
                   );
@@ -935,7 +947,7 @@ export const AksiKreasi: React.FC = () => {
                 <p className="text-emerald-700 font-bold text-sm">Kamu memahami sebab akibat aksi manusia terhadap alam (+2 ⭐ Bintang)</p>
                 <button
                   onClick={initSebabAkibat}
-                  className="px-6 py-4 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl shadow-playful-secondary hover:brightness-110 transition cursor-pointer"
+                  className="px-6 py-3.5 sm:py-4 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl shadow-playful-secondary hover:brightness-110 transition cursor-pointer min-h-[44px]"
                 >
                   Main Lagi!
                 </button>
@@ -943,7 +955,7 @@ export const AksiKreasi: React.FC = () => {
             ) : (
               <button
                 onClick={initSebabAkibat}
-                className="py-5 w-full bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-2xl shadow-playful-secondary transition cursor-pointer"
+                className="py-3.5 sm:py-4 md:py-5 w-full bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-2xl shadow-playful-secondary transition cursor-pointer min-h-[48px]"
               >
                 Acak Ulang
               </button>
@@ -957,22 +969,22 @@ export const AksiKreasi: React.FC = () => {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -15 }}
-            className="bg-white rounded-3xl p-6 border-4 border-emerald-300 shadow-playful flex flex-col items-center space-y-6"
+            className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 border-4 border-emerald-300 shadow-playful flex flex-col items-center space-y-4 sm:space-y-6"
           >
             <div className="w-full text-center">
-              <h3 className="text-2xl font-black text-emerald-950 flex items-center justify-between">
+              <h3 className="text-xl sm:text-2xl font-black text-emerald-950 flex items-center justify-between gap-2">
                 <span>🧩 Puzzle Gambar Lingkungan</span>
                 {completedSteps.includes('aksi_puzzle') && (
-                  <span className="text-emerald-600 font-black text-xs bg-emerald-50 px-2 py-1 rounded-xl border border-emerald-200">
+                  <span className="text-emerald-600 font-black text-xs bg-emerald-50 px-2 py-1 rounded-xl border border-emerald-200 shrink-0">
                     Lulus ✅
                   </span>
                 )}
               </h3>
-              <p className="text-slate-600 font-bold text-sm mt-1">Ketuk satu kepingan puzzle, lalu ketuk kepingan lain untuk menukarnya!</p>
+              <p className="text-slate-600 font-bold text-xs sm:text-sm mt-1">Ketuk satu kepingan puzzle, lalu ketuk kepingan lain untuk menukarnya!</p>
             </div>
 
             {/* Puzzle Board 2x2 */}
-            <div className="grid grid-cols-2 gap-2 bg-slate-100 p-3 rounded-2xl border-4 border-slate-200 shadow-inner">
+            <div className="grid grid-cols-2 gap-2 sm:gap-3 bg-slate-100 p-2.5 sm:p-3 rounded-2xl border-4 border-slate-200 shadow-inner">
               {puzzleBoard.map((tileIndex, positionIndex) => {
                 const bgX = (tileIndex % 2) * 100;
                 const bgY = Math.floor(tileIndex / 2) * 100;
@@ -987,7 +999,7 @@ export const AksiKreasi: React.FC = () => {
                       backgroundSize: '200% 200%',
                       backgroundPosition: `${bgX}% ${bgY}%`,
                     }}
-                    className={`w-28 h-28 md:w-36 md:h-36 rounded-xl border-3 shadow-md relative transition-all active:scale-95 cursor-pointer ${isSelected ? 'border-rose-500 scale-105 ring-4 ring-rose-200 z-10' : 'border-white hover:border-emerald-300'
+                    className={`w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36 rounded-xl border-3 shadow-md relative transition-all active:scale-95 cursor-pointer ${isSelected ? 'border-rose-500 scale-105 ring-4 ring-rose-200 z-10' : 'border-white hover:border-emerald-300'
                       }`}
                   >
                     <span className="absolute bottom-1 right-2 bg-slate-900/60 text-white text-xs font-bold px-1.5 py-0.5 rounded">
@@ -1004,7 +1016,7 @@ export const AksiKreasi: React.FC = () => {
                 <p className="text-emerald-700 font-bold text-sm">Gambar ekosistem alam Kalimantan berhasil tersusun (+2 ⭐ Bintang)</p>
                 <button
                   onClick={initPuzzle}
-                  className="px-6 py-4 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl shadow-playful-primary transition cursor-pointer flex items-center justify-center gap-1.5 mx-auto"
+                  className="px-6 py-3.5 sm:py-4 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl shadow-playful-primary transition cursor-pointer flex items-center justify-center gap-1.5 mx-auto min-h-[44px]"
                 >
                   <RefreshCw size={18} />
                   <span>Main Lagi (Acak Gambar)</span>
@@ -1013,7 +1025,7 @@ export const AksiKreasi: React.FC = () => {
             ) : (
               <button
                 onClick={initPuzzle}
-                className="py-5 px-8 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-2xl shadow-playful-primary transition cursor-pointer"
+                className="py-3.5 sm:py-4 md:py-5 px-6 sm:px-8 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-2xl shadow-playful-primary transition cursor-pointer min-h-[48px]"
               >
                 Ganti Gambar & Acak Ulang
               </button>
@@ -1027,22 +1039,22 @@ export const AksiKreasi: React.FC = () => {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -15 }}
-            className="bg-white rounded-3xl p-6 md:p-8 border-4 border-blue-300 shadow-playful space-y-6 flex flex-col justify-between"
+            className="bg-white rounded-3xl p-4 sm:p-6 md:p-8 border-4 border-blue-300 shadow-playful space-y-4 sm:space-y-6 flex flex-col justify-between"
           >
             <div className="text-center space-y-1">
-              <h3 className="text-2xl font-black text-blue-900">Memory Match: Memori Alam</h3>
-              <p className="text-slate-500 font-bold text-sm">Balikkan dan temukan 6 pasang gambar ekosistem alam Kalimantan!</p>
+              <h3 className="text-xl sm:text-2xl font-black text-blue-900">Memory Match: Memori Alam</h3>
+              <p className="text-slate-500 font-bold text-xs sm:text-sm">Balikkan dan temukan 6 pasang gambar ekosistem alam Kalimantan!</p>
             </div>
 
             {/* Cards Grid */}
-            <div className="grid grid-cols-3 md:grid-cols-4 gap-4 max-w-lg mx-auto py-4">
+            <div className="grid grid-cols-3 sm:grid-cols-4 gap-2.5 sm:gap-3 md:gap-4 max-w-sm sm:max-w-md md:max-w-lg mx-auto py-3 md:py-4 w-full">
               {cards.map((card, index) => {
                 const showContent = card.isFlipped || card.isMatched;
                 return (
                   <div
                     key={card.id}
                     onClick={() => handleCardClick(index)}
-                    className={`w-24 h-24 md:w-28 md:h-28 rounded-2xl border-3 flex items-center justify-center text-4xl shadow-playful transition-all cursor-pointer ${card.isMatched
+                    className={`w-full aspect-square rounded-xl sm:rounded-2xl border-3 flex items-center justify-center text-3xl sm:text-4xl shadow-playful transition-all cursor-pointer ${card.isMatched
                         ? 'bg-emerald-50 border-emerald-400 opacity-60'
                         : showContent
                           ? 'bg-blue-50 border-blue-400 rotate-0 scale-105'
@@ -1052,7 +1064,7 @@ export const AksiKreasi: React.FC = () => {
                     {showContent ? (
                       card.emoji
                     ) : (
-                      <HelpCircle size={32} className="text-white opacity-80" />
+                      <HelpCircle size={28} className="text-white opacity-80" />
                     )}
                   </div>
                 );

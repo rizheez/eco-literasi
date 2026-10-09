@@ -103,8 +103,8 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-transparent">
-      {/* SIDEBAR FOR DESKTOP */}
-      <aside className="hidden md:flex flex-col w-72 bg-white/90 backdrop-blur-xl border-r-2 border-white/50 p-6 space-y-8 shrink-0 shadow-[4px_0_24px_rgba(0,0,0,0.05)]">
+      {/* SIDEBAR FOR DESKTOP & TABLET */}
+      <aside className="hidden md:flex flex-col md:w-60 lg:w-72 bg-white/90 backdrop-blur-xl border-r-2 border-white/50 p-4 lg:p-6 space-y-6 lg:space-y-8 shrink-0 shadow-[4px_0_24px_rgba(0,0,0,0.05)]">
         {/* Child Profile Header */}
         <div className="onboarding-profile bg-emerald-50 rounded-2xl p-4 border-2 border-emerald-100 flex items-center space-x-3">
           {activeChild.avatar.startsWith('/') ? (
@@ -203,14 +203,14 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
       </header>
 
       {/* MAIN CONTAINER */}
-      <main className="flex-1 flex flex-col p-4 md:p-8 overflow-y-auto max-h-screen pb-24 md:pb-8">
+      <main className="flex-1 flex flex-col p-3 sm:p-4 md:p-8 overflow-y-auto max-h-screen pb-32 md:pb-8">
         <div className="max-w-5xl w-full mx-auto flex-1 flex flex-col justify-center">
           {children}
         </div>
       </main>
 
       {/* BOTTOM NAVIGATION FOR MOBILE */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t-4 border-emerald-100 flex justify-around py-2 px-1 z-40 shadow-lg">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t-4 border-emerald-100 flex justify-around py-2 px-1 pb-[max(0.5rem,env(safe-area-inset-bottom))] z-40 shadow-lg">
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = location.pathname === item.path;
@@ -231,7 +231,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
       </nav>
 
       {/* FLOATING MASCOT HELP BUTTON */}
-      <div className="fixed bottom-20 md:bottom-8 right-4 md:right-8 z-40 flex flex-col items-end">
+      <div className="fixed bottom-20 md:bottom-8 right-3 md:right-8 z-40 flex flex-col items-end">
         {/* Help Speech Bubble */}
         <AnimatePresence>
           {showHelp && (

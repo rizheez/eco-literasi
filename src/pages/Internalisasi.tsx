@@ -204,8 +204,8 @@ export const Internalisasi: React.FC = () => {
           </button>
         )}
         <div>
-          <h2 className="text-3xl font-extrabold text-emerald-800">Internalisasi Nilai Eco</h2>
-          <p className="text-slate-600 font-bold text-sm">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-emerald-800">Internalisasi Nilai Eco</h2>
+          <p className="text-slate-600 font-bold text-xs sm:text-sm">
             Pelajari hubungan sebab-akibat perilaku manusia terhadap kelestarian alam.
           </p>
         </div>
@@ -213,7 +213,7 @@ export const Internalisasi: React.FC = () => {
 
       {activeScenarioIdx === null ? (
         /* Scenario Selection Screen */
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
           {scenarios.map((sc, idx) => {
             const Icon = sc.icon;
             const isCompleted = completedSteps.includes(sc.id);
@@ -224,25 +224,25 @@ export const Internalisasi: React.FC = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ type: "spring", bounce: 0.6, delay: idx * 0.1 }}
                 onClick={() => handleSelectScenario(idx)}
-                className="bg-white rounded-3xl p-6 border-4 border-emerald-100 text-center cursor-pointer shadow-playful btn-bouncy hover:border-emerald-400 hover:translate-y-[-4px] transition-all flex flex-col items-center justify-between min-h-[220px]"
+                className="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-6 border-4 border-emerald-100 text-center cursor-pointer shadow-playful btn-bouncy hover:border-emerald-400 hover:translate-y-[-4px] transition-all flex flex-col items-center justify-between min-h-[200px] sm:min-h-[220px]"
               >
-                <div className="p-4 bg-emerald-50 rounded-2xl text-emerald-600">
-                  <Icon size={48} />
+                <div className="p-3.5 sm:p-4 bg-emerald-50 rounded-2xl text-emerald-600">
+                  <Icon size={40} className="sm:w-12 sm:h-12" />
                 </div>
                 <div className="space-y-1">
-                  <h3 className="font-extrabold text-2xl text-emerald-950">{sc.title}</h3>
-                  <p className="text-slate-500 font-semibold text-sm">
+                  <h3 className="font-extrabold text-xl sm:text-2xl text-emerald-950">{sc.title}</h3>
+                  <p className="text-slate-500 font-semibold text-xs sm:text-sm">
                     Simulasi interaktif pilihan anak
                   </p>
                 </div>
-                <div className="w-full mt-4">
+                <div className="w-full mt-3 sm:mt-4">
                   {isCompleted ? (
-                    <span className="inline-flex items-center space-x-1.5 bg-emerald-100 text-emerald-800 font-bold px-4 py-1.5 rounded-full text-sm">
+                    <span className="inline-flex items-center space-x-1.5 bg-emerald-100 text-emerald-800 font-bold px-3.5 sm:px-4 py-1.5 rounded-full text-xs sm:text-sm">
                       <span>Lengkap</span>
                       <CheckCircle2 size={16} fill="currentColor" className="text-emerald-100" />
                     </span>
                   ) : (
-                    <span className="inline-block bg-amber-500 text-white font-bold px-4 py-1.5 rounded-full text-sm shadow-sm">
+                    <span className="inline-block bg-amber-500 text-white font-bold px-3.5 sm:px-4 py-1.5 rounded-full text-xs sm:text-sm shadow-sm">
                       Mulai Simulasi ⭐
                     </span>
                   )}
@@ -253,23 +253,23 @@ export const Internalisasi: React.FC = () => {
         </div>
       ) : (
         /* Active Simulation Sandbox Screen */
-        <div className="bg-white rounded-3xl p-6 md:p-8 border-4 border-emerald-300 shadow-playful space-y-6">
+        <div className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 border-4 border-emerald-300 shadow-playful space-y-4 sm:space-y-6">
           <div className="text-center space-y-2">
-            <h3 className="text-2xl font-black text-emerald-900">
+            <h3 className="text-xl sm:text-2xl font-black text-emerald-900">
               {scenarios[activeScenarioIdx].title}
             </h3>
-            <p className="text-slate-600 font-extrabold text-lg bg-emerald-50 px-4 py-2.5 rounded-2xl border-2 border-emerald-100">
+            <p className="text-slate-600 font-extrabold text-sm sm:text-base md:text-lg bg-emerald-50 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-2xl border-2 border-emerald-100">
               💡 {scenarios[activeScenarioIdx].question}
             </p>
           </div>
 
           {/* Action Choice Buttons */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
             {scenarios[activeScenarioIdx].choices.map((choice, cIdx) => (
               <button
                 key={choice.text}
                 onClick={() => handleSelectChoice(cIdx)}
-                className={`py-4 px-6 rounded-2xl text-left border-3 flex items-center justify-between font-extrabold text-lg transition-all cursor-pointer ${
+                className={`py-3.5 sm:py-4 px-4 sm:px-6 rounded-2xl text-left border-3 flex items-center justify-between font-extrabold text-sm sm:text-base md:text-lg transition-all cursor-pointer min-h-[52px] ${
                   selectedChoiceIdx === cIdx
                     ? choice.isCorrect
                       ? "border-emerald-500 bg-emerald-100 text-emerald-950 scale-[1.02] shadow-sm"
@@ -277,8 +277,8 @@ export const Internalisasi: React.FC = () => {
                     : "border-slate-100 bg-slate-50 text-slate-700 hover:border-slate-200"
                 }`}
               >
-                <span>{choice.text}</span>
-                <span className="text-3xl ml-3 shrink-0">{choice.emoji}</span>
+                <span className="leading-snug">{choice.text}</span>
+                <span className="text-2xl sm:text-3xl ml-2 sm:ml-3 shrink-0">{choice.emoji}</span>
               </button>
             ))}
           </div>

@@ -362,27 +362,30 @@ export const Konstruksi: React.FC = () => {
       </div>
 
       {/* Tabs */}
-      <div className="flex space-x-3 bg-emerald-100/50 p-2 rounded-2xl border-2 border-emerald-100">
+      <div className="flex space-x-1.5 sm:space-x-3 bg-emerald-100/50 p-1.5 sm:p-2 rounded-2xl border-2 border-emerald-100">
         <button
           onClick={() => { playSound('pop'); cancelSpeech(); setActiveTab('matching'); }}
-          className={`flex-1 py-5 font-extrabold text-md md:text-lg rounded-xl transition cursor-pointer ${activeTab === 'matching' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-850 hover:bg-white/40'
+          className={`flex-1 py-3 sm:py-4 md:py-5 font-black text-xs sm:text-base md:text-lg rounded-xl transition cursor-pointer flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-center ${activeTab === 'matching' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-850 hover:bg-white/40'
             }`}
         >
-          🎮 Tebak Gambar
+          <span>🎮</span>
+          <span>Tebak Gambar</span>
         </button>
         <button
           onClick={() => { playSound('pop'); cancelSpeech(); setActiveTab('pronounce'); }}
-          className={`flex-1 py-5 font-extrabold text-md md:text-lg rounded-xl transition cursor-pointer ${activeTab === 'pronounce' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-850 hover:bg-white/40'
+          className={`flex-1 py-3 sm:py-4 md:py-5 font-black text-xs sm:text-base md:text-lg rounded-xl transition cursor-pointer flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-center ${activeTab === 'pronounce' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-850 hover:bg-white/40'
             }`}
         >
-          🎙️ Latih Lafal
+          <span>🎙️</span>
+          <span>Latih Lafal</span>
         </button>
         <button
           onClick={() => { playSound('pop'); cancelSpeech(); setActiveTab('story'); }}
-          className={`flex-1 py-5 font-extrabold text-md md:text-lg rounded-xl transition cursor-pointer ${activeTab === 'story' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-850 hover:bg-white/40'
+          className={`flex-1 py-3 sm:py-4 md:py-5 font-black text-xs sm:text-base md:text-lg rounded-xl transition cursor-pointer flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-center ${activeTab === 'story' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-850 hover:bg-white/40'
             }`}
         >
-          📖 Simak & Ceritakan
+          <span>📖</span>
+          <span>Dongeng</span>
         </button>
       </div>
 
@@ -394,23 +397,23 @@ export const Konstruksi: React.FC = () => {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -15 }}
-            className="bg-white rounded-3xl p-6 border-4 border-amber-300 shadow-playful flex flex-col justify-between space-y-6"
+            className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 border-4 border-amber-300 shadow-playful flex flex-col justify-between space-y-4 sm:space-y-6"
           >
             <div>
-              <h3 className="text-2xl font-black text-amber-900 flex items-center justify-between">
+              <h3 className="text-xl sm:text-2xl font-black text-amber-900 flex items-center justify-between gap-2">
                 <span>🎮 Tebak & Cocokkan Gambar</span>
                 {completedSteps.includes('konstruksi_matching') && (
-                  <span className="text-emerald-600 font-black text-sm bg-emerald-50 px-3 py-1 rounded-xl flex items-center gap-1 border border-emerald-200">
+                  <span className="text-emerald-600 font-black text-xs sm:text-sm bg-emerald-50 px-2.5 sm:px-3 py-1 rounded-xl flex items-center gap-1 border border-emerald-200 shrink-0">
                     Lulus <CheckCircle2 size={16} fill="currentColor" className="text-white" />
                   </span>
                 )}
               </h3>
-              <p className="text-slate-600 font-bold text-sm mt-1">Ketuk kata di kiri, lalu ketuk gambar yang cocok di kanan!</p>
+              <p className="text-slate-600 font-bold text-xs sm:text-sm mt-1">Ketuk kata di kiri, lalu ketuk gambar yang cocok di kanan!</p>
             </div>
 
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-2 gap-3 sm:gap-6">
               {/* Words list */}
-              <div className="space-y-3">
+              <div className="space-y-2.5 sm:space-y-3">
                 <p className="text-xs font-black uppercase text-amber-800 tracking-wider text-center">Kata</p>
                 {activeVocab.map((item) => {
                   const isMatched = !!matches[item.word];
@@ -420,7 +423,7 @@ export const Konstruksi: React.FC = () => {
                       key={item.word}
                       disabled={isMatched}
                       onClick={() => handleWordSelect(item.word)}
-                      className={`w-full h-24 rounded-2xl font-extrabold text-xl border-3 transition-all cursor-pointer flex items-center justify-center ${isMatched
+                      className={`w-full h-20 sm:h-24 rounded-xl sm:rounded-2xl font-black text-sm sm:text-lg md:text-xl border-3 transition-all cursor-pointer flex items-center justify-center px-2 text-center ${isMatched
                           ? 'bg-slate-50 text-slate-400 border-slate-200 cursor-not-allowed'
                           : isSelected
                             ? 'bg-amber-100 border-amber-500 text-amber-950 scale-105 shadow-sm'
@@ -434,7 +437,7 @@ export const Konstruksi: React.FC = () => {
               </div>
 
               {/* Gambar list */}
-              <div className="space-y-3">
+              <div className="space-y-2.5 sm:space-y-3">
                 <p className="text-xs font-black uppercase text-amber-800 tracking-wider text-center">Gambar</p>
                 {shuffledImages.map((image) => {
                   const isMatched = Object.values(matches).includes(image);
@@ -444,14 +447,14 @@ export const Konstruksi: React.FC = () => {
                       key={image}
                       disabled={isMatched}
                       onClick={() => handleImageSelect(image)}
-                      className={`w-full h-24 rounded-2xl border-3 transition-all cursor-pointer flex justify-center items-center ${isMatched
+                      className={`w-full h-20 sm:h-24 rounded-xl sm:rounded-2xl border-3 transition-all cursor-pointer flex justify-center items-center p-1.5 ${isMatched
                           ? 'bg-slate-50 border-slate-200 opacity-30 cursor-not-allowed'
                           : isSelected
                             ? 'bg-amber-100 border-amber-500 scale-105 shadow-sm'
                             : 'bg-white border-amber-100 hover:border-amber-400'
                         }`}
                     >
-                      <img src={image} alt="Pilihan Gambar" className="h-20 w-auto object-contain p-1" />
+                      <img src={image} alt="Pilihan Gambar" className="h-14 sm:h-20 w-auto object-contain p-1" />
                     </button>
                   );
                 })}
@@ -468,7 +471,7 @@ export const Konstruksi: React.FC = () => {
                 <p className="text-emerald-700 font-bold text-sm">Kamu mencocokkan semua kata dengan benar (+2 ⭐ Bintang)</p>
                 <button
                   onClick={initGame}
-                  className="px-6 py-4 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl shadow-playful-secondary hover:brightness-110 transition cursor-pointer"
+                  className="px-6 py-3.5 sm:py-4 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl shadow-playful-secondary hover:brightness-110 transition cursor-pointer min-h-[44px]"
                 >
                   Main Lagi!
                 </button>
@@ -476,7 +479,7 @@ export const Konstruksi: React.FC = () => {
             ) : (
               <button
                 onClick={initGame}
-                className="py-5 w-full bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-2xl shadow-playful-secondary transition cursor-pointer"
+                className="py-3.5 sm:py-4 md:py-5 w-full bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-2xl shadow-playful-secondary transition cursor-pointer min-h-[48px]"
               >
                 Acak Ulang
               </button>
@@ -490,64 +493,64 @@ export const Konstruksi: React.FC = () => {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -15 }}
-            className="bg-white rounded-3xl p-6 border-4 border-blue-300 shadow-playful flex flex-col justify-between space-y-6"
+            className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 border-4 border-blue-300 shadow-playful flex flex-col justify-between space-y-4 sm:space-y-6"
           >
             <div>
-              <h3 className="text-2xl font-black text-blue-900 flex items-center justify-between">
+              <h3 className="text-xl sm:text-2xl font-black text-blue-900 flex items-center justify-between gap-2">
                 <span>🎙️ Latih Pengucapan Kata</span>
-                <span className="text-blue-600 font-black text-xs bg-blue-50 px-2 py-1 rounded-xl border border-blue-200">
+                <span className="text-blue-600 font-black text-xs bg-blue-50 px-2 py-1 rounded-xl border border-blue-200 shrink-0">
                   Perekam Suara Luring
                 </span>
               </h3>
-              <p className="text-slate-600 font-bold text-sm mt-1">Pilih kosakata khas Dayak/alam, dengarkan suaranya, dan rekam suaramu!</p>
+              <p className="text-slate-600 font-bold text-xs sm:text-sm mt-1">Pilih kosakata khas Dayak/alam, dengarkan suaranya, dan rekam suaramu!</p>
             </div>
 
             {/* Word Selector */}
-            <div className="flex flex-wrap gap-2 justify-center">
+            <div className="flex flex-wrap gap-1.5 sm:gap-2 justify-center">
               {vocabList.map((item) => (
                 <button
                   key={item.word}
                   onClick={() => { playSound('pop'); setRecordingWord(item.word); speakIndonesian(item.word); setAudioUrl(null); }}
-                  className={`px-4 py-4 rounded-xl font-extrabold border-2 transition cursor-pointer ${recordingWord === item.word
+                  className={`px-3 sm:px-4 py-2 sm:py-3 rounded-xl font-extrabold text-xs sm:text-sm border-2 transition cursor-pointer ${recordingWord === item.word
                       ? 'bg-blue-500 text-white border-blue-500 shadow-sm'
                       : 'bg-white text-slate-700 border-slate-100 hover:border-blue-200'
                     }`}
                 >
-                  <span className="mr-1.5">{item.emoji}</span>
+                  <span className="mr-1">{item.emoji}</span>
                   {item.word}
                 </button>
               ))}
             </div>
 
             {/* Large Word display */}
-            <div className="bg-blue-50/50 rounded-2xl p-6 border-2 border-blue-100 text-center space-y-3 flex flex-col justify-center items-center">
+            <div className="bg-blue-50/50 rounded-2xl p-4 sm:p-6 border-2 border-blue-100 text-center space-y-2 sm:space-y-3 flex flex-col justify-center items-center">
               <ImageWithFallback
                 src={vocabList.find(v => v.word === recordingWord)?.image}
                 alt={recordingWord}
                 fallback={vocabList.find(v => v.word === recordingWord)?.emoji || '❓'}
-                className="w-40 h-40 object-contain mx-auto animate-float rounded-2xl flex items-center justify-center text-8xl"
+                className="w-24 h-24 sm:w-36 sm:h-36 md:w-40 md:h-40 object-contain mx-auto animate-float rounded-2xl flex items-center justify-center text-6xl sm:text-8xl"
               />
-              <h4 className="text-4xl font-black text-blue-950 tracking-wider">
+              <h4 className="text-2xl sm:text-4xl font-black text-blue-950 tracking-wider">
                 {recordingWord}
               </h4>
-              <p className="text-blue-600 font-bold text-sm">
+              <p className="text-blue-600 font-bold text-xs sm:text-sm">
                 ({vocabList.find(v => v.word === recordingWord)?.meaning})
               </p>
               <button
                 onClick={() => { playSound('click'); speakIndonesian(recordingWord); }}
-                className="p-3 bg-white text-blue-500 border-2 border-blue-200 rounded-full hover:bg-blue-50 transition cursor-pointer shadow-sm"
+                className="p-2.5 sm:p-3 bg-white text-blue-500 border-2 border-blue-200 rounded-full hover:bg-blue-50 transition cursor-pointer shadow-sm min-h-[44px] min-w-[44px] flex items-center justify-center"
                 title="Dengarkan Suara"
               >
-                <Volume2 size={24} />
+                <Volume2 size={22} />
               </button>
             </div>
 
             {/* Recorder Controls */}
-            <div className="bg-slate-50 p-4 rounded-2xl border-2 border-slate-100 flex items-center justify-around">
+            <div className="bg-slate-50 p-3 sm:p-4 rounded-2xl border-2 border-slate-100 flex flex-col sm:flex-row gap-2.5 sm:gap-4 items-stretch sm:items-center sm:justify-around">
               {!isRecording ? (
                 <button
                   onClick={startRecording}
-                  className="flex items-center space-x-2 px-6 py-5 bg-rose-500 hover:bg-rose-600 text-white font-extrabold rounded-2xl shadow-playful-rose transition cursor-pointer btn-bouncy"
+                  className="flex items-center justify-center space-x-2 px-5 sm:px-6 py-3.5 sm:py-4 bg-rose-500 hover:bg-rose-600 text-white font-extrabold rounded-2xl shadow-playful-rose transition cursor-pointer btn-bouncy min-h-[48px]"
                 >
                   <Mic size={20} />
                   <span>Mulai Rekam</span>
@@ -555,7 +558,7 @@ export const Konstruksi: React.FC = () => {
               ) : (
                 <button
                   onClick={stopRecording}
-                  className="flex items-center space-x-2 px-6 py-5 bg-slate-800 hover:bg-slate-900 text-white font-extrabold rounded-2xl shadow-playful transition cursor-pointer animate-pulse"
+                  className="flex items-center justify-center space-x-2 px-5 sm:px-6 py-3.5 sm:py-4 bg-slate-800 hover:bg-slate-900 text-white font-extrabold rounded-2xl shadow-playful transition cursor-pointer animate-pulse min-h-[48px]"
                 >
                   <Square size={20} />
                   <span>Berhenti</span>
@@ -565,7 +568,7 @@ export const Konstruksi: React.FC = () => {
               <button
                 disabled={!audioUrl}
                 onClick={playRecordedAudio}
-                className={`flex items-center space-x-2 px-6 py-5 rounded-2xl font-extrabold border-2 transition cursor-pointer ${audioUrl
+                className={`flex items-center justify-center space-x-2 px-5 sm:px-6 py-3.5 sm:py-4 rounded-2xl font-extrabold border-2 transition cursor-pointer min-h-[48px] ${audioUrl
                     ? 'bg-emerald-500 hover:bg-emerald-600 text-white border-emerald-500 shadow-playful-primary'
                     : 'bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed'
                   }`}
@@ -622,53 +625,53 @@ export const Konstruksi: React.FC = () => {
             </div>
 
             {/* Story Viewer & Quiz & Recorder */}
-            <div className="lg:col-span-2 space-y-6">
+            <div className="lg:col-span-2 space-y-4 sm:space-y-6">
               {/* Card 1: Story Content */}
-              <div className="bg-white rounded-3xl p-6 border-4 border-emerald-300 shadow-playful space-y-4">
-                <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-                  <h3 className="text-2xl font-black text-emerald-950 flex items-center gap-2">
+              <div className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 border-4 border-emerald-300 shadow-playful space-y-3 sm:space-y-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-3 border-b border-slate-100 pb-3">
+                  <h3 className="text-xl sm:text-2xl font-black text-emerald-950 flex items-center gap-2">
                     <span>📖 {storiesList[selectedStoryIdx].title}</span>
                   </h3>
                   <button
                     onClick={handleListenStory}
-                    className="flex items-center gap-1.5 px-4 py-2.5 bg-emerald-500 text-white rounded-2xl hover:bg-emerald-600 transition cursor-pointer font-extrabold text-sm shadow-sm border border-emerald-600"
+                    className="flex items-center justify-center gap-1.5 px-4 py-2.5 bg-emerald-500 text-white rounded-2xl hover:bg-emerald-600 transition cursor-pointer font-extrabold text-sm shadow-sm border border-emerald-600 min-h-[44px]"
                   >
                     <Volume2 size={18} />
                     <span>Dengarkan</span>
                   </button>
                 </div>
 
-                <div className="flex flex-col md:flex-row gap-4 items-center">
+                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-center sm:items-start">
                   <ImageWithFallback
                     src={storiesList[selectedStoryIdx].image}
                     alt={storiesList[selectedStoryIdx].title}
                     fallback={storiesList[selectedStoryIdx].emoji}
-                    className="w-28 h-28 object-contain rounded-2xl bg-slate-50 p-2 shrink-0"
+                    className="w-20 h-20 sm:w-28 sm:h-28 object-contain rounded-2xl bg-slate-50 p-2 shrink-0"
                   />
-                  <p className="text-slate-800 font-semibold text-lg leading-relaxed text-justify">
+                  <p className="text-slate-800 font-semibold text-sm sm:text-base md:text-lg leading-relaxed text-left sm:text-justify">
                     {storiesList[selectedStoryIdx].content}
                   </p>
                 </div>
               </div>
 
               {/* Card 2: Comprehension Quiz */}
-              <div className="bg-white rounded-3xl p-6 border-4 border-amber-300 shadow-playful space-y-4">
-                <h4 className="text-xl font-black text-amber-900 flex items-center gap-2">
+              <div className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 border-4 border-amber-300 shadow-playful space-y-3 sm:space-y-4">
+                <h4 className="text-lg sm:text-xl font-black text-amber-900 flex items-center gap-2">
                   <HelpCircle size={22} className="text-amber-500" />
                   <span>Kuis Pemahaman Cerita</span>
                 </h4>
-                <p className="text-slate-700 font-bold text-md bg-amber-50/50 p-3.5 rounded-xl border border-amber-100">
+                <p className="text-slate-700 font-bold text-sm sm:text-base bg-amber-50/50 p-3 sm:p-3.5 rounded-xl border border-amber-100">
                   💡 {storiesList[selectedStoryIdx].question}
                 </p>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5 sm:gap-3">
                   {storiesList[selectedStoryIdx].choices.map((choice, i) => {
                     return (
                       <button
                         key={i}
                         disabled={storyAnswered !== null}
                         onClick={() => handleSelectStoryChoice(choice.isCorrect)}
-                        className={`p-3.5 rounded-xl font-extrabold text-base border-2 transition text-left cursor-pointer flex justify-between items-center ${storyAnswered === null
+                        className={`p-3 sm:p-3.5 rounded-xl font-extrabold text-sm sm:text-base border-2 transition text-left cursor-pointer flex justify-between items-center min-h-[48px] ${storyAnswered === null
                             ? 'bg-white border-slate-200 text-slate-700 hover:border-amber-300 hover:bg-amber-50/30'
                             : choice.isCorrect
                               ? 'bg-emerald-100 border-emerald-400 text-emerald-950'
@@ -677,7 +680,7 @@ export const Konstruksi: React.FC = () => {
                       >
                         <span>{choice.text}</span>
                         {storyAnswered !== null && choice.isCorrect && (
-                          <CheckCircle2 size={18} className="text-emerald-600" fill="currentColor" />
+                          <CheckCircle2 size={18} className="text-emerald-600 shrink-0 ml-2" fill="currentColor" />
                         )}
                       </button>
                     );
@@ -690,21 +693,21 @@ export const Konstruksi: React.FC = () => {
                 <motion.div
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  className="bg-white rounded-3xl p-6 border-4 border-rose-300 shadow-playful space-y-4"
+                  className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 border-4 border-rose-300 shadow-playful space-y-3 sm:space-y-4"
                 >
-                  <h4 className="text-xl font-black text-rose-900 flex items-center gap-2">
+                  <h4 className="text-lg sm:text-xl font-black text-rose-900 flex items-center gap-2">
                     <Mic size={22} className="text-rose-500" />
                     <span>Ceritakan Kembali Kisahnya!</span>
                   </h4>
-                  <p className="text-slate-600 font-semibold text-sm">
+                  <p className="text-slate-600 font-semibold text-xs sm:text-sm">
                     Hebat! Sekarang ketuk tombol rekam dan ceritakan dongeng di atas menggunakan bahasamu sendiri ya!
                   </p>
 
-                  <div className="bg-slate-50 p-4 rounded-2xl border-2 border-slate-100 flex items-center justify-around">
+                  <div className="bg-slate-50 p-3 sm:p-4 rounded-2xl border-2 border-slate-100 flex flex-col sm:flex-row gap-2.5 sm:gap-4 items-stretch sm:items-center sm:justify-around">
                     {!storyIsRecording ? (
                       <button
                         onClick={startStoryRecording}
-                        className="flex items-center space-x-2 px-5 py-5 bg-rose-500 hover:bg-rose-600 text-white font-extrabold rounded-2xl shadow-playful-rose transition cursor-pointer btn-bouncy"
+                        className="flex items-center justify-center space-x-2 px-5 py-3.5 sm:py-4 bg-rose-500 hover:bg-rose-600 text-white font-extrabold rounded-2xl shadow-playful-rose transition cursor-pointer btn-bouncy min-h-[48px]"
                       >
                         <Mic size={18} />
                         <span>Mulai Rekam</span>
@@ -712,7 +715,7 @@ export const Konstruksi: React.FC = () => {
                     ) : (
                       <button
                         onClick={stopStoryRecording}
-                        className="flex items-center space-x-2 px-5 py-5 bg-slate-800 hover:bg-slate-900 text-white font-extrabold rounded-2xl shadow-playful transition cursor-pointer animate-pulse"
+                        className="flex items-center justify-center space-x-2 px-5 py-3.5 sm:py-4 bg-slate-800 hover:bg-slate-900 text-white font-extrabold rounded-2xl shadow-playful transition cursor-pointer animate-pulse min-h-[48px]"
                       >
                         <Square size={18} />
                         <span>Selesai Rekam</span>
@@ -722,7 +725,7 @@ export const Konstruksi: React.FC = () => {
                     <button
                       disabled={!storyAudioUrl}
                       onClick={playStoryAudio}
-                      className={`flex items-center space-x-2 px-5 py-5 rounded-2xl font-extrabold border-2 transition cursor-pointer ${storyAudioUrl
+                      className={`flex items-center justify-center space-x-2 px-5 py-3.5 sm:py-4 rounded-2xl font-extrabold border-2 transition cursor-pointer min-h-[48px] ${storyAudioUrl
                           ? 'bg-emerald-500 hover:bg-emerald-600 text-white border-emerald-500 shadow-playful-primary'
                           : 'bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed'
                         }`}
@@ -733,10 +736,10 @@ export const Konstruksi: React.FC = () => {
                   </div>
 
                   {storyAudioUrl && !storyCompleted && (
-                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="pt-3 text-center">
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="pt-2 text-center">
                       <button
                         onClick={handleCompleteStory}
-                        className="px-8 py-4 bg-emerald-500 hover:bg-emerald-600 text-white font-black text-lg rounded-2xl shadow-playful-primary btn-bouncy transition cursor-pointer"
+                        className="w-full sm:w-auto px-6 sm:px-8 py-3.5 sm:py-4 bg-emerald-500 hover:bg-emerald-600 text-white font-black text-base sm:text-lg rounded-2xl shadow-playful-primary btn-bouncy transition cursor-pointer min-h-[48px]"
                       >
                         🌟 Selesai & Ambil Bintang (+2 ⭐)
                       </button>

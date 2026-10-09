@@ -132,7 +132,7 @@ export const Eksplorasi: React.FC = () => {
       </div>
 
       {/* Grid of gallery items */}
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
         {items.map((item, index) => {
           const isCompleted = completedSteps.includes(item.id);
           return (
@@ -142,20 +142,20 @@ export const Eksplorasi: React.FC = () => {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: index * 0.08 }}
               onClick={() => handleSelectItem(item)}
-              className="bg-white rounded-3xl p-5 border-4 border-emerald-100 text-center cursor-pointer shadow-playful hover:border-emerald-400 hover:translate-y-[-4px] transition-all relative overflow-hidden flex flex-col justify-between min-h-[160px]"
+              className="bg-white rounded-2xl sm:rounded-3xl p-3 sm:p-5 border-4 border-emerald-100 text-center cursor-pointer shadow-playful hover:border-emerald-400 hover:translate-y-[-4px] transition-all relative overflow-hidden flex flex-col justify-between min-h-[140px] sm:min-h-[160px]"
             >
               {isCompleted && (
-                <div className="absolute top-3 right-3 text-emerald-500">
-                  <CheckCircle2 size={24} fill="currentColor" className="text-white" />
+                <div className="absolute top-2.5 right-2.5 sm:top-3 sm:right-3 text-emerald-500">
+                  <CheckCircle2 size={20} fill="currentColor" className="text-white sm:w-6 sm:h-6" />
                 </div>
               )}
               <ImageWithFallback
                 src={item.image}
                 alt={item.title}
                 fallback={item.emoji}
-                className="w-24 h-24 object-contain mx-auto my-2 animate-float-delayed rounded-xl flex items-center justify-center text-6xl"
+                className="w-16 h-16 sm:w-24 sm:h-24 object-contain mx-auto my-1.5 sm:my-2 animate-float-delayed rounded-xl flex items-center justify-center text-4xl sm:text-6xl"
               />
-              <h3 className="font-extrabold text-xl text-emerald-950">{item.title}</h3>
+              <h3 className="font-extrabold text-base sm:text-xl text-emerald-950 leading-snug">{item.title}</h3>
             </motion.div>
           );
         })}
@@ -164,27 +164,27 @@ export const Eksplorasi: React.FC = () => {
       {/* Detail Overlay Modal */}
       <AnimatePresence>
         {selectedItem && (
-          <div className="fixed inset-0 bg-emerald-950/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="fixed inset-0 bg-emerald-950/70 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4">
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white rounded-3xl p-6 md:p-8 max-w-2xl w-full border-4 border-blue-400 shadow-2xl relative"
+              className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto border-4 border-blue-400 shadow-2xl relative"
             >
               <button
                 onClick={() => { playSound('click'); cancelSpeech(); setSelectedItem(null); }}
-                className="absolute top-4 right-4 bg-slate-100 text-slate-500 p-2 rounded-full font-bold hover:bg-slate-200 cursor-pointer"
+                className="absolute top-3 right-3 sm:top-4 sm:right-4 bg-slate-100 text-slate-500 w-9 h-9 rounded-full font-bold hover:bg-slate-200 cursor-pointer flex items-center justify-center z-10"
               >
                 ✕
               </button>
 
-              <div className="space-y-4">
-                <div className="w-full h-56 md:h-72 bg-gradient-to-b from-slate-50 to-slate-100 rounded-3xl overflow-hidden shadow-inner border border-slate-200/40 flex items-center justify-center relative">
+              <div className="space-y-3 sm:space-y-4">
+                <div className="w-full h-40 sm:h-56 md:h-72 bg-gradient-to-b from-slate-50 to-slate-100 rounded-2xl sm:rounded-3xl overflow-hidden shadow-inner border border-slate-200/40 flex items-center justify-center relative">
                   <ImageWithFallback
                     src={selectedItem.image}
                     alt={selectedItem.title}
                     fallback={selectedItem.emoji}
-                    className="w-full h-full object-contain p-3 animate-float"
+                    className="w-full h-full object-contain p-2 sm:p-3 animate-float"
                   />
                 </div>
                 <div className="text-center">
@@ -201,29 +201,29 @@ export const Eksplorasi: React.FC = () => {
                 </div>
               </div>
 
-              <div className="mt-6 space-y-4 text-slate-700">
-                <div className="bg-slate-50 p-4 rounded-2xl border-2 border-slate-100">
-                  <h4 className="font-extrabold text-slate-800 text-sm tracking-wider uppercase mb-1">📖 Budaya Dayak</h4>
-                  <p className="font-semibold text-base leading-relaxed">{selectedItem.description}</p>
+              <div className="mt-4 sm:mt-6 space-y-3 sm:space-y-4 text-slate-700">
+                <div className="bg-slate-50 p-3.5 sm:p-4 rounded-xl sm:rounded-2xl border-2 border-slate-100">
+                  <h4 className="font-extrabold text-slate-800 text-xs sm:text-sm tracking-wider uppercase mb-1">📖 Budaya Dayak</h4>
+                  <p className="font-semibold text-sm sm:text-base leading-relaxed">{selectedItem.description}</p>
                 </div>
 
-                <div className="bg-emerald-50 p-4 rounded-2xl border-2 border-emerald-100">
-                  <h4 className="font-extrabold text-emerald-800 text-sm tracking-wider uppercase mb-1">🌳 Nilai Ekologi</h4>
-                  <p className="font-semibold text-base leading-relaxed text-emerald-950">{selectedItem.ecoLesson}</p>
+                <div className="bg-emerald-50 p-3.5 sm:p-4 rounded-xl sm:rounded-2xl border-2 border-emerald-100">
+                  <h4 className="font-extrabold text-emerald-800 text-xs sm:text-sm tracking-wider uppercase mb-1">🌳 Nilai Ekologi</h4>
+                  <p className="font-semibold text-sm sm:text-base leading-relaxed text-emerald-950">{selectedItem.ecoLesson}</p>
                 </div>
               </div>
 
-              <div className="mt-6 flex flex-col-reverse md:flex-row gap-3">
+              <div className="mt-4 sm:mt-6 flex flex-col-reverse md:flex-row gap-2.5 sm:gap-3">
                 <button
                   onClick={() => { playSound('click'); cancelSpeech(); setSelectedItem(null); }}
-                  className="w-full md:w-1/3 py-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-2xl transition cursor-pointer"
+                  className="w-full md:w-1/3 py-3.5 sm:py-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-2xl transition cursor-pointer min-h-[48px]"
                 >
                   Tutup
                 </button>
                 {completedSteps.includes(selectedItem.id) ? (
                   <button
                     disabled
-                    className="w-full md:w-2/3 py-4 bg-emerald-100 text-emerald-600 font-bold rounded-2xl flex items-center justify-center space-x-2 border-2 border-emerald-200 cursor-not-allowed opacity-80"
+                    className="w-full md:w-2/3 py-3.5 sm:py-4 bg-emerald-100 text-emerald-600 font-bold rounded-2xl flex items-center justify-center space-x-2 border-2 border-emerald-200 cursor-not-allowed opacity-80 min-h-[48px]"
                   >
                     <CheckCircle2 size={22} className="shrink-0" />
                     <span>Sudah Selesai ✅</span>
@@ -231,7 +231,7 @@ export const Eksplorasi: React.FC = () => {
                 ) : (
                   <button
                     onClick={() => handleComplete(selectedItem.id)}
-                    className="w-full md:w-2/3 py-4 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-2xl shadow-playful-primary flex items-center justify-center space-x-2 cursor-pointer btn-bouncy transition-all"
+                    className="w-full md:w-2/3 py-3.5 sm:py-4 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-2xl shadow-playful-primary flex items-center justify-center space-x-2 cursor-pointer btn-bouncy transition-all min-h-[48px]"
                   >
                     <CheckCircle2 size={22} className="shrink-0" />
                     <span>Selesai & Ambil Bintang (+2 ⭐)</span>
