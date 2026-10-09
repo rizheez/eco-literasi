@@ -30,6 +30,7 @@ export const Progress: React.FC = () => {
     { id: 'internalisasi_forest', label: 'Internalisasi: Jaga Hutan Kaltim 🌲' },
     { id: 'internalisasi_river', label: 'Internalisasi: Jaga Sungai Mahakam 💧' },
     { id: 'aksi_wordbuilder', label: 'Aksi Kreasi: Susun Huruf Kosakata 🔠' },
+    { id: 'aksi_counting', label: 'Aksi Kreasi: Hitung Huruf Kata 🔢' },
     { id: 'aksi_sebab_akibat', label: 'Aksi Kreasi: Hubungkan Sebab-Akibat 🔗' },
     { id: 'aksi_puzzle', label: 'Aksi Kreasi: Puzzle Gambar Alam 🧩' },
     { id: 'aksi_memory', label: 'Aksi Kreasi: Memori Alam 🧠' },

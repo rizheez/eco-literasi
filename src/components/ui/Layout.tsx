@@ -31,8 +31,8 @@ const guideTexts: Record<string, GuideMessage> = {
     dayak: "Mai tulung ake' mileh kenang chie jia alem tana' ite'! Tekep ca tombol pelehan ungot ngelan akibat ne men alam Kalimantan. Ayen lingo janji sayang tana' bumi ya!"
   },
   '/aksi': {
-    id: 'Waktunya bermain game seru! Ada susun huruf kosakata Dayak, mencocokkan sebab-akibat, menyusun puzzle alam, dan melatih memori. Setiap game yang selesai akan memberimu bintang!',
-    dayak: "Kedo tau pekiut game rame! Te' atur sukat huruf Dayak, patep sebab-akibat, atur puzzle alam, ngan latih linget. Tiap game chie sukat ma'ang iko bintang!"
+    id: 'Waktunya bermain game seru! Ada susun huruf kosakata Dayak, menghitung jumlah huruf, mencocokkan sebab-akibat, menyusun puzzle alam, dan melatih memori. Setiap game yang selesai akan memberimu bintang!',
+    dayak: "Kedo tau pekiut game rame! Te' atur sukat huruf Dayak, kire mula huruf, patep sebab-akibat, atur puzzle alam, ngan latih linget. Tiap game chie sukat ma'ang iko bintang!"
   },
   '/progress': {
     id: 'Wah, lihat semua pencapaian luar biasamu! Di sini kamu bisa melihat daftar tugas yang sudah selesai dan jumlah bintang serta medali yang berhasil kamu kumpulkan!',

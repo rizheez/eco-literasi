@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useProgressStore } from '../store/useProgressStore';
 import { playSound, speakIndonesian, cancelSpeech } from '../utils/audio';
-import { ChevronLeft, RotateCcw, HelpCircle, RefreshCw } from 'lucide-react';
+import { ChevronLeft, RotateCcw, HelpCircle, RefreshCw, Volume2, Lightbulb, ArrowRight, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import confetti from 'canvas-confetti';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -85,7 +85,7 @@ const sebabAkibatData: SebabAkibatPair[] = [
 export const AksiKreasi: React.FC = () => {
   const { width, height } = useWindowSize();
   const { completedSteps, completeStep } = useProgressStore();
-  const [activeTab, setActiveTab] = useState<'wordbuilder' | 'sebab_akibat' | 'puzzle' | 'memory'>('wordbuilder');
+  const [activeTab, setActiveTab] = useState<'wordbuilder' | 'counting' | 'sebab_akibat' | 'puzzle' | 'memory'>('wordbuilder');
 
   useEffect(() => {
     playSound('pop');
@@ -109,6 +109,124 @@ export const AksiKreasi: React.FC = () => {
   const [scrambledLetters, setScrambledLetters] = useState<string[]>([]);
   const [selectedLetters, setSelectedLetters] = useState<string[]>([]);
   const [wordGameWon, setWordGameWon] = useState(false);
+
+  // Counting Word Config & Logic
+  interface CountingWord {
+    word: string;
+    emoji: string;
+    clue: string;
+    image?: string;
+    dayakTerm: string;
+  }
+
+  const countingWordList: CountingWord[] = [
+    { word: 'PESUT', emoji: '🐬', clue: 'Lumba-lumba air tawar Sungai Mahakam', image: '/images/pesut_mahakam.png', dayakTerm: 'Pesut Mahakam' },
+    { word: 'LAMIN', emoji: '🏠', clue: 'Rumah adat suku Dayak yang panjang', image: '/images/rumah_lamin.png', dayakTerm: 'Lamin / Amin' },
+    { word: 'SAPE', emoji: '🎸', clue: 'Alat musik petik tradisional Dayak', image: '/images/musik_sape.png', dayakTerm: 'Sampe\' / Sape\'' },
+    { word: 'HUTAN', emoji: '🌳', clue: 'Tempat rimbun pepohonan Kalimantan', image: '/images/hutan_hujan.png', dayakTerm: 'Ba\' / Uyan' },
+    { word: 'SUNGAI', emoji: '🌊', clue: 'Aliran air jernih tempat ikan berenang', image: '/images/sungai_mahakam.png', dayakTerm: 'Sungai / Sunge' },
+    { word: 'ENGGANG', emoji: '🦜', clue: 'Burung suci kebanggaan suku Dayak', image: '/images/burung_enggang.png', dayakTerm: 'Tegun / Enggang' },
+    { word: 'ORANGUTAN', emoji: '🦧', clue: 'Kera berbulu merah khas hutan Kaltim', image: '/images/orangutan.png', dayakTerm: 'Orangutan' },
+  ];
+
+  const [countingIdx, setCountingIdx] = useState(0);
+  const [countedIndices, setCountedIndices] = useState<number[]>([]);
+  const [countingAnswerSelected, setCountingAnswerSelected] = useState<number | null>(null);
+  const [countingWon, setCountingWon] = useState(false);
+  const [countingWrong, setCountingWrong] = useState(false);
+
+  const indonesianNumberWords = ['Nol', 'Satu', 'Dua', 'Tiga', 'Empat', 'Lima', 'Enam', 'Tujuh', 'Delapan', 'Sembilan', 'Sepuluh', 'Sebelas', 'Dua belas'];
+
+  const getCountingOptions = (wordLength: number) => {
+    const base = Math.max(1, wordLength - 2);
+    const options = [base, base + 1, base + 2, base + 3];
+    if (!options.includes(wordLength)) {
+      return [wordLength - 1, wordLength, wordLength + 1, wordLength + 2].filter(n => n > 0);
+    }
+    return options;
+  };
+
+  const handleLetterTap = (index: number) => {
+    if (countedIndices.includes(index)) {
+      playSound('pop');
+      const order = countedIndices.indexOf(index) + 1;
+      speakIndonesian(indonesianNumberWords[order] || String(order));
+      return;
+    }
+    playSound('pop');
+    const newCounted = [...countedIndices, index];
+    setCountedIndices(newCounted);
+    const currentCount = newCounted.length;
+    speakIndonesian(indonesianNumberWords[currentCount] || String(currentCount));
+  };
+
+  const handleSelectCountingAnswer = (num: number) => {
+    setCountingAnswerSelected(num);
+    const targetLength = countingWordList[countingIdx].word.length;
+    const targetWord = countingWordList[countingIdx].word;
+
+    if (num === targetLength) {
+      playSound('success');
+      confetti({ particleCount: 70, spread: 60 });
+      setCountingWon(true);
+      setCountingWrong(false);
+      setCountedIndices(targetWord.split('').map((_, i) => i));
+      completeStep('aksi_counting', 2);
+      speakIndonesian(`Hebat sekali! Kata ${targetWord} memiliki ${targetLength} huruf. Kamu dapat dua bintang!`);
+    } else {
+      playSound('error');
+      setCountingWrong(true);
+      speakIndonesian(`Kurang tepat, kata ${targetWord} bukan ${num} huruf. Coba hitung lagi ya!`);
+      setTimeout(() => {
+        setCountingWrong(false);
+        setCountingAnswerSelected(null);
+      }, 1500);
+    }
+  };
+
+  const handleNextCountingWord = () => {
+    playSound('click');
+    const nextIdx = (countingIdx + 1) % countingWordList.length;
+    setCountingIdx(nextIdx);
+    setCountedIndices([]);
+    setCountingAnswerSelected(null);
+    setCountingWon(false);
+    setCountingWrong(false);
+    speakIndonesian(`Ayo hitung kata berikutnya: ${countingWordList[nextIdx].word}`);
+  };
+
+  const handlePrevCountingWord = () => {
+    playSound('click');
+    const prevIdx = (countingIdx - 1 + countingWordList.length) % countingWordList.length;
+    setCountingIdx(prevIdx);
+    setCountedIndices([]);
+    setCountingAnswerSelected(null);
+    setCountingWon(false);
+    setCountingWrong(false);
+    speakIndonesian(`Ayo hitung kata: ${countingWordList[prevIdx].word}`);
+  };
+
+  const handleResetCounting = () => {
+    playSound('pop');
+    setCountedIndices([]);
+    setCountingAnswerSelected(null);
+    setCountingWon(false);
+    setCountingWrong(false);
+    speakIndonesian(`Ayo hitung huruf pada kata ${countingWordList[countingIdx].word}`);
+  };
+
+  const handleAutoCountAll = () => {
+    playSound('pop');
+    const target = countingWordList[countingIdx].word;
+    const all = target.split('').map((_, i) => i);
+    setCountedIndices(all);
+    speakIndonesian(`Ada ${target.length} huruf pada kata ${target}`);
+  };
+
+  const handleSpeakQuestion = () => {
+    playSound('pop');
+    speakIndonesian(`Ada berapa huruf pada kata ${countingWordList[countingIdx].word}? Ketuk hurufnya satu per satu untuk berhitung!`);
+  };
 
   // Sebab Akibat State
   const [selectedSebab, setSelectedSebab] = useState<number | null>(null);
@@ -142,8 +260,6 @@ export const AksiKreasi: React.FC = () => {
 
     speakIndonesian(`Susun kata: ${item.word}. Petunjuk: ${item.clue}`);
   };
-
-
 
   const handleLetterSelect = (letter: string, index: number) => {
     playSound('click');
@@ -391,31 +507,43 @@ export const AksiKreasi: React.FC = () => {
       </div>
 
       {/* Tabs Layout */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 bg-emerald-100/50 p-2 rounded-2xl border-2 border-emerald-100">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 bg-emerald-100/50 p-2 rounded-2xl border-2 border-emerald-100">
         <button
           onClick={() => { playSound('pop'); cancelSpeech(); setActiveTab('wordbuilder'); }}
-          className={`py-5 font-extrabold text-sm md:text-base rounded-xl transition cursor-pointer ${activeTab === 'wordbuilder' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-800 hover:bg-white/50'
+          className={`py-4 md:py-5 font-extrabold text-xs sm:text-sm md:text-base rounded-xl transition cursor-pointer ${activeTab === 'wordbuilder' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-800 hover:bg-white/50'
             }`}
         >
           🔠 Susun Huruf
         </button>
         <button
+          onClick={() => {
+            playSound('pop');
+            cancelSpeech();
+            setActiveTab('counting');
+            speakIndonesian(`Ayo hitung! Ada berapa huruf pada kata ${countingWordList[countingIdx].word}? Ketuk hurufnya satu per satu!`);
+          }}
+          className={`py-4 md:py-5 font-extrabold text-xs sm:text-sm md:text-base rounded-xl transition cursor-pointer ${activeTab === 'counting' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-800 hover:bg-white/50'
+            }`}
+        >
+          🔢 Hitung Huruf
+        </button>
+        <button
           onClick={() => { playSound('pop'); cancelSpeech(); setActiveTab('sebab_akibat'); }}
-          className={`py-5 font-extrabold text-sm md:text-base rounded-xl transition cursor-pointer ${activeTab === 'sebab_akibat' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-800 hover:bg-white/50'
+          className={`py-4 md:py-5 font-extrabold text-xs sm:text-sm md:text-base rounded-xl transition cursor-pointer ${activeTab === 'sebab_akibat' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-800 hover:bg-white/50'
             }`}
         >
           🔄 Sebab-Akibat
         </button>
         <button
           onClick={() => { playSound('pop'); cancelSpeech(); setActiveTab('puzzle'); }}
-          className={`py-5 font-extrabold text-sm md:text-base rounded-xl transition cursor-pointer ${activeTab === 'puzzle' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-800 hover:bg-white/50'
+          className={`py-4 md:py-5 font-extrabold text-xs sm:text-sm md:text-base rounded-xl transition cursor-pointer ${activeTab === 'puzzle' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-800 hover:bg-white/50'
             }`}
         >
           🧩 Puzzle Alam
         </button>
         <button
           onClick={() => { playSound('pop'); cancelSpeech(); setActiveTab('memory'); }}
-          className={`py-5 font-extrabold text-sm md:text-base rounded-xl transition cursor-pointer ${activeTab === 'memory' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-800 hover:bg-white/50'
+          className={`py-4 md:py-5 font-extrabold text-xs sm:text-sm md:text-base rounded-xl transition cursor-pointer ${activeTab === 'memory' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-800 hover:bg-white/50'
             }`}
         >
           🧠 Memori Alam
@@ -516,6 +644,214 @@ export const AksiKreasi: React.FC = () => {
                 >
                   🔊 Dengarkan Bunyi Kata
                 </button>
+              </div>
+            )}
+          </motion.div>
+        )}
+
+        {activeTab === 'counting' && (
+          <motion.div
+            key="counting"
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -15 }}
+            className="bg-white rounded-3xl p-6 md:p-8 border-4 border-sky-300 shadow-playful space-y-6 flex flex-col justify-between"
+          >
+            {/* Header */}
+            <div className="text-center space-y-2 relative">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-black uppercase tracking-wider bg-sky-100 text-sky-800 px-3 py-1 rounded-xl">
+                  Kata {countingIdx + 1} dari {countingWordList.length}
+                </span>
+                <h3 className="text-xl md:text-2xl font-black text-sky-950 flex items-center gap-2">
+                  <span>🔢 Hitung Huruf: Kosakata Dayak</span>
+                </h3>
+                {completedSteps.includes('aksi_counting') ? (
+                  <span className="text-emerald-600 font-black text-xs bg-emerald-50 px-2 py-1 rounded-xl border border-emerald-200">
+                    Lulus ✅
+                  </span>
+                ) : (
+                  <span className="text-sky-600 font-black text-xs bg-sky-50 px-2 py-1 rounded-xl border border-sky-200">
+                    +2 ⭐
+                  </span>
+                )}
+              </div>
+
+              {/* Clue and Word Card */}
+              <div className="bg-gradient-to-r from-sky-50 via-indigo-50 to-emerald-50 border-2 border-sky-200 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4 mt-3">
+                <div className="flex items-center gap-3">
+                  <ImageWithFallback
+                    src={countingWordList[countingIdx].image}
+                    alt={countingWordList[countingIdx].word}
+                    fallback={countingWordList[countingIdx].emoji}
+                    className="w-16 h-16 object-contain rounded-xl animate-float flex items-center justify-center text-4xl bg-white/80 p-1 border border-sky-100 shadow-sm"
+                  />
+                  <div className="text-left">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="text-xl font-black text-slate-800 tracking-wide">{countingWordList[countingIdx].word}</span>
+                      <span className="text-[11px] font-bold bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-lg border border-emerald-200">
+                        🌿 {countingWordList[countingIdx].dayakTerm}
+                      </span>
+                    </div>
+                    <p className="font-bold text-slate-600 text-xs sm:text-sm mt-0.5">{countingWordList[countingIdx].clue}</p>
+                  </div>
+                </div>
+
+                {/* Question & Audio action */}
+                <div className="flex items-center gap-2 shrink-0">
+                  <button
+                    onClick={handleSpeakQuestion}
+                    className="px-3.5 py-2.5 bg-sky-500 hover:bg-sky-600 text-white rounded-xl font-bold text-xs flex items-center gap-1.5 shadow-sm btn-bouncy transition cursor-pointer"
+                  >
+                    <Volume2 size={16} />
+                    <span>Dengar Soal</span>
+                  </button>
+                  <button
+                    onClick={handleAutoCountAll}
+                    title="Bantu Tampilkan Nomor Huruf"
+                    className="px-3 py-2.5 bg-amber-100 hover:bg-amber-200 text-amber-900 rounded-xl font-bold text-xs flex items-center gap-1 transition cursor-pointer border border-amber-200"
+                  >
+                    <Lightbulb size={16} />
+                    <span>Bantu</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Letter Cards to Tap & Count */}
+            <div className="space-y-3 py-2">
+              <p className="text-center text-xs font-extrabold text-slate-500 uppercase tracking-wider flex items-center justify-center gap-1.5">
+                <span>👆</span>
+                <span>Ketuk tiap huruf untuk menghitung urutannya:</span>
+              </p>
+
+              <div className="flex flex-wrap justify-center gap-2 md:gap-3 py-2">
+                {countingWordList[countingIdx].word.split('').map((char, index) => {
+                  const isCounted = countedIndices.includes(index);
+                  const order = countedIndices.indexOf(index) + 1;
+                  return (
+                    <motion.button
+                      key={index}
+                      whileHover={{ scale: 1.08 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => handleLetterTap(index)}
+                      className={`relative w-14 h-16 sm:w-16 sm:h-20 md:w-20 md:h-24 rounded-2xl font-black text-2xl sm:text-3xl md:text-4xl flex items-center justify-center transition-all cursor-pointer border-3 shadow-md ${
+                        isCounted
+                          ? 'bg-gradient-to-b from-sky-400 to-sky-500 text-white border-sky-600 shadow-sky-200 scale-105'
+                          : 'bg-white text-slate-800 border-slate-200 hover:border-sky-400 hover:bg-sky-50/50'
+                      }`}
+                    >
+                      {/* Count Badge on Top */}
+                      {isCounted && (
+                        <motion.span
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          className="absolute -top-3 bg-amber-400 text-amber-950 font-black text-xs sm:text-sm px-2 py-0.5 rounded-full border-2 border-white shadow-md"
+                        >
+                          {order}
+                        </motion.span>
+                      )}
+                      <span>{char}</span>
+                    </motion.button>
+                  );
+                })}
+              </div>
+
+              {/* Progress counter pill */}
+              <div className="flex justify-center">
+                <span className="text-xs font-bold text-sky-800 bg-sky-50 px-3 py-1 rounded-full border border-sky-200">
+                  Sudah dihitung: <strong className="text-sky-900 font-black">{countedIndices.length}</strong> dari {countingWordList[countingIdx].word.length} huruf
+                </span>
+              </div>
+            </div>
+
+            {/* Question Prompt */}
+            <div className="text-center pt-1">
+              <h4 className="text-base sm:text-lg font-black text-slate-800">
+                Ada berapa jumlah huruf pada kata <span className="text-sky-600 underline decoration-sky-300 decoration-4 font-black">{countingWordList[countingIdx].word}</span>?
+              </h4>
+            </div>
+
+            {/* 4 Number Option Buttons or Success Banner */}
+            {!countingWon ? (
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-xl mx-auto">
+                  {getCountingOptions(countingWordList[countingIdx].word.length).map((optionNum, idx) => {
+                    const isSelected = countingAnswerSelected === optionNum;
+                    const isWrong = isSelected && countingWrong;
+                    const colorVariants = [
+                      'from-amber-400 to-orange-500 text-white hover:from-amber-500 hover:to-orange-600',
+                      'from-emerald-400 to-teal-500 text-white hover:from-emerald-500 hover:to-teal-600',
+                      'from-sky-400 to-blue-500 text-white hover:from-sky-500 hover:to-blue-600',
+                      'from-purple-400 to-indigo-500 text-white hover:from-purple-500 hover:to-indigo-600'
+                    ];
+                    return (
+                      <motion.button
+                        key={optionNum}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => handleSelectCountingAnswer(optionNum)}
+                        className={`h-20 sm:h-24 rounded-2xl font-black text-3xl sm:text-4xl shadow-playful flex flex-col items-center justify-center gap-1 transition-all cursor-pointer border-3 border-white/40 ${
+                          isWrong
+                            ? 'bg-rose-500 text-white animate-shake'
+                            : `bg-gradient-to-b ${colorVariants[idx % 4]}`
+                        }`}
+                      >
+                        <span>{optionNum}</span>
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-white/90">Huruf</span>
+                      </motion.button>
+                    );
+                  })}
+                </div>
+
+                {/* Bottom navigation buttons */}
+                <div className="flex items-center justify-between pt-2 max-w-xl mx-auto">
+                  <button
+                    onClick={handlePrevCountingWord}
+                    className="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl flex items-center gap-1.5 transition cursor-pointer"
+                  >
+                    <ArrowLeft size={16} />
+                    <span>Sebelumnya</span>
+                  </button>
+
+                  <button
+                    onClick={handleResetCounting}
+                    className="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl flex items-center gap-1.5 transition cursor-pointer"
+                  >
+                    <RotateCcw size={14} />
+                    <span>Reset Hitung</span>
+                  </button>
+
+                  <button
+                    onClick={handleNextCountingWord}
+                    className="px-4 py-2.5 bg-sky-100 hover:bg-sky-200 text-sky-800 font-bold text-xs rounded-xl flex items-center gap-1.5 transition cursor-pointer"
+                  >
+                    <span>Lewati</span>
+                    <ArrowRight size={16} />
+                  </button>
+                </div>
+              </div>
+            ) : (
+              /* Success Banner */
+              <div className="bg-emerald-50 border-3 border-emerald-300 rounded-3xl p-6 text-center space-y-4 max-w-xl mx-auto shadow-sm">
+                <div className="w-16 h-16 bg-emerald-500 text-white rounded-2xl flex items-center justify-center mx-auto text-3xl shadow-md animate-bounce">
+                  ⭐
+                </div>
+                <div>
+                  <h4 className="font-extrabold text-2xl text-emerald-900">Hebat! Jawabanmu Benar! 🎉</h4>
+                  <p className="text-emerald-700 font-bold text-sm mt-1">
+                    Kata <span className="font-black underline">{countingWordList[countingIdx].word}</span> terdiri dari <span className="font-black">{countingWordList[countingIdx].word.length} huruf</span>. (+2 ⭐ Bintang)
+                  </p>
+                </div>
+                <div className="flex justify-center gap-3 pt-2">
+                  <button
+                    onClick={handleNextCountingWord}
+                    className="px-8 py-3.5 bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold text-base rounded-2xl shadow-playful-emerald flex items-center gap-2 btn-bouncy transition cursor-pointer"
+                  >
+                    <span>Kata Selanjutnya</span>
+                    <ArrowRight size={18} />
+                  </button>
+                </div>
               </div>
             )}
           </motion.div>
