@@ -507,10 +507,10 @@ export const AksiKreasi: React.FC = () => {
       </div>
 
       {/* Tabs Layout */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-1.5 sm:gap-2 bg-emerald-100/50 p-1.5 sm:p-2 rounded-2xl border-2 border-emerald-100">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-1.5 sm:gap-2 bg-white p-1.5 sm:p-2 rounded-2xl border-2 border-emerald-100 shadow-sm">
         <button
           onClick={() => { playSound('pop'); cancelSpeech(); setActiveTab('wordbuilder'); }}
-          className={`py-2.5 sm:py-3.5 md:py-4 font-extrabold text-xs sm:text-sm md:text-base rounded-xl transition cursor-pointer ${activeTab === 'wordbuilder' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-800 hover:bg-white/50'
+          className={`py-2.5 sm:py-3.5 md:py-4 font-extrabold text-xs sm:text-sm md:text-base rounded-xl transition cursor-pointer ${activeTab === 'wordbuilder' ? 'bg-emerald-500 text-white shadow-sm' : 'text-slate-700 hover:text-emerald-800 hover:bg-emerald-50'
             }`}
         >
           🔠 Susun Huruf
@@ -522,28 +522,28 @@ export const AksiKreasi: React.FC = () => {
             setActiveTab('counting');
             speakIndonesian(`Ayo hitung! Ada berapa huruf pada kata ${countingWordList[countingIdx].word}? Ketuk hurufnya satu per satu!`);
           }}
-          className={`py-2.5 sm:py-3.5 md:py-4 font-extrabold text-xs sm:text-sm md:text-base rounded-xl transition cursor-pointer ${activeTab === 'counting' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-800 hover:bg-white/50'
+          className={`py-2.5 sm:py-3.5 md:py-4 font-extrabold text-xs sm:text-sm md:text-base rounded-xl transition cursor-pointer ${activeTab === 'counting' ? 'bg-emerald-500 text-white shadow-sm' : 'text-slate-700 hover:text-emerald-800 hover:bg-emerald-50'
             }`}
         >
           🔢 Hitung Huruf
         </button>
         <button
           onClick={() => { playSound('pop'); cancelSpeech(); setActiveTab('sebab_akibat'); }}
-          className={`py-2.5 sm:py-3.5 md:py-4 font-extrabold text-xs sm:text-sm md:text-base rounded-xl transition cursor-pointer ${activeTab === 'sebab_akibat' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-800 hover:bg-white/50'
+          className={`py-2.5 sm:py-3.5 md:py-4 font-extrabold text-xs sm:text-sm md:text-base rounded-xl transition cursor-pointer ${activeTab === 'sebab_akibat' ? 'bg-emerald-500 text-white shadow-sm' : 'text-slate-700 hover:text-emerald-800 hover:bg-emerald-50'
             }`}
         >
           🔄 Sebab-Akibat
         </button>
         <button
           onClick={() => { playSound('pop'); cancelSpeech(); setActiveTab('puzzle'); }}
-          className={`py-2.5 sm:py-3.5 md:py-4 font-extrabold text-xs sm:text-sm md:text-base rounded-xl transition cursor-pointer ${activeTab === 'puzzle' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-800 hover:bg-white/50'
+          className={`py-2.5 sm:py-3.5 md:py-4 font-extrabold text-xs sm:text-sm md:text-base rounded-xl transition cursor-pointer ${activeTab === 'puzzle' ? 'bg-emerald-500 text-white shadow-sm' : 'text-slate-700 hover:text-emerald-800 hover:bg-emerald-50'
             }`}
         >
           🧩 Puzzle Alam
         </button>
         <button
           onClick={() => { playSound('pop'); cancelSpeech(); setActiveTab('memory'); }}
-          className={`py-2.5 sm:py-3.5 md:py-4 font-extrabold text-xs sm:text-sm md:text-base rounded-xl transition cursor-pointer ${activeTab === 'memory' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-800 hover:bg-white/50'
+          className={`py-2.5 sm:py-3.5 md:py-4 font-extrabold text-xs sm:text-sm md:text-base rounded-xl transition cursor-pointer ${activeTab === 'memory' ? 'bg-emerald-500 text-white shadow-sm' : 'text-slate-700 hover:text-emerald-800 hover:bg-emerald-50'
             }`}
         >
           🧠 Memori Alam
