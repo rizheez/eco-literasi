@@ -140,12 +140,15 @@ TEXTS = [
     "Di sini kita bisa melihat keindahan alam Kalimantan! Ketuk salah satu kartu untuk mendengarkan cerita menarik tentang budaya dan hewan-hewan kita. Selesai membaca akan dapat bintang!",
     "Ayo dengarkan cerita interaktif seru! Ketuk cerita yang kamu suka untuk mendengar petualangan Pongo dan sahabat-sahabatnya. Kamu juga bisa belajar mengeja kata di kamus kosakata!",
     "Ayo bantu aku memilih tindakan yang baik untuk bumi! Ketuk salah satu tombol pilihan untuk melihat dampaknya terhadap alam Kalimantan. Jangan lupa berjanji untuk menyayangi bumi ya!",
+    "Waktunya bermain game seru! Ada susun huruf kosakata Dayak, menghitung jumlah huruf, mencocokkan sebab-akibat, menyusun puzzle alam, dan melatih memori. Setiap game yang selesai akan memberimu bintang!",
     "Waktunya bermain game seru! Ada susun huruf kosakata Dayak, mencocokkan sebab-akibat, menyusun puzzle alam, dan melatih memori. Setiap game yang selesai akan memberimu bintang!",
     "Wah, lihat semua pencapaian luar biasamu! Di sini kamu bisa melihat daftar tugas yang sudah selesai dan jumlah bintang serta medali yang berhasil kamu kumpulkan!",
     "Di menu pengaturan ini, kamu atau orang tuamu bisa mengatur besar kecilnya volume musik latar dan volume suara pemandu, atau menghapus data jika ingin mengulang dari awal.",
     # Onboarding Tour
+    "Selamat datang! Aku Enggo yang akan memandu petualangan belajarmu. Di sebelah kiri atas adalah profil petualanganmu, tempat melihat namamu, level, dan bintangmu!",
     "Selamat datang teman! Aku Enggo yang akan memandu petualangan belajarmu. Di sebelah kiri atas adalah profil petualanganmu, tempat melihat namamu, level, dan bintangmu!",
     "Ayo ketuk menu Eksplorasi di sini untuk melihat peta petualangan dan belajar tentang budaya Dayak!",
+    "Jika kamu butuh bantuan atau ingin mendengar petunjuk suara, cukup ketuk aku di sini!",
     # Hitung Huruf (Counting Game) Numbers
     "Nol", "Satu", "Dua", "Tiga", "Empat", "Lima", "Enam", "Tujuh", "Delapan", "Sembilan", "Sepuluh", "Sebelas", "Dua belas",
 ]
