@@ -362,10 +362,10 @@ export const Konstruksi: React.FC = () => {
       </div>
 
       {/* Tabs */}
-      <div className="flex space-x-1.5 sm:space-x-3 bg-emerald-100/50 p-1.5 sm:p-2 rounded-2xl border-2 border-emerald-100">
+      <div className="flex space-x-1.5 sm:space-x-3 bg-white p-1.5 sm:p-2 rounded-2xl border-2 border-emerald-100 shadow-sm">
         <button
           onClick={() => { playSound('pop'); cancelSpeech(); setActiveTab('matching'); }}
-          className={`flex-1 py-3 sm:py-4 md:py-5 font-black text-xs sm:text-base md:text-lg rounded-xl transition cursor-pointer flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-center ${activeTab === 'matching' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-850 hover:bg-white/40'
+          className={`flex-1 py-3 sm:py-4 md:py-5 font-black text-xs sm:text-base md:text-lg rounded-xl transition cursor-pointer flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-center ${activeTab === 'matching' ? 'bg-emerald-500 text-white shadow-sm' : 'text-slate-700 hover:text-emerald-800 hover:bg-emerald-50'
             }`}
         >
           <span>🎮</span>
@@ -373,7 +373,7 @@ export const Konstruksi: React.FC = () => {
         </button>
         <button
           onClick={() => { playSound('pop'); cancelSpeech(); setActiveTab('pronounce'); }}
-          className={`flex-1 py-3 sm:py-4 md:py-5 font-black text-xs sm:text-base md:text-lg rounded-xl transition cursor-pointer flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-center ${activeTab === 'pronounce' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-850 hover:bg-white/40'
+          className={`flex-1 py-3 sm:py-4 md:py-5 font-black text-xs sm:text-base md:text-lg rounded-xl transition cursor-pointer flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-center ${activeTab === 'pronounce' ? 'bg-emerald-500 text-white shadow-sm' : 'text-slate-700 hover:text-emerald-800 hover:bg-emerald-50'
             }`}
         >
           <span>🎙️</span>
@@ -381,7 +381,7 @@ export const Konstruksi: React.FC = () => {
         </button>
         <button
           onClick={() => { playSound('pop'); cancelSpeech(); setActiveTab('story'); }}
-          className={`flex-1 py-3 sm:py-4 md:py-5 font-black text-xs sm:text-base md:text-lg rounded-xl transition cursor-pointer flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-center ${activeTab === 'story' ? 'bg-emerald-500 text-white shadow-sm' : 'text-emerald-850 hover:bg-white/40'
+          className={`flex-1 py-3 sm:py-4 md:py-5 font-black text-xs sm:text-base md:text-lg rounded-xl transition cursor-pointer flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-center ${activeTab === 'story' ? 'bg-emerald-500 text-white shadow-sm' : 'text-slate-700 hover:text-emerald-800 hover:bg-emerald-50'
             }`}
         >
           <span>📖</span>
