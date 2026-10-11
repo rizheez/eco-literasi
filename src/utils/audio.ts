@@ -20,7 +20,52 @@ async function getHash(text: string): Promise<string> {
   return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
-// Speak guide in Indonesian, using pre-rendered MP3
+// Fallback to Web Speech API if pre-rendered audio is missing or fails
+function speakWithSpeechSynthesis(text: string, volume: number, sequenceId: number) {
+  if (typeof window === 'undefined' || !('speechSynthesis' in window)) {
+    unduckBGM();
+    return;
+  }
+
+  try {
+    window.speechSynthesis.cancel();
+
+    if (sequenceId !== currentSpeechSequence) {
+      unduckBGM();
+      return;
+    }
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'id-ID';
+    utterance.volume = Math.max(0, Math.min(1, volume));
+    utterance.rate = 0.95;
+
+    // Pick Indonesian voice if available
+    const voices = window.speechSynthesis.getVoices();
+    const idVoice = voices.find(v => v.lang.toLowerCase().replace('_', '-').startsWith('id'));
+    if (idVoice) {
+      utterance.voice = idVoice;
+    }
+
+    duckBGM();
+
+    utterance.onend = () => {
+      unduckBGM();
+    };
+
+    utterance.onerror = (e) => {
+      console.warn('SpeechSynthesis error:', e);
+      unduckBGM();
+    };
+
+    window.speechSynthesis.speak(utterance);
+  } catch (err) {
+    console.warn('SpeechSynthesis fallback failed:', err);
+    unduckBGM();
+  }
+}
+
+// Speak guide in Indonesian, using pre-rendered MP3 with Web Speech API fallback
 export async function speakIndonesian(text: string) {
   const settings = useSettingsStore.getState().settings;
   if (!settings.textToSpeechEnabled) return;
@@ -44,8 +89,26 @@ export async function speakIndonesian(text: string) {
     audio.volume = settings.voiceVolume;
     currentUtteranceAudio = audio;
 
+    let fallbackTriggered = false;
+    const triggerFallback = () => {
+      if (fallbackTriggered) return;
+      fallbackTriggered = true;
+      if (currentUtteranceAudio === audio) {
+        currentUtteranceAudio = null;
+      }
+      if (sequenceId === currentSpeechSequence) {
+        speakWithSpeechSynthesis(cleaned, settings.voiceVolume, sequenceId);
+      } else {
+        unduckBGM();
+      }
+    };
+
     // Lower BGM volume (ducking)
     duckBGM();
+
+    audio.addEventListener('error', () => {
+      triggerFallback();
+    });
 
     audio.addEventListener('ended', () => {
       if (currentUtteranceAudio === audio) {
@@ -55,13 +118,12 @@ export async function speakIndonesian(text: string) {
     });
 
     await audio.play().catch(err => {
-      console.warn('Audio play failed:', err);
-      if (currentUtteranceAudio === audio) {
-        unduckBGM();
-      }
+      console.warn('Audio play failed, falling back to Web Speech API:', err);
+      triggerFallback();
     });
   } catch (err) {
     console.error('Error generating hash or playing audio:', err);
+    speakWithSpeechSynthesis(cleaned, settings.voiceVolume, sequenceId);
   }
 }
 
@@ -72,6 +134,9 @@ export function cancelSpeech() {
     currentUtteranceAudio.pause();
     currentUtteranceAudio.src = '';
     currentUtteranceAudio = null;
+  }
+  if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
   }
   // Restore BGM volume if speech is cancelled
   unduckBGM();
