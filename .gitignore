@@ -29,6 +29,7 @@ docs/
 # Python & Scratch
 __pycache__/
 scratch/
+.playwright-mcp/
 
 # Keystores & Signing Secrets
 Keystore
